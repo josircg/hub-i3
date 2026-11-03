@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} :: Privacidad{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 mb-4">
+      <h2>Privacidad</h2>
+      <p>
+        Esta política describe cómo Hub-i3 trata los datos personales y las métricas de uso, conforme a la LGPD
+        (Ley brasileña nº 13.709/2018).
+      </p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Datos recopilados</h3></div>
+    <div class="col-sm-8 col-12">
+      Para usuarios autenticados, pueden tratarse datos de cuenta (nombre, correo electrónico, perfil y permisos).
+      Para navegación pública, pueden recopilarse métricas técnicas y agregadas de acceso.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Finalidad del tratamiento</h3></div>
+    <div class="col-sm-8 col-12">
+      Los datos se usan para autenticación, gestión de contenidos, seguridad de la plataforma, comunicación operativa
+      y análisis estadístico para mejorar el servicio.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Bases legales</h3></div>
+    <div class="col-sm-8 col-12">
+      El tratamiento puede basarse en ejecución de políticas públicas, interés legítimo administrativo, obligación legal
+      y, cuando corresponda, consentimiento del titular.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Derechos del titular</h3></div>
+    <div class="col-sm-8 col-12">
+      El titular puede solicitar acceso, corrección y actualización de sus datos, conforme a las hipótesis legales y
+      a las limitaciones técnicas y administrativas del servicio.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Cookies y métricas</h3></div>
+    <div class="col-sm-8 col-12">
+      Se pueden utilizar cookies para mantener sesión y preferencias. Las métricas de uso se tratan con énfasis en
+      datos agregados para evitar identificación indebida de personas.
+    </div>
+  </div>
+</div>
+{% endblock list_of_items %}

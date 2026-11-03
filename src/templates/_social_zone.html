@@ -1,0 +1,41 @@
+{% load i18n l10n %}
+
+{% if object.totalLikes is not None %}
+  <span class="me-3
+  {% if user.is_authenticated %} heart {% endif %} {% if object.pk in likes or liked %} text-danger {% else %} text-muted {% endif %}"
+        data-object_id="{{ object.pk }}" id="heart{{ object.pk }}" data-url="{{ object.get_like_url }}"
+        {% if user.is_authenticated %} role="button" {% endif %}
+  >
+  <i class="fa fa-heart" aria-hidden="true"></i>
+  <span class="value">{{ object.totalLikes }}</span>
+  </span>
+{% endif %}
+
+{% if object.totalFollowers is not None %}
+  <span class="me-3
+  {% if user.is_authenticated %} followIcon {% endif %} {% if object.pk in follows or followed %} text-primary {% else %} text-muted {% endif %}"
+        data-object_id="{{ object.pk }}" id="follow{{ object.pk }}" data-url="{{ object.get_follow_url }}"
+        {% if user.is_authenticated %} role="button" {% endif %}
+  >
+  <i class="far fa-bookmark"></i>
+  <span class="value">{{ object.totalFollowers }}</span>
+  </span>
+{% endif %}
+
+{% if object.totalAccesses is not None %}
+  <span class="float-left text-muted me-3"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="{% if object.firstAccess %}{% translate 'Since'%} {{ object.firstAccess|date:"SHORT_DATE_FORMAT" }}{% endif %}">
+  <i class="fas fa-eye"></i>
+  {{ object.totalAccesses }}
+  </span>
+{% endif %}
+
+<span class="float-right text-muted dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false">
+   <i class="fas fa-share-alt" aria-hidden="true"></i>
+</span>
+
+<ul class="dropdown-menu">
+  {% include '_social_zone_share_options.html' %}
+</ul>

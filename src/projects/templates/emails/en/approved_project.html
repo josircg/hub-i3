@@ -1,0 +1,20 @@
+{% block html_body  %}
+
+<p>Hi!</p>
+<p>
+  We are pleased to inform you that your project, <a href="{{ domain }}/project/{{ id }}">"{{ name }}"</a>“XXX”, was approved.
+</p>
+<p>
+ You can update or edit the profile of this project by accessing the section
+  <a href="{{ domain }}/users/me/submissions">My submissions</a> in your <a href="{{ domain }}/users/me">Personal Area</a> (see the top right corner of the platform menu).
+</p>
+<p>
+  You can also invite other people to edit this project, authorizing them to change all registration information. Therefore, be careful when assigning this role to someone.
+</p>
+<p>To send the invitation, just <a href="{{ domain }}/project_permissions/{{ id }}/">click here</a> or access the page of the project.</p>
+<p>If you wish to contact us, write to civis@ibict.br.</p>
+<p>This is an automatic email. Please DO NOT reply.</p>
+<p>Sincerely,</p>
+<p>Cívis Team</p>
+
+{% endblock html_body %}

@@ -1,0 +1,38 @@
+{% block html_body %}
+<!DOCTYPE html>
+<html>
+<body>
+  <p>
+  {% autoescape off %}
+   Hello, {{ user.name }}
+  {% endautoescape %}
+  </p>
+  <p>Welcome to the Cívis Citizen Science platform! We are incredibly happy to see you here.</p>
+  <p>
+   This beta platform version will provide you with useful resources to plan and develop citizen science projects,
+   not to mention that you will be able to contribute to initiatives and learn through the experience and knowledge of others involved.
+  </p>
+  <p>
+    When registering with Cívis, you will be able to closely follow initiatives of your interest and add resources to your library,
+    which can be found at <a href="{{domain}}{% url 'profiles:show_self' %}">My Area</a>
+  </p>
+  <p>Do not forget: the platform’s success depends on everyone’s contribution!</p>
+  <p>
+    That is why we invite you to share your citizen science resources and register the citizen science initiatives in which
+    you are or have been involved. It’s simple! Use the “New Submission” button in the top menu and choose the desired option.
+  </p>
+
+  <p>
+    <b>If you want to make your profile and submissions public, tick these options in My privacy center.</b>
+  </p>
+
+  <p>If you wish to contact us, write to {{ reply_to }}.</p>
+  <p>This is an automatic email. Please DO NOT reply.</p>
+  <p>
+   Sincerely, <br>
+   Cívis Team
+  </p>
+</body>
+
+</html>
+{% endblock html_body %}

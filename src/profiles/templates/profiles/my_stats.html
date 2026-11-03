@@ -1,0 +1,88 @@
+{% extends "./base_template_profiles.html" %}
+{% load i18n static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'site/css/forms.css' %}">
+  {{ form.media.css }}
+{% endblock %}
+
+{% block profile_right %}
+{% if projects_submitted %}
+<h3 class="col-12 leftborder mb-3">{% trans "Your projects <span class='text-pink6'>stats</span>" %}</h3>
+
+<div class="row ">
+  <form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-8 mb-4">
+        {{ form.project|as_crispy_field }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row" id="chart-list">
+  {% for project in projects_submitted %}
+    <div class="col-12">
+      <div id="project_stats_{{project.pk}}" style="display: none">
+        <div class="row">
+          <div class="col-12 mb-5">
+            <h5>{{ project }}</h5>
+            <section id="project_chart_{{ project.pk }}"></section>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+  {{ block.super }}
+  <script src="https://cdn.plot.ly/plotly-locale-{{ LANGUAGE_CODE }}-latest.js"></script>
+  <script src="{% static 'site/js/plotly-2.32.0.min.js' %}"></script>
+  <script>
+      $(document).ready(function() {
+        let chartConfig = {
+            accessLabel: "{% translate 'Accesses' %}",
+            likesLabel: "{% translate 'Likes' %}",
+            followsLabel: "{% translate 'Follows' %}",
+            locale: "{{ LANGUAGE_CODE }}",
+            chartTitle: "{% translate 'Stats' %}",
+            xaxisTitle: "{% translate 'Days' %}",
+            yaxisTitle: "{% translate 'Values' %}"
+        };
+
+        let chart = new ProjectStatsChart(chartConfig);
+
+        $('#id_project').on('select2:select', function(e){
+            let selectedOption = $(this).find('option:selected');
+            let project_id = selectedOption.val();
+            let project = selectedOption.text();
+            let chartListContainer = $('#chart-list');
+            chartListContainer.empty();
+            chartListContainer.append(`
+                <div class="col-12">
+                    <div id="project_stats_${project_id}" style="display: none">
+                        <div class="row">
+                            <div class="col-12 mb-5">
+                                <h5>${project}</h5>
+                                <section id="project_chart_${project_id}"></section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+            chart.generateProjectStats(project_id, `project_stats_${project_id}`);
+        });
+
+        {% for project in projects_submitted %}
+          chart.generateProjectStats({{ project.pk }}, "project_stats_{{ project.pk}}");
+        {% endfor %}
+      });
+  </script>
+
+  {{ form.media.js }}
+{% endblock scripts%}

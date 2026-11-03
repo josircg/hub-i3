@@ -1,0 +1,11 @@
+{% extends 'admin/submit_line.html' %}
+{% load i18n %}
+
+{% block submit-row %}
+  {% if add %}
+    {% if show_save_and_continue %}<input type="submit" value="{% if can_change %}{% translate 'Save' %}{% else %}{% translate 'Save and view' %}{% endif %}" name="_continue">{% endif %}
+  {% else %}
+    {% if show_save_and_continue and can_change %}<input type="submit" value="{% translate 'Preview' %}" name="_preview">{% endif %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}

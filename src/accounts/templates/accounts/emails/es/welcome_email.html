@@ -1,0 +1,34 @@
+{% block html_body %}
+<!DOCTYPE html>
+<html>
+<body>
+  <p>
+  {% autoescape off %}
+   Hola, {{ user.name }}
+  {% endautoescape %}
+  </p>
+  <p>¡La plataforma de ciencia ciudadana Cívis le da la bienvenida! Estamos encantados de que se haya unido a nosotros.</p>
+  <p>
+   En esta versión beta de la plataforma encontrará recursos útiles para planificar y desarrollar proyectos de ciencia ciudadana,
+   así como diversas iniciativas a las que puede contribuir y aprender de la experiencia y los conocimientos de otras personas.
+  </p>
+  <p>
+   Al suscribirse a Cívis, podrá seguir iniciativas de su interés y añadir recursos a su biblioteca, que encontrarás en <a href="{{domain}}{% url 'profiles:show_self' %}">Mi Área</a>.
+  </p>
+  <p>Pero atención: ¡el éxito de la plataforma depende de la contribución de todes!</p>
+  <p>
+   Por eso le invitamos a compartir sus propios recursos de ciencia ciudadana y a registrar las iniciativas de ciencia ciudadana en
+   las que participe o haya participado. Para ello, sólo tiene que utilizar el botón "Nueva presentación" del menú superior y elegir la opción que desee.
+  </p>
+  <p>
+    <b>Si quiere que tu perfil y sus envíos sean visibles para el público, marca estas opciones en Mi centro de privacidad.</b>
+  </p>
+  <p>Si desea ponerse en contacto con nosotros, escríbanos a {{ reply_to }}.</p>
+  <p>Este es un correo electrónico automático, NO responda.</p>
+  <p>
+   Saludos, <br>
+   Equipo Cívis
+  </p>
+</body>
+</html>
+{% endblock html_body %}

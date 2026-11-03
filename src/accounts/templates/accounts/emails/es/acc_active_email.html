@@ -1,0 +1,25 @@
+{% block html_body  %}
+
+<p>Hola, {{ user.name }}</p>
+
+<p>
+ Gracias por registrarse para formar parte de la comunidad de la plataforma de ciencia ciudadana Cívis.<br>
+ Su registro está casi listo. Para completarlo, confirme su dirección de correo electrónico haciendo clic en el
+ <a href="{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}">enlace de activación</a>, o copie y pegue el enlace siguiente en su navegador.
+</p>
+
+<p>
+ {{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+</p>
+
+<p>
+ Si no le ha registrado en Cívis, ignora este mensaje o escribe a civis@ibict.br e infórmanos. Este es un correo automático, NO responda.
+</p>
+
+<p>
+  Su dirección de correo electrónico siempre será privada para la comunidad, y sólo se utilizará para que podamos enviarle alertas como ésta, a menos que usted decida explícitamente revelarla en el futuro.
+</p>
+
+<p>Gracias, <br>Equipo Cívis </p>
+
+{% endblock html_body %}

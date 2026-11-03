@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} :: Privacidade{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 mb-4">
+      <h2>Privacidade</h2>
+      <p>
+        Esta política descreve como o Hub-i3 trata dados pessoais e métricas de uso, em conformidade com a LGPD
+        (Lei nº 13.709/2018).
+      </p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Dados coletados</h3></div>
+    <div class="col-sm-8 col-12">
+      Para usuários autenticados, podem ser tratados dados de conta (nome, e-mail, perfil e permissões).
+      Para navegação pública, podem ser coletadas métricas técnicas agregadas de acesso.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Finalidade do tratamento</h3></div>
+    <div class="col-sm-8 col-12">
+      Os dados são utilizados para autenticação, gestão de conteúdo, segurança da plataforma, comunicação operacional
+      e análise estatística de uso para melhoria contínua do serviço.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Bases legais</h3></div>
+    <div class="col-sm-8 col-12">
+      O tratamento pode ocorrer com base em execução de políticas públicas, interesse legítimo da administração,
+      obrigação legal e, quando aplicável, consentimento do titular.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Direitos do titular</h3></div>
+    <div class="col-sm-8 col-12">
+      O titular pode solicitar acesso, correção e atualização de seus dados, observadas as hipóteses legais e os limites
+      técnicos e administrativos do serviço.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Cookies e métricas</h3></div>
+    <div class="col-sm-8 col-12">
+      Cookies podem ser utilizados para manter sessão e preferências. Métricas de uso são tratadas com foco em dados
+      agregados, evitando identificação indevida de pessoas.
+    </div>
+  </div>
+</div>
+{% endblock list_of_items %}

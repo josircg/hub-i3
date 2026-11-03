@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block head %}
+  {{ block.super }}
+  {% block js %}{% endblock js %}
+{% endblock %}
+
+{% block messages %}
+  {% if not user.is_authenticated %}
+    <div class="container-fluid p-0">
+      <div class="alert alert-warning" role="alert">
+        {% translate 'Want to join the discussion? Log in or register with Cívis' %}
+      </div>
+    </div>
+  {% endif %}
+  {{ block.super }}
+{% endblock messages %}
+
+{% block list_of_items %}
+
+<div class="container">
+    {% block body %}
+    {# The forum content will go in this 'body' block #}
+    {% endblock body %}
+</div>
+{% endblock list_of_items %}
+
+{% block scripts %}
+  {{ block.super }}
+  {% block extra_js %}{% endblock extra_js %}
+{% endblock scripts %}
+

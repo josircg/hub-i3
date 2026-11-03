@@ -1,0 +1,25 @@
+{% block html_body  %}
+
+<p>Hello, {{ user.name }}</p>
+
+<p>
+ Thank you for registering to be part of the Cívis Citizen Science platform community.<br>
+ Your registration is almost complete. As a last step, please confirm your email address by clicking on the
+ <a href="{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}">activation link</a>, or copy and paste the link below into your browser.
+</p>
+
+<p>
+ {{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+</p>
+
+<p>
+ If you have not registered on Cívis, please ignore this message or write to civis@ibict.br to let us know. This is an automatic email. Please DO NOT reply.
+</p>
+
+<p>
+ Your email will always remain private to the community, and we will only send you notices like this unless you explicitly choose to make this information public in the future.
+</p>
+
+<p>Thank you, <br>Cívis Team</p>
+
+{% endblock html_body %}

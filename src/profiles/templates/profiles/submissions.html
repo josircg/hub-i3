@@ -1,0 +1,72 @@
+{% extends "./base_template_profiles.html" %}
+{% load i18n %}
+{% block profile_right %}
+
+{% if not submissions %}
+  <h3 class="col-12 leftborder">
+    {% if editable %}
+      {% translate "You don't have any submissions registered yet." %}
+    {% else %}
+      {% translate "This user does not have any submissions registered." %}
+    {% endif %}
+  </h3>
+{% else %}
+  {% if projects_submitted %}
+  <h3 class="col-12 leftborder">{% translate "Submitted <span class='text-pink6'>projects</span>" %}</h3>
+  <div class="row">
+      {% for project in projects_submitted %}
+      <div class="col-12 col-md-6">
+          {% include "horizontal_card_project.html" %}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+
+  {% if resources_submitted %}
+  <h3 class="col-12 leftborder mt-5">{% translate "Submitted <span class='text-pink6'>resources</span>" %}</h3>
+  <div class="row">
+      {% for resource in resources_submitted %}
+      <div class="col-12 col-md-6">
+          {% include "horizontal_card_resource.html" %}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if trainings_submitted %}
+  <h3 class="col-12 leftborder mt-5">{% translate "Submitted <span class='text-pink6'>training</span>" %}</h3>
+  <div class="row">
+      {% for resource in trainings_submitted %}
+      <div class="col-12 col-md-6">
+          {% include "horizontal_card_resource.html" %}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+
+  {% if organisations_submitted %}
+  <h3 class="col-12 leftborder mt-5">{% translate "Submitted <span class='text-pink6'>organisations</span>" %}</h3>
+  <div class="row">
+      {% for organisation in organisations_submitted %}
+      <div class="col-12 col-md-6">
+          {% include "horizontal_card_organisation.html" %}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if event_submitted %}
+  <h3 class="col-12 leftborder mt-5">{% translate "Submitted <span class='text-pink6'>events</span>" %}</h3>
+  <div class="row">
+      {% for event in event_submitted %}
+      <div class="col-12 col-md-6">
+          {% include "horizontal_card_event.html" %}
+      </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

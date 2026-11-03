@@ -1,0 +1,30 @@
+{% extends 'contact/newsletter.html' %}
+{% load static %}
+
+{% block header_section %}
+  <tr>
+    <td style="background-image: url({{ domain }}{% static 'site/newsletter/cabecalho.png' %}); background-size: cover; background-repeat: no-repeat; background-position: top; border-radius: 5px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="height: 138px; padding: 0 40px;">
+        <tr>
+          <td width="50%">
+            <a href="{{ domain }}" target="_blank"><img src="{{ domain }}{% static 'site/newsletter/logo_hub3i.png' %}" alt="" width="225"></a>
+          </td>
+          <td width="50%" style=" text-align:right;">
+            <h5 style="color: #ae4a74; font-weight: 300; margin: 0px 50px;">{{ news.headline }}</h5>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+{% endblock %}
+
+{% block list_of_items %}
+  <tr>
+    <td style="padding: 18px 40px; border-bottom: 1px solid #e4e4e4;">
+      <h3 style="color: #ae4a74; font-weight: 600; margin: 0; font-size: 16px;">{{ news.featured_title }}</h3>
+      <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 16px; color: #667085; margin: 0;">{{ news.featured_text|safe }}</p>
+    </td>
+  </tr>
+{% endblock %}
+
+{% block unsubscribe %}{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'admin/change_form.html' %}
+{% load i18n %}
+
+{% block object-tools-items %}
+  {% if change %}
+    <li>
+      <a href="{% url 'dossiers:add_dossier_items' pk=original.pk %}" class="historylink">{% translate 'Add Items' %}</a>
+    </li>
+    <li>
+      <a href="{% url 'dossiers:add_dossier_items' pk=original.pk %}?rebuild" class="historylink" title="{% translate 'Add new items to the dossier based on keywords' %}">
+        {% translate 'Search content' %}
+      </a>
+    </li>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}

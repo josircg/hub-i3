@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load static %}
+<div class="modal fade" id="modalsubmit">
+    <div class="modal-dialog mdialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fw-300">{% trans "What do you want to submit?" %}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="menu-item mb-5">
+                    <h4><a  href="/newProject" class="link-menu-submit" class="colorred"><i class="fas fa-binoculars"></i> {% trans "Project" %}</a></h4>
+                    <p class="fw-500">{% trans "Register a citizen science project" %}</p>
+                </div>
+                <div class="menu-item mb-5">
+                    <h4><a href="/newResource" class="link-menu-submit" class="colorgreen"><i class="fas fa-tools"></i> {% trans "Resource" %}</a></h4>
+                    <p class="fw-500">{% trans "Register a citizen science resource" %}</p>
+                </div>
+                <div class="menu-item mb-5">
+                    <h4><a href="/newTrainingResource" class="link-menu-submit" class="colorlightblue"><i class="fas fa-graduation-cap"></i> {% trans "Training" %}</a></h4>
+                    <p class="fw-500">{% trans "Register a course or educational material related to citizen science" %}</p>
+                </div>
+                <div class="menu-item mb-5">
+                    <h4><a href="/new_event" class="link-menu-submit" class="colororange"><i class="fas fa-calendar-day"></i> {% trans "Event" %}</a></h4>
+                    <p class="fw-500">{% trans "Register a citizen science event" %}</p>
+                </div>
+                {% if user.is_staff %}
+                <div class="menu-item mb-5">
+                    <h4><a href="/newPlatform" class="link-menu-submit"><i class="fas fa-globe"></i> {% trans "Platform" %}</a></h4>
+                    <p class="fw-500">{% trans "Register a citizen science platform" %}</p>
+                </div>
+                {% endif %}
+                <div class="menu-item mb-5">
+                    <h4><a href="/new_organisation" class="link-menu-submit"><i class="fas fa-university"></i> {% trans "Organisation or Network" %}</a></h4>
+                    <p class="fw-500">{% trans "Register your organisation or network" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

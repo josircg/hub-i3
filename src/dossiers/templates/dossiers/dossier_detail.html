@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n thumbnail eucs_platform_tags %}
+{% block meta %}
+<meta name="description" content="{{ dossier.translated_data.heading|truncate_summary:30|default:dossier.translated_data.title|striptags }}">
+<meta property="og:title" content='{{ dossier.translated_data.title|striptags }}' />
+<meta property="og:description" content='{{ dossier.translated_data.heading|truncate_summary:30|default:dossier.translated_data.title|striptags }}' />
+<meta property="og:url" content="{{ DOMAIN}}{{ dossier.get_absolute_url }}">
+<meta property="og:image" content="{{ DOMAIN }}{% thumbnail dossier.image|safe_image 1200x627 %}" />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content='{{ dossier.translated_data.title|striptags }}' />
+<meta name="twitter:description" content='{{ dossier.translated_data.heading|truncate_summary:30|default:dossier.translated_data.title|striptags }}' />
+<meta property="twitter:image" content="{{ DOMAIN }}{% thumbnail dossier.image|safe_image 600x300 crop upscale %}">
+{% endblock meta %}
+{% block title %}{{ block.super }} :: {% translate 'Dossier' %}{% endblock %}
+
+{% block list_of_items %}
+
+<div class="container dossier">
+  <div class="row">
+    <div class="container mt-5">
+      <div class="row d-flex justify-content-center">
+        
+        <div class="dossier-image-container">
+          <img class="dossier-main-image lazyload"
+               data-src="{{ DOMAIN }}{% thumbnail dossier.image|safe_image 1320x300 crop upscale %}"
+               data-srcset="{{ DOMAIN }}{% thumbnail dossier.image|safe_image 1320x300 crop upscale %} 1x, {{ DOMAIN }}{% thumbnail dossier.image|safe_image 2640x600 crop upscale %} 2x"
+               alt="Card image">
+        </div>
+        
+        <div class="col-sm-10 col-12 dossier-content mx-2 mx-sm-0">
+
+          <div class="dossier-header">
+            <div class="dossier-tag">{% translate 'Dossier' %}</div>
+
+            {% if has_permission_to_edit and not preview %}
+              <a href="{% url 'dossiers:dossier_edit' dossier.pk %}">
+                  <span class="posts-number-tag"><i class="bi bi-pen"></i> {% trans 'Edit' %}</span>
+              </a>
+            {% endif %}
+          </div>
+
+          <h1>{{ dossier.translated_data.title }}</h1>
+
+          <div class="dossier-author-date">
+            <p class="dossier-author">
+              {% translate 'Curators' %}: {{ dossier.curators }}
+            </p>
+            <p class="dossier-date">
+              {% translate 'Published date' %} {{ dossier.dateCreated|date:"SHORT_DATE_FORMAT" }}
+            </p>
+            <p class="dossier-date">
+              {% translate 'Updated' %} {{ dossier.updated_on|date:"SHORT_DATE_FORMAT" }}
+            </p>
+
+            {% if dossier.user_is_curator or user.is_staff %}
+              {% url 'dossiers:dossierobjects_detail' dossier.pk as dossierobjects_detail_url %}
+
+              {% if dossier.pending_items %}
+                <p class="text-danger">
+                  {% blocktranslate with pending=dossier.pending_items detail_url=dossierobjects_detail_url %}There are {{ pending }} contents awaiting moderation. <a href="{{ detail_url }}">Access here</a>.{% endblocktranslate %}
+                </p>
+              {% elif dossier.total_items %}
+                <p>
+                  {% blocktranslate with detail_url=dossierobjects_detail_url %}<a href="{{ detail_url }}">Access here</a> the content associated with the dossier{% endblocktranslate %}
+                </p>
+              {% endif %}
+            {% endif %}
+          </div>
+
+          {% if dossier.post_id %}
+            {% if preview or dossier.post.published %}
+              <div class="mt-4">
+                <a href="{{ dossier.post.get_absolute_url }}" class="btn btn-HUB 3I">{% translate 'Help spread the word' %}</a>
+              </div>
+            {% endif %}
+          {% endif %}
+
+          <div class="dossier-resumo">
+            <h3>{% translate 'Summary' %}:</h3>
+            <p>
+              {{ dossier.translated_data.heading | safe }}
+            </p>
+          </div>
+
+          <div class="dossier-keyword">
+            <h3>{% translate 'Keywords' %}</h3>
+            {% for keyword in dossier.keywords.all %}
+              <span class="keyword-tag">{{ keyword }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="dossier-desciption">
+            <h2>{% translate 'Description' %}</h2>
+            <div class="dossier-desciption-text">{{ dossier.translated_data.content | safe }}</div>
+          </div>
+
+          <div class="dossier-banner-spacer">
+            {% if dossier.forum_id %}
+              <div class="dossier-forum-banner">
+                <div class="row">
+                  <div class="col-md-7 col-lg-8">
+                    <h3>{% translate 'Join the forum' %}</h3>
+                    {% with forum=dossier.forum %}
+                      <p><a href="{% url 'forum:forum' forum.slug forum.pk %}">{{ forum.name|safe }}</a></p>
+                      <a href="{% url 'forum:forum' forum.slug forum.pk %}">
+                        <span class="posts-number-tag"><i class="bi bi-journal-text"></i> {{ forum.direct_posts_count }} {% translate 'Posts' %}</span>
+                      </a>
+                    {% endwith %}
+                  </div>
+                  <div class="col-md-5 col-lg-4 mt-3 mt-md-0">
+                    <img class="lazyload" src="{% static 'site/img/forum-banner.png' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="dossier-blog">
+            <h2>{% translate 'Blog' %}</h2>
+            {% for obj in dossier.dossierobject_set.approved_items.posts %}
+              {% with post=obj.content_object %}
+                <div class="dossier-blog-card">
+                  <div class="row">
+                    <div class="col-md-5 col-lg-4">
+                      <div class="img-container">
+                        <img class="lazyload" src="{% thumbnail post.image|safe_image 612x408 upscale crop %}" alt="image for {{ post.title }}">
+                      </div>
+                    </div>
+                    <div class="col-md-7 col-lg-8 d-flex flex-column">
+                      <h3 class="dossier-card-title mt-md-0 mt-4">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title | truncatewords_html:10 }}</a></h3>
+                      <p class="dossier-card-text">
+                        {{ post.excerpt|safe }}
+                      </p>
+                      <div class="mt-auto text-end">
+                        <a href="{{ post.get_absolute_url }}" class="btn btn-HUB 3I">{% translate 'See more' %}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endwith %}
+            {% empty %}
+              <div class="row"><p>{% translate 'No items added' %}</p></div>
+            {% endfor %}
+          </div>
+
+          <div class="dossier-banner-spacer">
+            <div class="dossier-banner-cards">
+              <div class="row g-4 equal-height-row">
+                <div class="col-md-6">
+                  <div class="dossier-banner-card card-yellow">
+                    <h3 class="dossier-banner-card-title">
+                      <span class="circle">
+                        <i class="bi bi-calendar-event-fill"></i>
+                      </span>
+                      <a href="{% url 'events' %}?dossier={{ dossier.pk }}" class="dossier-banner-card-title">{% translate 'Events' %}</a>
+                    </h3>
+                    <p class="dossier-banner-card-text">{% translate 'Find out about the events in this dossier.' %}</p>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="dossier-banner-card card-green">
+                      <h3 class="dossier-banner-card-title">
+                        <span class="circle">
+                          <i class="bi bi-binoculars-fill"></i>
+                        </span>
+                        <a href="{% url 'projects' %}?dossier={{ dossier.pk }}" class="dossier-banner-card-title">
+                        {% translate 'Projects' %}
+                        </a>
+                      </h3>
+
+                      <a href="{% url 'projects' %}?dossier={{ dossier.pk }}" class="d-flex justify-content-between align-items-center text-decoration-none text-dark py-2">
+                        <span>{% translate 'Latin America and the Caribbean' %}</span>
+                        <i class="bi bi-chevron-right"></i>
+                      </a>
+                      {% if dossier.forum_id %}
+                        <hr class="my-1">
+                        <a href="{% url 'forum:forum' dossier.forum.slug dossier.forum.pk %}" class="d-flex justify-content-between align-items-center text-decoration-none text-dark py-2">
+                          <span>{% translate 'In other regions' %}</span>
+                          <i class="bi bi-chevron-right"></i>
+                        </a>
+                      {% endif %}
+
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="dossier-banner-card card-red">
+                    <h3 class="dossier-banner-card-title">
+                      <span class="circle">
+                        <i class="bi bi-tools"></i>
+                      </span>
+                      <a href="{% url 'resources' %}?dossier={{ dossier.pk }}" class="dossier-banner-card-title">
+                      {% translate 'Resources' %}
+                      </a>
+                    </h3>
+                    <p class="dossier-banner-card-text">{% translate 'Find out about the resources in this dossier.' %}</p>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="dossier-banner-card card-blue">
+                    <h3 class="dossier-banner-card-title">
+                      <span class="circle">
+                        <i class="bi bi-mortarboard-fill"></i>
+                      </span>
+                      <a href="{% url 'training_resources' %}?dossier={{ dossier.pk }}" class="dossier-banner-card-title">
+                      {% translate 'Training Resources' %}
+                      </a>
+                    </h3>
+                    <p class="dossier-banner-card-text">{% translate 'Find out about the training resources in this dossier.' %}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="dossier-accordion">
+            <h2 class="dossier-accordion-title">{% translate 'Contribute to the dossier!' %}</h2>
+
+            <p class="dossier-banner-card-text">
+              {% url 'contact' as contact_url %}
+              {% blocktranslate %}Follow the steps below, or, if you prefer, send your suggestion via the <a a class="text-pink5" href="{{ contact_url }}">contact form</a>.{% endblocktranslate%}
+            </p>
+
+            <div class="accordion" id="accordionDossie">
+              <div class="accordion-item">
+                <div class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    {% translate 'Add existing content in Cívis to the dossier' %}
+                  </button>
+                </div>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionDossie">
+                  <div class="accordion-body">
+                    <p>{% translate 'Step by step:' %}</p>
+                    <p><span class="circle-list">1</span>{% translate 'Log in to Cívis.'%}</p>
+                    <p><span class="circle-list">2</span>{% translate 'Go to the page of the content (project, resource, training and event) to be suggested.' %}</p>
+                    <p><span class="circle-list">3</span>{% translate 'Click the <b>“Indicate to dossier”</b> button.' %}</p>
+                    <p><span class="circle-list">4</span>{% translate 'Select the desired dossier.' %}</p>
+                    <p><span class="circle-list">5</span>{% translate 'Click <b>“Assign”</b>.'%}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    {% translate 'Register new content in Cívis and add it to the dossier' %}
+                  </button>
+                </div>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionDossie">
+                  <div class="accordion-body">
+                    <p>{% translate 'Step by step:' %}</p>
+                    <p><span class="circle-list">1</span>{% translate 'Log in to Cívis.'%}</p>
+                    <p><span class="circle-list">2</span>{% translate 'Click the <b>"New submission"</b> button and select the content form to be registered.' %}</p>
+                    <p><span class="circle-list">3</span>{% translate 'Include the new content information and, at the end of the form, click the <b>"Save & indicate to Dossier"</b> button.' %}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if users or organisations %}
+            <div class="dossier-banner-spacer">
+              <h2>{% translate 'Meet those who collaborated in the construction of this Dossier' %}</h2>
+
+              <div class="dossier-author-date">
+                {% if users %}
+                  <p class="dossier-author">{% translate 'Other collaborators' %}</p>
+                  <div class="mb-4"></div>
+                  <ul>
+                    {% for user in users %}
+                      <li><p>{{ user.name }}</p></li>
+                    {% endfor %}
+                  </ul>
+
+                  <div class="mb-4"></div>
+                {% endif %}
+
+                {% if organisations %}
+                  <p class="dossier-author">{% translate 'Partners' %}</p>
+                  <div class="mb-4"></div>
+                  <div class="row">
+                    {% for organisation in organisations %}
+                        <div class="col-md-3 col-sm-6 mb-2 d-flex justify-content-center align-items-center">
+                          <a href="{% url 'organisation' organisation.pk %}">
+                            <img class="lazyload"
+                                 data-src="{{ DOMAIN }}{% thumbnail organisation.logo|safe_image 180x60 crop upscale %}"
+                                 alt="{{ organisation }}">
+                          </a>
+                        </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

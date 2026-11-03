@@ -1,0 +1,1 @@
+from machina.apps.forum_permission.models import * # noqa

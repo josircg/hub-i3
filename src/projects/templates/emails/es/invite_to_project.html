@@ -1,0 +1,12 @@
+{% block html_body  %}
+  <p>Fuiste invitado por {{ creator }} para ser el editor del proyecto <a href='{{ domain }}/project/{{ project_id }}'>{{ project }}</a>, registrado en la plataforma Cívis.</p>
+  <p>Esto le otorga autorización para actualizar o modificar la información registrada para este proyecto.</p>
+  <p>Para aceptar la invitación, <a href='{{ domain }}/{{ link }}'>haga clic aquí</a>.</p>
+  <p>
+    Cívis es una plataforma de ciencia ciudadana, desarrollada por el Instituto Brasileño de Información en Ciencia y Tecnología - IBICT.
+    Nuestro objetivo es brindar infraestructura y contenidos que contribuyan a ampliar la comprensión sobre la ciencia ciudadana,
+    difundir su uso y apoyar el desarrollo de proyectos y la aplicación de metodologías en este campo.
+  </p>
+  <p>Cívis está abierto para que cualquiera pueda registrar proyectos, recursos y otros contenidos de ciencia ciudadana.</p>
+  <p>¡Únete a la comunidad Cívis!</p>
+{% endblock html_body %}

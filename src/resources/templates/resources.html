@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load l10n %}
+{% block title %}{{ block.super }} :: {% if not isTrainingResource %}{% translate "Resources" %}{% else %}{% translate "Training Resources" %}{% endif %}{% endblock %}
+{% block meta_title %}{{ block.super }} :: {% if not isTrainingResource %}{% translate "Resources" %}{% else %}{% translate "Training Resources" %}{% endif %}{% endblock %}
+{% block meta_seo_description %}{% if not isTrainingResource %}{% translate "List of Resources" %}{% else %}{% translate "List of Training Resources" %}{% endif %}{% endblock %}
+{% block meta_description %}{% if not isTrainingResource %}{% translate "List of Resources" %}{% else %}{% translate "List of Training Resources" %}{% endif %}{% endblock %}
+{% block meta_t_title %}{{ block.super }} :: {% if not isTrainingResource %}{% translate "Resources" %}{% else %}{% translate "List of Training Resources" %}{% endif %}{% endblock %}
+{% block meta_t_description %}{% if not isTrainingResource %}{% translate "List of Resources" %}{% else %}{% translate "List of Training Resources" %}{% endif %}{% endblock %}
+
+{% block list_of_items %}
+{% include "modal_resources.html" %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+          {% if not dossier %}
+            {% if isTrainingResource %}
+                <h1>{% trans "Training resource <span class='text-pink5'> search</span>" %} </h1>
+            {% else %}
+                <h1>{% trans "Resource <span class='text-pink5'> search</span>" %} </h1>
+            {% endif %}
+
+            {% include "_subnavbar_finder.html" %}
+          {% else %}
+            <h1><span class="text-pink5">{{ dossier }}</span> {% if isTrainingResource %}{% translate 'Training Resources' %}{% else %}{% translate 'Resources' %}{% endif %}</h1>
+          {% endif %}
+
+          {% include "_finder_resources.html" %}
+        </div>
+    </div>
+    <div class="row">
+        {% include "resources_cards.html" %}
+    </div>
+</div>
+{% endblock list_of_items %}
+
+{% block scripts %}
+<script src="{% static 'site/js/bootstrap-autocomplete.js'%}?v=5"></script>
+<script>
+    $('.basicAutoComplete').autoComplete(
+        { minLength: 3 }
+    );
+    $('.basicAutoComplete').on('autocomplete.select', function (evt, item) {
+        $('#searchTop').submit();
+    });
+    $(function () {
+        $('.custom-select').on('change', function () {
+            $('#searchResources').submit();
+        });
+        $('#pill-inLanguage').on('click', function() {
+            $('#inLanguage').val('')
+            $('#searchResources').submit()
+        });
+        $('#pill-theme').on('click', function() {
+            $('#theme').val('')
+            $('#searchResources').submit();
+        });
+        $('#pill-category').on('click', function() {
+            $('#category').val('')
+            $('#searchResources').submit();
+        });
+    });
+</script>
+{% endblock scripts %}

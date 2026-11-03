@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ block.super }} :: Sobre{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h1 class="mt-5 mb-5">
+                Sobre <span class="text-pink6">Hub-i3</span>
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 col-12"></div>
+        <div class="col-sm-8 col-11">
+
+            <div class="row mb-5">                
+                <div class="col-12">
+                    <p>
+                        El Hub de Información e Innovación Inclusivas (Hub-i3) es una plataforma digital de consulta
+                        de políticas públicas dirigidas a grupos en situación de vulnerabilidad social.
+                    </p>
+                    <p>
+                        El sistema organiza las políticas por ciclo de vida y grupo poblacional, con recursos de búsqueda
+                        textual, filtros y navegación por categorías.
+                    </p>
+                    <p>
+                        La consulta pública es abierta y no requiere registro. Las funciones de gestión de contenidos y
+                        administración de usuarios son restringidas a perfiles autenticados.
+                    </p>
+                    <p>
+                        La plataforma está dirigida a un público amplio y plural, que incluye:
+                    </p> 
+                    <ul>
+                        <li>ciudadanos que buscan localizar políticas públicas de forma clara y rápida;</li>
+                        <li>investigadores y organizaciones de la sociedad civil que trabajan con inclusión social;</li>
+                        <li>gestores públicos responsables del mantenimiento y seguimiento de la plataforma.</li>
+                    </ul>
+                    
+                    <h1 class="mt-5 mb-5">Objetivos de <span class="text-pink6">Hub-i3</span></h1>
+    
+                    <p>
+                        Hub-i3 tiene como objetivo reunir y organizar información sobre políticas públicas, facilitar
+                        su localización mediante búsqueda y filtros, garantizar acceso libre y accesible, apoyar el mantenimiento
+                        continuo de la base y disponibilizar métricas de uso en herramientas de código abierto.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock list_of_items %}

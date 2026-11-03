@@ -1,0 +1,38 @@
+{% extends "./base_template_profiles.html" %}
+{% load i18n %}
+{% block profile_right %}
+
+{% if projects_followed %}
+<h4 class="col-12 leftborder">{% trans "Projects in bookmarks" %}</h4>
+<div class="row">
+    {% for fproject in projects_followed %}
+    <div class="col-12 col-md-6">
+        {% include "horizontal_card_project.html" with project=fproject.project %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if resources_followed %}
+<h4 class="col-12 leftborder mt-5">{% trans "Resources in bookmarks" %}</h4>
+<div class="row">
+    {% for fresource in resources_followed %}
+    <div class="col-12 col-md-6">
+        {% include "horizontal_card_resource.html" with resource=fresource.resource %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if trainings_followed %}
+<h4 class="col-12 leftborder mt-5">{% trans "Training in bookmarks" %}</h4>
+<div class="row">
+    {% for fresource in trainings_followed %}
+    <div class="col-12 col-md-6">
+        {% include "horizontal_card_resource.html" with resource=fresource.resource %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

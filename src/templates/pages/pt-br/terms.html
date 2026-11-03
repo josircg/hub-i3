@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} :: Termos de Uso{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 mb-4">
+      <h2>Termos de Uso</h2>
+      <p>
+        Estes termos regulam o uso do Hub-i3, plataforma digital de consulta a políticas públicas voltadas a grupos
+        em situação de vulnerabilidade social.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Acesso e finalidade</h3></div>
+    <div class="col-sm-8 col-12">
+      O acesso às consultas é público e sem cadastro. Funções de gestão e administração exigem autenticação e perfil
+      autorizado.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Uso adequado</h3></div>
+    <div class="col-sm-8 col-12">
+      Ao utilizar a plataforma, o usuário compromete-se a:
+      <ul>
+        <li>respeitar a legislação aplicável;</li>
+        <li>não publicar conteúdo ilegal, fraudulento, discriminatório ou ofensivo;</li>
+        <li>não inserir malware, scripts maliciosos ou material que viole direitos autorais e de terceiros.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Conteúdo e atualização</h3></div>
+    <div class="col-sm-8 col-12">
+      As informações são mantidas pela equipe responsável do IBICT a partir de base de dados curada. Critérios de
+      atualização e escopo de cobertura podem evoluir ao longo do projeto.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Disponibilidade e mudanças</h3></div>
+    <div class="col-sm-8 col-12">
+      O Hub-i3 poderá realizar ajustes técnicos, editoriais e funcionais para melhoria contínua da plataforma, incluindo
+      alterações nestes termos.
+    </div>
+  </div>
+</div>
+{% endblock list_of_items %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} :: Terms of Use{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 mb-4">
+      <h2>Terms of Use</h2>
+      <p>
+        These terms govern the use of Hub-i3, a digital platform for consulting public policies focused on socially
+        vulnerable groups.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Access and purpose</h3></div>
+    <div class="col-sm-8 col-12">
+      Public consultation is open without registration. Management and administration features require authentication
+      and an authorized profile.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Acceptable use</h3></div>
+    <div class="col-sm-8 col-12">
+      Users agree to:
+      <ul>
+        <li>comply with applicable law;</li>
+        <li>avoid posting illegal, fraudulent, discriminatory, or abusive content;</li>
+        <li>avoid publishing malware, malicious scripts, or third-party copyright violations.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Content and updates</h3></div>
+    <div class="col-sm-8 col-12">
+      Information is maintained by the responsible IBICT team through curated data workflows. Update rules and scope
+      may evolve during the project lifecycle.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Availability and changes</h3></div>
+    <div class="col-sm-8 col-12">
+      Hub-i3 may introduce technical, editorial, and functional improvements, including updates to these terms.
+    </div>
+  </div>
+</div>
+{% endblock list_of_items %}

@@ -1,0 +1,19 @@
+{% block html_body  %}
+<p>Hola,</p>
+<p>Nos complace informarle de que su proyecto <a href="{{ domain }}/project/{{ id }}">{{ name }}</a> ha sido aprobado.</p>
+<p>
+ Puede realizar actualizaciones o cambios en el perfil de este proyecto accediendo a la sección
+  <a href="{{ domain }}/users/me/submissions">Mis propuestas</a> en su <a href="{{ domain }}/users/me">Área Personal</a> (véase la esquina superior derecha del menú de la plataforma).
+</p>
+<p>
+ También es posible invitar a otras personas a ser editores de este proyecto, dándoles  autorización para
+  cambiar toda la información de registro. Así que ten cuidado al asignar este papel a otra persona.
+</p>
+<p>
+ Para enviar una invitación, <a href="{{ domain }}/project_permissions/{{ id }}/">pulse aquí</a> o visite la página de el proyecto.
+</p>
+<p>Si desea ponerse en contacto con nosotros, escríbanos a civis@ibict.br.</p>
+<p>Este es un correo electrónico automático, NO responda.</p>
+<p>Saludos,</p>
+<p>Equipo Cívis</p>
+{% endblock html_body %}

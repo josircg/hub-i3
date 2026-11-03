@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} :: Privacy{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 mb-4">
+      <h2>Privacy</h2>
+      <p>
+        This policy explains how Hub-i3 handles personal data and usage metrics in compliance with the Brazilian LGPD
+        (Law No. 13,709/2018).
+      </p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Data collected</h3></div>
+    <div class="col-sm-8 col-12">
+      For authenticated users, account data may be processed (name, email, profile, permissions). For public browsing,
+      technical and aggregated usage metrics may be collected.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Processing purposes</h3></div>
+    <div class="col-sm-8 col-12">
+      Data is used for authentication, content management, platform security, operational communication, and
+      statistical analysis to improve service quality.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Legal bases</h3></div>
+    <div class="col-sm-8 col-12">
+      Processing may rely on public-policy execution, legitimate administrative interest, legal obligations, and,
+      when applicable, user consent.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Data subject rights</h3></div>
+    <div class="col-sm-8 col-12">
+      Data subjects may request access, correction, and updates of their information, subject to legal and operational
+      constraints.
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-4 col-12"><h3>Cookies and analytics</h3></div>
+    <div class="col-sm-8 col-12">
+      Cookies may be used to maintain sessions and preferences. Usage metrics are handled with an emphasis on aggregate
+      data to avoid undue personal identification.
+    </div>
+  </div>
+</div>
+{% endblock list_of_items %}

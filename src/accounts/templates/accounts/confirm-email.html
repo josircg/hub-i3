@@ -1,0 +1,16 @@
+{% extends "accounts/confirm-base.html" %}
+{% load i18n %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h3>{% trans "Almost done!" %}</h3><br/><br/>
+      <p>
+        {% trans "We sent you an email to confirm your registration. Please, check your inbox and follow the instructions to finish the process. We sent you an email to confirm your registration. Please, check your inbox and follow the instructions to finish the process. If you do not receive the message, please contact " %}
+        <a href="{% url 'contact' %}">Cívis</a>.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

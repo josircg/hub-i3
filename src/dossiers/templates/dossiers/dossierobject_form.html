@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'site/css/forms.css' %}">
+{% endblock head %}
+
+{% block title %}{{ block.super }} :: {% translate 'Content associated with the dossier' %}: {{ dossier.title }}{% endblock %}
+
+{% block list_of_items %}
+  <div class="intro-form mt-5 mb-5 pb-5 pt-5">
+      <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>{% translate "Content associated with the dossier" %}<span class="text-pink6"> {{ dossier.title }}</span></h1>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p>{% translate "Here it is possible to approve or delete content associated with the dossier." %}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="container mt-5">
+      <form action="." method="post" enctype="multipart/form-data" id="dossier-form">
+        {% csrf_token %}
+        <input type="hidden" name="to" value="{{ request.GET.to }}">
+        <div class="row">
+          <div class="col-12">
+            <div class="row d-flex justify-content-center">
+              <div class="col-10 form-check">
+                <h3 class="leftborder">{% translate "Dossier Objects"|lower|capfirst %}</h3>
+                {{ formset.management_form }}
+                <table class="table table-bordered">
+                  <thead>
+                    <th scope="col">{% translate 'Moderate' %}</th>
+                    <th scope="col">{% translate 'content type'|capfirst %}</th>
+                    <th scope="col">{% translate 'Content link' %}</th>
+                  </thead>
+                  <tbody>
+                    {% for form in formset %}
+                      <tr>
+                        <td>
+                          {{ form.approved|as_crispy_field }}
+                          {{ form.id|as_crispy_field }}
+                        </td>
+                        <td>{{ form.instance.ctype_name }}</td>
+                        <td>
+                          <a href="{{ form.instance.content_object.get_absolute_url }}" target="_blank">{{ form.instance.content_object }}</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="mb-4"></div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+              <div class="col-10">
+                <button class="btn btn-pink6 submit">
+                  <i class="fas fa-share-square"></i> {% translate "Save & view Dossier" %}
+                </button>
+                <div class="mb-4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% load i18n %}
+<button class="btn btn-pink6 submit">
+    <i class="fas fa-share-square"></i> {% translate "Save" %}
+</button>
+
+{% if show_continue %}
+  <button class="btn btn-pink6 submit continue">
+      <i class="fas fa-save"></i> {% translate "Save & continue editing" %}
+  </button>
+{% endif %}
+
+{% if show_indicate %}
+  <button class="btn btn-pink6 submit dossier"
+          title="{% translate 'Indicate which dossier you would like to suggest this content for. The association with the dossier is subject to moderation.' %}">
+    <i class="fas fa-plus"></i> {% translate 'Save & indicate to Dossier' %}
+  </button>
+{% endif %}
+
+<div class="row savedInfo"></div>

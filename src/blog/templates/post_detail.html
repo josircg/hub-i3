@@ -1,0 +1,77 @@
+{% extends 'baseblog.html' %}
+{% load i18n l10n thumbnail eucs_platform_tags %}
+{% block meta %}
+<meta name="description" content="{{ post.excerpt|truncate_summary:30 }}">
+<meta property="og:title" content='{{ post.title|striptags }}' />
+<meta property="og:description" content='{{ post.excerpt|truncate_summary:30 }}' />
+<meta property="og:url" content="{{ DOMAIN}}{{ post.get_absolute_url }}">
+<meta property="og:image" content="{{ DOMAIN }}{% thumbnail post.image|safe_image 1200x627 %}" />
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content='{{ post.title|safe }}' />
+<meta name="twitter:description" content='{{ post.excerpt|truncate_summary:30 }}' />
+<meta property="twitter:image" content="{{ DOMAIN }}{% thumbnail post.image|safe_image 600x300 crop upscale %}">
+{% endblock meta %}
+
+{% block list_of_items %}
+
+<div class="container" id="blog-single">
+  <div class="row">
+    <div class="container mt-5">
+      <div class="row d-flex justify-content-center">
+
+        <div class="col-sm-10 col-12">
+          <div class="mt-5 mb-5">
+            <div>
+              <h1>{% block title %} {{ post.title }} {% endblock title %}</h1>
+              <div class="row">
+                <div class="col-10 d-flex justify-content-between align-items-start">
+                  <p class="text-muted">
+                      {{ post.authors_names }} <br /> {{ post.created_on }}
+                  </p>
+
+                  {% if post.dossierobjects.first_dossier %}
+                    <a class="btn btn-pink6" href="{% url 'dossiers:dossiers_list' %}?dossierobject__post__pk={{ post.pk|unlocalize }}">
+                      {% translate "View associated dossiers" %}
+                    </a>
+                  {% endif %}
+                </div>
+                <div class="col-md-2">
+                  {% if post.status %}
+                    {% if user.is_authenticated %}
+                      <a class="btn" href="{% url 'dossiers:dossier_select' ctype_id post.pk %}"
+                           title="{% translate 'Indicate to Dossier' %}"><i class="fas fa-plus-square"></i></a>
+                      <span class="btn dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false">
+                         <i class="fas fa-sm fa-share-alt" aria-hidden="true"></i>
+                      </span>
+                    {% endif %}
+                    <ul class="dropdown-menu">
+                      {% include '_social_zone_share_options.html' with object=post use_alternative_text=True %}
+                    </ul>
+                  {% endif %}
+                </div>
+
+                <hr>
+
+              </div>
+              {% if post.image.width > post.image.height %}              
+              <div class="mb-4 mt-5">
+                <img class="img-fluid img-responsive img-zoom lazyload" data-src="/media/{{post.image}}" alt="Card image">
+              </div>              
+              {% endif %}
+              {% if post.image.width < post.image.height %}
+                <img class="img-fluid img-responsive img-zoom lazyload" style="float: right; margin: 0px 0px 15px 15px;" width="300px" data-src="/media/{{post.image}}" alt="Card image">
+              {% endif %}              
+
+              <div class="blog-text-content mt-5">{{ post.content | safe }}</div>
+
+              <hr />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock list_of_items %}

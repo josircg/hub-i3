@@ -1,0 +1,9 @@
+{% block html_body  %}
+  <p>Hola {{ user.name }},</p>
+  <p>Su contraseña se ha restablecido correctamente. Para garantizar la seguridad de su cuenta, necesitamos que reactive su nombre de usuario antes de poder acceder a nuestros servicios nuevamente.</p>
+  <p>Haga clic en el siguiente enlace para reactivar su cuenta:</p>
+  <p><a href="{{ domain }}{% url 'accounts:activate' uidb64=token uid=token %}?reactivate">{{ domain }}{% url 'accounts:activate' uidb64=token uid =token %}?reactivar</a></p>
+  <p>Si no solicitó un restablecimiento de contraseña o cree que se trata de un error, comuníquese con civis@ibict.br de inmediato.</p>
+  <p>Saludos,</p>
+  <p>Equipo Cívis</p>
+{% endblock %}

@@ -1,0 +1,1 @@
+from machina.apps.forum_permission.checker import * # noqa

@@ -1,0 +1,6 @@
+-r requirements/development.txt
+
+pytz~=2023.3.post1
+six~=1.16.0
+invoke~=2.2.0
+Werkzeug<3

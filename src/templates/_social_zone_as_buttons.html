@@ -1,0 +1,28 @@
+{% load i18n l10n %}
+
+{% if user.is_authenticated %}
+  {% if followed is not None %}
+    <button class="btn followButton {% if extra_class %}{{ extra_class }} {% else %}mb-1 {% endif %}{% if followed %}btn-my-darkBlue {% else %}btn-my-outline-darkBlue {% endif %}"
+            data-object_id="{{ object.pk }}" id="follow{{ object.pk }}"
+            data-url="{{ object.get_follow_url }}">
+        <i class="far fa-bookmark"></i> {% translate 'Bookmark' %}
+    </button>
+  {% endif %}
+
+  {% if liked is not None %}
+    <button class="btn heartButton {% if extra_class %}{{ extra_class }} {% else %}mb-1 {% endif %}{% if liked %}btn-my-darkBlue{% else %}btn-my-outline-darkBlue{% endif %}"
+            data-object_id="{{ object.pk }}" id="heart{{ object.pk }}"
+            data-url="{{ object.get_like_url }}">
+        <i class="far fa-heart"></i> {% translate 'Like' %}
+    </button>
+  {% endif %}
+{% endif %}
+
+<button class="btn btn-my-darkBlue dropdown-toggle {% if extra_class %}{{ extra_class }} {% else %}mb-1 {% endif %}"
+        type="button" id="btnshareoptions" data-bs-toggle="dropdown" aria-expanded="false">
+  <i class="fas fa-share-alt" aria-hidden="true"></i> {% translate 'Share' %}
+</button>
+
+<ul class="dropdown-menu" aria-labelledby="btnshareoptions">
+  {% include '_social_zone_share_options.html' %}
+</ul>

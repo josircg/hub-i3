@@ -1,0 +1,23 @@
+{% extends "horizontal_card.html" %}
+{% load thumbnail %}
+{% load i18n %}
+{% load eucs_platform_tags %}
+{% block img %}
+<a href="{% url 'dossiers:dossier_detail' dossier_curator.dossier.pk %}">
+    <img title="dossier picture" class="img-fluid lazyload" data-src="{% thumbnail dossier_curator.dossier.image|safe_image:'default_profile.png' 200x133 crop %}">
+</a>
+{% endblock img %}
+{% block title %}
+<a href="{% url 'dossiers:dossier_detail' dossier_curator.dossier.pk %}">{{ dossier_curator.dossier.title | truncatechars:30}}</a>
+<div class="small text-muted">{{ dossier_curator.dossier.dateCreated }}</div>
+{% url 'dossiers:dossierobjects_detail' dossier_curator.dossier.pk as dossierobjects_detail_url %}
+{% if dossier_curator.pending_count %}
+  <a href="{{ dossierobjects_detail_url }}" class="small text-danger">
+    {% blocktranslate count total=dossier_curator.pending_count %}There is one content awaiting moderation{% plural %}There are {{ total }} contents awaiting moderation. Access here.{% endblocktranslate %}
+  </a>
+{% elif dossier_curator.total_count %}
+<a href="{{ dossierobjects_detail_url }}" class="small">{% translate 'Access here the content associated with the dossier' %}</a>
+{% else %}
+  <div class="small text-danger">{% translate 'There are no dossier objects' %}</div>
+{% endif %}
+{% endblock title %}

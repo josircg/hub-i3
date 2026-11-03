@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block meta %}
+{% translate "Hub-i3 é uma plataforma digital de consulta a políticas públicas voltadas a grupos em situação de vulnerabilidade social." as start_description %}
+{% translate "O sistema organiza as políticas por ciclo de vida e grupo populacional, com recursos de busca, filtragem e navegação, conforme os requisitos iniciais do projeto." as end_description %}
+{% translate 'Hub-i3 - Hub de Informação e Inovação Inclusivas' as title %}
+<meta name="description" content="{{ start_description }} {{ end_description }}">
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:description" content='{{ start_description }} {{ end_description }}' />
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ DOMAIN }}{% static 'site/img/background-header-1200x627.png' %}">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ title }}" />
+<meta name="twitter:description" content='{{ start_description }} {{ end_description }}' />
+<meta property="twitter:image" content="{{ DOMAIN }}{% static 'site/img/background-header-600x300.png' %}">
+{% endblock %}
+{% block navbar-left %}
+{% include "_navbar_r2.html"  %}
+{% endblock %}
+{% block splash %}
+{% if request.get_full_path == "/"|add:LANGUAGE_CODE|add:"/" %}
+
+<div id="banner" class="container-fluid" >
+    <div class="container" >
+        <div class="row">
+            <div class="col-12 col-md-12 mt-0 headerText">
+                <div class="">
+                    <span class="mt-4 mb-2 whiteText headerTitle">
+                        {% trans "Informação pública inclusiva para todas as pessoas" %}
+                        {% if LANGUAGE_CODE == "pt-br" or LANGUAGE_CODE == "es" %}
+                            <img data-src="{% static 'site/img/todxs.gif' %}" alt="todos" style="width: 127px; margin-bottom: 7px;" class="lazyload">
+                        {% endif %}
+                    </span>
+                    <span class="headerSubTitle">
+                        <a href="{% url 'projects' %}">{% trans "Explore as políticas" %}</a>! 
+                    </span>
+                </div>
+            </div>
+
+            {% include "_subnavbar_finder.html" %}
+                <!-- <div class="col-md-6 col-12 mt-5 pb-5">
+                    {% if user.is_authenticated %}
+                    <h3 class="mb-5 mt-5">Go to your 
+                        <a class="lightBlue-color" href="/users/me">personal area</a><br/>
+                        and see your stats</h3>
+                    {% else %}
+                    <h3 class="mb-5 mt-5"><a href='signup'>join the community</a> <div>and participate</div></h3>
+                    {% endif %}
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock splash %}
+{% block list_of_items %}
+    <div class="container-fluid pb-5" id="div-sobre">
+        <div class="container">
+            <div class="row">
+                <h5 class="text-pink5">{% trans "Sobre a plataforma" %}</h5>
+                    <div class="col-xs-12 col-sm-6">
+                    <span class="title-m title d-block mt-3">{% trans "O que é o Hub-i3?" %}</span>
+                    <p>{% trans "O Hub de Informação e Inovação Inclusivas (Hub-i3) reúne e organiza informações sobre políticas públicas para grupos em situação de vulnerabilidade social." %}
+                       {% trans "A plataforma facilita o acesso por meio de busca textual, filtros por ciclo de vida e grupo populacional e navegação por categorias." %}
+                    </p>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <span class="title-m title d-block mt-3">{% trans "Objetivo do Hub-i3" %}</span>
+                    <p>{% trans "O objetivo é garantir acesso livre e acessível a informações de interesse público, apoiar a manutenção contínua da base e fornecer métricas de uso para a gestão da plataforma." %}
+                    </p>
+                </div>
+                <div class="col-12 pt-3 ">
+                    <a href="/about" class="btn btn-pink6">{% trans "Saiba mais" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include '_latest_events.html' %}
+    {% if visao_endpoint %}
+        {% include '_mapa_interativo.html' %}
+    {% endif %}
+    {% include '_latest_projects.html' %}
+    {% include '_latest_resources.html' %}
+    {% include '_latest_training_resources.html' %}
+    {% include '_latest_platforms.html' %}
+{% endblock list_of_items %}
+
+{% block scripts %}
+  <script src="{% static 'site/js/bootstrap-autocomplete.js'%}?v=5"></script>
+  <script>
+    $('.basicAutoComplete').autoComplete(
+        { minLength: 3 }
+    );
+    $('.basicAutoComplete').on('autocomplete.select', function (evt, item) {
+        $('#searchTop').submit();
+    });
+  </script>
+{% endblock scripts %}

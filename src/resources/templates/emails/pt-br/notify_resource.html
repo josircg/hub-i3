@@ -1,0 +1,6 @@
+{% block html_body  %}
+  <p>Uma ferramenta foi submetida na plataforma Cívis.</p>
+  <p>
+    Acesse a ferramenta, <a href='{{ domain }}{% url resource_edit_url pk=resourceid %}'>{{ submissionName }}</a>, para fazer a moderação.
+  </p>
+{% endblock html_body %}

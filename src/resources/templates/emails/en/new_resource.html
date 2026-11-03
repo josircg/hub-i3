@@ -1,0 +1,18 @@
+{% block html_body  %}
+ <p>Hi!</p>
+ <p>
+ Thank you for registering the resource, <a href='{{ domain }}{% url resource_url pk=resourceid %}'>{{ submissionName }}</a>, on the Cívis platform.
+ </p>
+ <p>
+   The next step is to forward your submission to our moderation team This step aims to prevent the platform is used for purposes other than supporting citizen science.
+ </p>
+ <p>Don’t worry, if we have any questions, we will contact you.</p>
+ <p>If everything is ok, you will be notified of the resources’ approval, and that it has been published on the platform.</p>
+ <p>
+   You can update or edit the profile of this resource at any time, simply access the section My Submissions in your <a href="{{ domain }}{% url 'profiles:show_self' %}">Personal Area</a> (see the top right corner of the platform menu).
+ </p>
+ <p>If you wish to contact us, write to civis@ibict.br.</p>
+ <p>This is an automatic email. Please DO NOT reply.</p>
+ <p>Sincerely,</p>
+ <p>Cívis Team</p>
+{% endblock html_body %}

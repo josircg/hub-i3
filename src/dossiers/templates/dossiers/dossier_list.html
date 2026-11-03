@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+{% load eucs_platform_tags dossiers_tags %}
+{% block title %}{{ block.super }} :: {% translate 'Dossiers' %}{% endblock %}
+{% block meta_seo_description %}{% translate 'Dossiers' %}{% endblock %}
+{% block meta_title %}{% translate 'Dossiers' %} - {{ block.super }}{% endblock %}
+{% block meta_description %}{% translate 'Dossiers' %} - {{ block.super }}{% endblock %}
+{% block meta_t_title %}{% translate 'Dossiers' %} - {{ block.super }}{% endblock %}
+{% block meta_t_description %}{% translate 'Dossiers' %} - {{ block.super }}{% endblock %}
+
+{% block list_of_items %}
+<div class="container">
+  <div class="row">
+    <div class="row">
+      <div class="col-5">
+        <h1 class="mt-5 mb-5">{{ site_name }}<span class="text-pink6">{% translate 'Dossiers' %}</span></h1>
+      </div>
+      <div class="col-6 text-end">
+        <span class="fs-6 mt-5 pt-3 mb-5 d-block">
+          {% url 'contact' as contact_url %}
+          {% blocktranslate %}Want to suggest a new dossier? <a class="text-pink5" href="{{ contact_url }}">Contact us.</a>{% endblocktranslate %}
+        </span>
+      </div>
+    </div>
+    <div id="blog-list">
+      {% for dossier in object_list %}
+        {% can_edit_dossier user dossier as can_edit %}
+
+        <div class="col-12 mb-5">
+          <div class="h-100 border-0">
+              <div class="card-content">
+                <div class="row">
+                  <div class="col-md-3 pe-0">
+                    <img class="card-img lazyload"
+                        src="{% thumbnail dossier.image|safe_image 330x290 upscale crop %}"
+                        alt="Card image">
+                  </div>
+                  <div class="col-md-8 card-text">
+                    <div class="d-flex align-items-center gap-2">
+                      <h3 class="mb-0">
+                        <a href="{{ dossier.get_absolute_url }}" class="card-title text-decoration-none">
+                          {{ dossier.translated_data.title }}
+                        </a>
+                      </h3>
+                      {% if can_edit %}
+                        <a class="badge {% if dossier.is_active %}bg-my-darkGreen{% elif dossier.is_draft %}bg-my-orange{% else %}bg-my-red{% endif %}"
+                           href="{% url 'dossiers:dossier_edit' dossier.pk %}">
+                          {{ dossier.get_status_display }}
+                        </a>
+                      {% endif %}
+                    </div>
+                    <div>
+                      <p>{{ dossier.translated_data.heading|safe|truncate_summary:95 }}</p>
+
+                      {% if dossier.user_is_curator or user.is_staff %}
+                        {% url 'dossiers:dossierobjects_detail' dossier.pk as dossierobjects_detail_url %}
+
+                        {% if dossier.pending_items %}
+                          <p class="text-danger">
+                            {% blocktranslate with pending=dossier.pending_items detail_url=dossierobjects_detail_url %}There are {{ pending }} contents awaiting moderation. <a href="{{ detail_url }}">Access here</a>.{% endblocktranslate %}
+                          </p>
+
+                        {% elif dossier.total_items %}
+                          <p>
+                            {% blocktranslate with detail_url=dossierobjects_detail_url %}<a href="{{ detail_url }}">Access here</a> the content associated with the dossier{% endblocktranslate %}
+                          </p>
+                        {% endif %}
+                      {% endif %}
+
+                    </div>
+                    {% if dossier.post_id %}
+                      {% if can_edit or dossier.post.is_active %}
+                        <div>
+                          <a href="{{ dossier.post.get_absolute_url }}" class="btn btn-HUB 3I">{% translate 'Help spread the word' %}</a>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+
+                  </div>
+                  {% if can_edit %}
+                    <div class="col-md-1">
+                      <a class="btn btn-red float-left mt-1" href="{% url 'dossiers:dossier_edit' dossier.pk %}" title="{% translate 'Edit' %}">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+          <div class="d-flex col-12 justify-content-center">
+            <h2>{% translate 'No dossiers.' %}</h2>
+          </div>
+      {% endfor %}
+    </div>
+    <div class="col-lg-12">{% include "_paginator.html" %}</div>
+  </div>
+</div>
+{% endblock list_of_items %}

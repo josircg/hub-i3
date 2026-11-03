@@ -1,0 +1,9 @@
+{% block html_body  %}
+  <p>Olá {{ user.name }},</p>
+  <p>Sua senha foi redefinida com sucesso. Para garantir a segurança da sua conta, precisamos que você reative o seu usuário antes de poder acessar nossos serviços novamente.</p>
+  <p>Por favor, clique no link abaixo para reativar sua conta:</p>
+  <p><a href="{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}?reactivate">{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}?reactivate</a></p>
+  <p>Se você não solicitou a redefinição de senha ou acredita que isso seja um erro, por favor, entre em contato com civil@ibict.br imediatamente.</p>
+  <p>Saudações,</p>
+  <p>Equipe Cívis</p>
+{% endblock %}

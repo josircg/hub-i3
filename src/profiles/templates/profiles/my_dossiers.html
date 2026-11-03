@@ -1,0 +1,15 @@
+{% extends "./base_template_profiles.html" %}
+{% load i18n %}
+
+{% block profile_right %}
+{% if dossiers %}
+<h3 class="col-12 leftborder mt-5"><span class='text-pink6'>{% translate "My Dossiers" %}</span></h3>
+<div class="row">
+    {% for dossier_curator in dossiers %}
+      <div class="col-12 col-md-6">
+          {% include "horizontal_card_dossier.html" %}
+      </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

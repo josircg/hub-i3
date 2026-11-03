@@ -1,0 +1,38 @@
+{% load i18n %}
+{% if use_alternative_text %}
+  {% blocktranslate with object_url=DOMAIN|add:object.get_absolute_url asvar simple_text %}{{ object }}: Learn more on Cívis! {{ object_url }}{% endblocktranslate %}
+  {% blocktranslate with object_url=DOMAIN|add:object.get_absolute_url asvar social_network_text %}{{ object }}: Learn more on Cívis! {{ object_url }} @HUB 3Ibr #CitizenScience{% endblocktranslate %}
+{% else %}
+  {% blocktranslate with object_url=DOMAIN|add:object.get_absolute_url asvar simple_text %}{{ object }} is on Cívis, a Citizen Science platform {{ object_url }}{% endblocktranslate %}
+  {% blocktranslate with object_url=DOMAIN|add:object.get_absolute_url asvar social_network_text %}{{ object }} is on Cívis, a #CitizenScience platform {{ object_url }} @HUB 3Ibr{% endblocktranslate %}
+{% endif %}
+
+<li>
+  <a class="text-muted dropdown-item social-network"
+     href="https://twitter.com/intent/tweet?text={{ social_network_text|urlencode }}"
+     target="_blank"><i class="fab fa-twitter"></i> {% translate 'Share on X' %}</a>
+</li>
+<li>
+  <a class="text-muted dropdown-item social-network"
+     href="https://api.whatsapp.com/send?text={{ simple_text|urlencode }}"
+  ><i class="fab fa-whatsapp"></i> {% translate 'Share on WhatsApp' %}</a>
+</li>
+<li>
+  <a class="text-muted dropdown-item social-network"
+     href="https://www.facebook.com/sharer/sharer.php?u={{ DOMAIN|add:object.get_absolute_url|urlencode }}"
+  ><i class="fab fa-facebook"></i> {% translate 'Share on Facebook' %}</a>
+</li>
+<li>
+  <a class="text-muted dropdown-item social-network"
+     href="http://www.linkedin.com/shareArticle?mini=true&url={{ DOMAIN|add:object.get_absolute_url|urlencode }}"
+  ><i class="fab fa-linkedin"></i> {% translate 'Share on Linkedin' %}</a>
+</li>
+<li>
+  <a class="text-muted dropdown-item social-network"
+     href="https://www.pinterest.com/pin/create/button/?url={{ DOMAIN|add:object.get_absolute_url|urlencode }}&description={{ social_network_text|cut:"@HUB 3Ibr"|urlencode }}"
+  ><i class="fab fa-pinterest"></i> {% translate 'Share on Pinterest' %}</a>
+</li>
+<li>
+  <a class="dropdown-item copyLink" href="#" data-url="{{ simple_text }}">
+    <i class="fas fa-link"></i> {% translate 'Copy the link' %}</a>
+</li>

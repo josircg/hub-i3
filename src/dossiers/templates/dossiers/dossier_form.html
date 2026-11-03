@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% load crispy_forms_tags eucs_platform_tags thumbnail %}
+
+{% block head %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'site/css/forms.css' %}">
+  {{ form.media.css }}
+  {{ form.media.js }}
+{% endblock head %}
+
+
+{% block title %}{{ block.super }} :: {% translate 'Edit Dossier' %}{% endblock %}
+
+{% block list_of_items %}
+  <div class="intro-form mt-5 mb-5 pb-5 pt-5">
+      <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>{% translate "Editing" %}<span class="text-pink6"> {{ dossier.title }}</span></h1>
+            </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="container mt-5">
+      <form action="." method="post" enctype="multipart/form-data" id="dossier-form">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-12">
+            <div class="row d-flex justify-content-center">
+              <div class="col-8">
+                  <h3 class="leftborder">{% translate "Main information" %}</h3>
+                  {{ form.title|as_crispy_field }}
+                  {{ form.heading|as_crispy_field }}
+                  {{ form.content|as_crispy_field }}
+                  <div class="mb-4"></div>
+                  <h3 class="leftborder">{% translate "Image for the dossier header" %}</h3>
+                  <img class="img-fluid img-zoom" id="previewimage" width="320" height="290"
+                       src="{% thumbnail dossier.image|safe_image 320x290 %}">
+                  <div class="mb-4"></div>
+                  {{ form.image|as_crispy_field }}
+                  {{ form.status|as_crispy_field }}
+                  <div class="mb-4"></div>
+                  {{ form.keywords|as_crispy_field }}
+                  <div class="mb-4"></div>
+              </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+              <div class="col-8">
+                <button type="submit" name="_save" class="btn btn-pink6 submit mb-1">
+                  <i class="fas fa-share-square"></i> {% translate "Save" %}
+                </button>
+                <button type="submit" name="_continue" class="btn btn-pink6 submit-action mb-1">
+                  <i class="fas fa-save"></i> {% translate "Save & continue editing" %}
+                </button>
+                {% if dossier.dossierobject_set.exists %}
+                  <a class="btn btn-my-darkBlue mb-1" href="{% url 'dossiers:dossierobjects_detail' dossier.pk %}">
+                    <i class="fas fa-eye"></i> {% translate 'Access the content for moderation' %}
+                  </a>
+                {% endif %}
+                <div class="mb-4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('form button[type=submit]').on('click', function() {
+                let $form = $(this.form);
+                let $clicked = $(this);
+                // disables all other buttons
+                $form.find('button[type=submit]').not($clicked).attr('disabled', true);
+                // applies a "disabled effect" to the clicked object
+                $clicked.addClass('submitting');
+            });
+
+            $('#id_image').on('change', function(event){
+              const file = event.target.files[0];
+              const $previewimage = $('#previewimage');
+              const oldSrc = $previewimage.attr('src');
+
+              if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                  $previewimage.attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(file);
+              } else {
+                $previewimage.attr('src', oldSrc);
+              }
+            });
+        });
+    })(jQuery);
+  </script>
+{% endblock %}

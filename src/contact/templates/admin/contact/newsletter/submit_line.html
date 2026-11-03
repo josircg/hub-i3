@@ -1,0 +1,10 @@
+{% extends "admin/submit_line.html" %}
+{% load i18n %}
+
+{% block submit-row %}
+  {% if change and original.status in status_allows_sending %}
+    <input type="submit" value="{% trans 'Send Newsletter' %}" name="_queued">
+  {% endif %}
+
+  {{ block.super }}
+{% endblock %}

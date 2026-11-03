@@ -1,0 +1,252 @@
+{% load static %}
+{% load thumbnail eucs_platform_tags %}
+<html class=" udwmzjr idc0_350">
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="format-detection" content="address=no">
+      <meta name="format-detection" content="telephone=no">
+      <meta name="format-detection" content="email=no">
+      <meta name="x-apple-disable-message-reformatting">
+      {% block extra_head %}{% endblock %}
+      <style>
+  @import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700;900&display=swap");
+
+  body {
+      font-family: "Poppins", "sans-serif";
+  }
+      </style>
+      <title>{% block title %}{{ news.headline }}{% endblock %}</title>
+  </head>
+
+  <body style="padding: 0; margin: 0; -webkit-font-smoothing: antialiased; background-color: #f6f8f9; -webkit-text-size-adjust: none;">
+    <img src="{{tracking_url}}" alt="" width="1" height="1">
+    <table id="content" role="article" aria-roledescription="email" aria-label="" width="640" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+      <tr>
+        <td>
+          <table width="100%" cellpadding="0" cellspacing="0" {% if invisible %}style="{{invisible | safe}}"{% endif %} >
+            <tr>
+              <td style="padding: 8px 0; text-align:right;">
+                <span style="display:none; max-height:0; overflow:hidden;">
+                </span>
+                <a href="{{ domain }}{{ news.get_absolute_url }}" style="text-decoration: none; color: #63666d; font-size: 12px;" >Ver no navegador</a>
+              </td>
+            </tr>
+          </table>
+
+          <table id="email" cellpadding="0" cellspacing="0" width="100%" style="border-radius: 5px; background-color: #ffffff;">
+            {% block header_section %}
+            <tr>
+              <td style="background-image: url({{ domain }}{% static 'site/newsletter/cabecalho.png' %}); background-size: cover; background-repeat: no-repeat; background-position: top; border-radius: 5px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="height: 138px; padding: 0 40px;">
+                  <tr>
+                    <td width="50%">
+                      <a href="{{ domain }}" target="_blank"><img src="{{ domain }}{% static 'site/newsletter/logo_hub3i.png' %}" alt="" width="225"></a>
+                    </td>
+                    <td width="50%" style=" text-align:right;">
+                      <h4 style="color: #ae4a74; font-weight: 600; margin: 0px 50px;">Newsletter</h4>
+                      <h5 style="color: #ae4a74; font-weight: 300; margin: 0px 50px;">{{ news.headline }}</h5>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {% endblock %}
+
+            {% block list_of_items %}
+            <!-- INTRO -->
+            <tr>
+              <td style="padding: 18px 40px; border-bottom: 1px solid #e4e4e4;">
+                <h3 style="color: #ae4a74; font-weight: 600; margin: 0; font-size: 16px;">{{ news.featured_title }}</h3>
+                <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 16px; color: #667085; margin: 0;">{{ news.featured_text|safe }}</p>
+              </td>
+            </tr>
+
+
+            <!-- DESTAQUE -->
+            {% if news.blog %}
+            <tr>
+              <td style="padding: 18px 40px; border-bottom: 1px solid #e4e4e4;">
+                <h3 style="color: #ae4a74; font-weight: 600; margin: 0; font-size: 16px;">{{ news.blog.title }}</h3>
+
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="center" style="padding: 15px 0;">
+                      {% if news.blog.image %}
+                        <img src="{{ domain }}{% thumbnail news.blog.image 560x382 upscale crop %}" alt="" width="100%">
+                      {% else %}
+                        <img src="{{ domain }}/media/void_600.png" alt="">
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
+
+                <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 16px; color: #667085; margin: 0;">{{ news.blog.excerpt }}</p>
+
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding: 20px 0;  text-align:right;">
+                      <a href="{{ domain }}{{ news.blog.get_absolute_url }}" style="font-family: 'Lato', sans-serif; border: 1px solid #ae4a74; border-radius: 5px; padding: 11px 33px; text-decoration: none; font-size: 1rem; color: #ae4a74; transition: all ease 0.5s;">Veja mais</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {% endif %}
+
+            <!-- ACONTECE -->
+            <tr>
+              <td style="padding: 18px 40px; border-bottom: 1px solid #e4e4e4;">
+
+                <h3 style="color: #ae4a74; font-weight: 600; margin: 0; font-size: 16px;">Acontece</h3>
+                {% with acontece|length as total %}
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  {% for evento in acontece %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                      <tr>
+                    {% endif %}
+
+                    <td width="{% if total == 1 %}100{% else %}50{% endif %}%" style="padding: 0px 5px 5px 0px;">
+                      <table width="100%" cellpadding="0" cellspacing="0" style="height: 100px; border: 1px solid #e4e4e4; border-radius: 5px; padding: 10px;">
+                        <tr>
+                          <td>
+                            <img src="{{ domain }}{% static 'site/newsletter/calendar.png' %}" alt="" width="20" style="margin-right: 0px; vertical-align: middle;">
+                            <span style="font-family: 'Poppins', sans-serif; font-weight: 300; color: #667085; font-size: 14px;">{{ evento.period }}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="padding-top: 10px;">
+                            <span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ae4a74; font-size: 14px;">{{ evento.title }}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+
+                    {% if forloop.counter|divisibleby:2 or forloop.last %}
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                </table>
+                {% endwith %}
+
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding: 20px 0;  text-align:right;">
+                      <a href="{{ domain }}/events" style="font-family: 'Lato', sans-serif; border: 1px solid #ae4a74; border-radius: 5px; padding: 11px 33px; text-decoration: none; font-size: 1rem; color: #ae4a74; transition: all ease 0.5s;">Veja mais</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- SUBMISSÕES -->
+            <tr>
+              <td style="padding: 18px 40px; border-bottom: 1px solid #e4e4e4;">
+                <h3 style="color: #ae4a74; font-weight: 600; margin: 0; font-size: 16px;">Novas submissões</h3>
+                <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 16px; color: #667085; margin: 0;">Conheça os novos projetos e iniciativas cadastrados na Cívis este mês</p>
+                <table style="width: 100%; border-collapse: collapse; margin: 15px 0px;">
+                  {% for project in projects %}
+                  <tr>
+                    <td style="width: 132px; vertical-align: top;">
+                      <div style="background-image: url({{ domain }}{% thumbnail project.image 132x90 upscale crop %}); width: 132px; height: 90px; background-size: cover;"></div>
+                    </td>
+                    <td style="padding-left: 20px; vertical-align: top;">
+                      <h3 style="margin: 0px;  font-size: 14px; ">
+                        <a href="{{ domain }}/project/{{ project.id }}" style=" color:#667085; text-decoration: none; font-weight: 600;" target="_blank" >{{ project.title }}</a>
+                      </h3>
+                      <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 14px; color: #667085; margin: 0;">
+                        {{ project.description | safe | truncate_summary:20}}
+                      </p>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
+
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding: 20px 0;  text-align:right;">
+                      <a href="{{ domain }}/projects" style="font-family: 'Lato', sans-serif; border: 1px solid #ae4a74; border-radius: 5px; padding: 11px 33px; text-decoration: none; font-size: 1rem; color: #ae4a74; transition: all ease 0.5s;">Veja mais</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- DESTAQUE -->
+            {% if news.featured_resource %}
+            <tr>
+              <td style="padding: 18px 40px; border-bottom: 1px solid #e4e4e4;">
+                <h3 style="color: #ae4a74; font-weight: 600; margin: 0; font-size: 16px;">Recurso em destaque</h3>
+                <table style="width: 100%; border-collapse: collapse; margin: 15px 0px;">
+                    <tr>
+                      <td style="width: 132px; vertical-align: top;">
+                        <div style="background-image: url({{ domain }}{% thumbnail news.featured_resource.safe_image 132x90 upscale crop %}); width: 132px; height: 90px; background-size: cover;"></div>
+                      </td>
+                      <td style="padding-left: 20px; vertical-align: top;">
+                        <h3 style=" margin: 0px;  font-size: 14px; ">
+                          <a href="{{ domain }}/resource/{{ news.featured_resource.id }}" target="_blank" style="color:#667085; text-decoration: none; font-weight: 600;">
+                            {{ news.featured_resource.name }}
+                          </a>
+                        </h3>
+                        <p style=" font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 14px; color: #667085; margin: 0; ">{{ news.featured_resource.abstract | safe | truncate_summary:30 }}</p>
+                      </td>
+                    </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding: 20px 0;  text-align:right;">
+                      <a href="{{ domain }}/resources" style="font-family: 'Lato', sans-serif; border: 1px solid #ae4a74; border-radius: 5px; padding: 11px 33px; text-decoration: none; font-size: 1rem; color: #ae4a74; transition: all ease 0.5s;">Veja mais</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {% endif %}
+            {% endblock %}
+          </table>
+
+          <!-- Footer -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="border-bottom: 1px solid #ccc; padding: 20px 40px; background-color: #E4E4E4;">
+            <tr>
+              <td width="50%">
+                <a href="{{ domain }}">
+                  <img src="{{ domain }}{% static 'site/newsletter/logo_hub3i_footer.png' %}" style="max-height: 30px;" alt="">
+                </a>
+              </td>
+              <td style=" text-align:right;">
+                <table cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding-right: 10px;">
+                      <a href="https://www.gov.br/ibict/pt-br" target="_blank">
+                        <img src="{{ domain }}{% static 'site/newsletter/logo_ibict.png' %}" style="max-height: 30px;" alt="">
+                      </a>
+                    </td>
+                    <td>
+                      <a href="https://www.gov.br/mcti/pt-br" target="_blank">
+                        <img src="{{ domain }}{% static 'site/newsletter/logo_MCTI.png' %}" style="max-height: 30px;" alt="">
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          {% block unsubscribe %}
+          <table width="100%" cellpadding="0" cellspacing="0" style="text-decoration: none; color: #63666d; font-size: 12px; margin-top: 10px; {{invisible | safe}}">
+            <tr>
+              <td style=" text-align:right;">
+                <p style="font-weight: 400;">
+                  Não deseja receber mais nossos e-mails?
+                  <a href="{{unsubscribe}}">Clique aqui para se descadastrar.</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+          {% endblock %}
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

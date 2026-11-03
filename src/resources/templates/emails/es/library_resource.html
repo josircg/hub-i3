@@ -1,0 +1,13 @@
+{% block html_body  %}
+ <p>Hola,</p>
+ <p>
+   Nos complace informarte de que tu recurso <a href="{{ domain }}{% url resource_url pk=id %}">{{ name }}</a> ha sido marcado como favorito por otro miembro de la comunidad Cívis.
+ </p>
+ <p>
+   Puede realizar actualizaciones o cambios en el perfil de este recurso accediendo a la sección Mis envíos de su <a href="{{ domain }}{% url 'profiles:show_self' %}">Área Personal</a> (véase la esquina superior derecha del menú de la plataforma).
+ </p>
+ <p>Si desea ponerse en contacto con nosotros, escríbanos a civis@ibict.br.</p>
+ <p>Este es un correo electrónico automático, NO responda.</p>
+ <p>Saludos,</p>
+ <p>Equipo Cívis</p>
+{% endblock html_body %}
