@@ -7,6 +7,13 @@ For more information on this file, see
 https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/
 """
 import os
+import warnings
+
+# drf-yasg e django-countries ainda importam pkg_resources (ver dívida técnica
+# em .kiro/steering/django.md). Silencia o aviso até a migração para Django 4.x.
+warnings.filterwarnings(
+    "ignore", message="pkg_resources is deprecated", category=UserWarning
+)
 
 from django.conf import settings
 from django.core.wsgi import get_wsgi_application

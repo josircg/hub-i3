@@ -414,12 +414,15 @@ wheels = [
 
 [[package]]
 name = "django-authtools"
-version = "2.0.0"
+version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/5c/9aa9e0c6386caf2d6f589f994bb50a28ebc61cfb5d57524d39350cc11651/django-authtools-2.0.0.tar.gz", hash = "sha256:76994e6dfc887291c6d8c5c842fb9551f7ea258ba9e271fe261396d9e45aed7a", size = 38369, upload-time = "2022-07-29T20:42:21.848Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/2e/c67b9d5cf581e5730ee2681e5e68e702284d6017daa32507c54716d7a9ef/django_authtools-2.1.0.tar.gz", hash = "sha256:e51d0832a5e93361a09902ce99f57996e60ebd563629461fa5eb2b858db7bf7f", size = 40032, upload-time = "2026-04-22T13:47:12.024Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ae/6e/0fb0bfacb686ebe7410e12f83a56563c95b9dcd4a1c823d37247bc9cc1e6/django_authtools-2.1.0-py3-none-any.whl", hash = "sha256:2d0c63d252583959a194ae7e560353ccd8ef8c3f76ab361f14f03a3cbff0b831", size = 14242, upload-time = "2026-04-22T13:47:11.09Z" },
+]
 
 [[package]]
 name = "django-braces"
@@ -907,7 +910,7 @@ requires-dist = [
     { name = "django", specifier = "<4.0" },
     { name = "django-active-link", specifier = "==0.1.8" },
     { name = "django-admin-tools", specifier = "==0.9.3" },
-    { name = "django-authtools", specifier = "==2.0.0" },
+    { name = "django-authtools", specifier = ">=2.0.2" },
     { name = "django-braces", specifier = "==1.15.0" },
     { name = "django-ckeditor", specifier = "<6.7" },
     { name = "django-cleanup", specifier = "==8.0.0" },

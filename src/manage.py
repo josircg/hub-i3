@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 import os
 import sys
+import warnings
+
+# drf-yasg e django-countries ainda importam pkg_resources (ver dívida técnica
+# em .kiro/steering/django.md). Silencia o aviso até a migração para Django 4.x.
+warnings.filterwarnings(
+    "ignore", message="pkg_resources is deprecated", category=UserWarning
+)
 
 if __name__ == "__main__":
     # CHANGED manage.py will use development settings by
