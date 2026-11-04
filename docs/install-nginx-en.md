@@ -1,11 +1,16 @@
-Tutorial for install HUB 3I on a production server:
+Tutorial for install Hub I3 on a production server:
 
-1) Install NGINX and Supervisor (logged as root):
+Paths used below (adjust to your server): application in `/var/webapp/hub-i3`,
+user `webapp`, gunicorn listening on `127.0.0.1:5000`.
+
+1) Install NGINX and system packages (logged as root):
 
 ````
-apt-get install -y nginx build-essential libssl-dev python3-dev python-setuptools libxml2-dev supervisor git libfreetype6 libfreetype6-dev python3-virtualenv libpq-dev
+apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev
 dpkg-reconfigure tzdata
 ````
+
+(`gettext` is required by `compilemessages`; `gdal-bin`/`libgdal-dev` by GeoDjango.)
 
 2) Create webapp user and permissions (logged as root)
 
@@ -22,8 +27,6 @@ sudo chown root:www-data sites-available
 sudo chmod 775 sites-*
 sudo chown root:www-data /var/log/nginx
 sudo chmod 775 /var/log/nginx
-sudo chown webapp:www-data /etc/supervisor/conf.d
-sudo chmod 775 /etc/supervisor/conf.d
 ````
 
 3) Log in as webapp and create a public key. Add it to gitlab/github:
@@ -35,46 +38,45 @@ cd .ssh
 cat id_rsa.pub
 ````
 
-4) Logged as webapp, install the python environment:
+4) Logged as webapp, install `uv` (it manages the virtualenv and Python 3.10):
 
-> cd /var/webapp
-> virtualenv HUB 3I
+````
+curl -LsSf https://astral.sh/uv/install.sh | sh
+````
 
-Another option is: mkvirtualenv HUB 3I -p python3
+5) Clone the repository (If git asks for a password, then step (3) didn't work well)
 
-5) Activate Python environment
-```
-cd HUB 3I
-source bin/activate
+````
+cd /var/webapp
+git clone git@git.ibict.br:cgti/hub-i3.git
+cd hub-i3
 mkdir logs
-```
+````
 
-6) Clone HUB 3I repository (If git asks for a password, then step (3) didn't work well)
-> git clone  git@git.ibict.br:cgti/HUB 3I.git
-
-7) Access HUB 3I folder and install libraries
+6) Install the dependencies. This creates `/var/webapp/hub-i3/.venv` using exactly
+the versions in `uv.lock`, without the dev tools, and installs `gunicorn` (group `prod`):
 
 ```
-cd HUB 3I
-pip install -r requirements/production.txt
+uv sync --frozen --no-dev --group prod
 ```
 
-8) Change manage.py to point to eucs_platform/settings/production.py
+The project is already configured to use `eucs_platform.settings.production`
+by default (see `src/manage.py` and `src/eucs_platform/wsgi.py`).
 
-9) Log in again as root/sudo to configure NGINX
+7) Log in again as root/sudo to configure NGINX
 
 * copy template nginx.conf and change the site parameters (domain, port, path, etc)
 
 ```
-cp docs/nginx.conf /etc/nginx/sites-enabled/HUB 3I.conf
+cp docs/nginx.conf /etc/nginx/sites-enabled/hub-i3.conf
 ```
 
-* to test if your new config is ok, run '''nginx -t''' 
-* to apply the new config: '''sudo systemctl restart nginx'''
+* to test if your new config is ok, run `nginx -t`
+* to apply the new config: `sudo systemctl restart nginx`
  
-10) PostgreSQL (Logged as root)
+8) PostgreSQL (Logged as root)
  
-O Banco de Dados utiliza PostGIS [*], assim algumas instruções extras devem ser executadas: 
+The database uses PostGIS [*], so some extra instructions are required:
 
 ```
 sudo apt install postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts
@@ -84,8 +86,8 @@ sudo apt install postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts
 ```
 su - postgres psql ou sudo -u postgres psql
 create user eucitizenscience_usr with encrypted password 'mypass';
-create database HUB 3I with owner=eucitizenscience_usr;
-\connect HUB 3I;
+create database hub_i3 with owner=eucitizenscience_usr;
+\connect hub_i3;
 create extension postgis;
 GRANT ALL on public.spatial_ref_sys TO eucitizenscience_usr;
 ```
@@ -93,41 +95,75 @@ GRANT ALL on public.spatial_ref_sys TO eucitizenscience_usr;
 Log in as webapp and test postgres connection:
 
 ```
-psql -h localhost -U eucitizenscience_usr HUB 3I
+psql -h localhost -U eucitizenscience_usr hub_i3
 ```
 
-11) Change local.env to apply your new PostgreSQL database and test the connection:
+9) Copy `src/eucs_platform/settings/local.sample.reference.env` to `local.env`,
+apply your new PostgreSQL database and test the connection:
 
 ```
-cd /var/webapp/HUB 3I/HUB 3I
-source ../bin/activate
+cd /var/webapp/hub-i3/src
+cp eucs_platform/settings/local.sample.reference.env eucs_platform/settings/local.env
+uv run --no-sync manage.py dbshell
+```
+
+10) Test also the django configuration:
+
+```
+uv run --no-sync manage.py check
+```
+
+11) Import your database or create an empty instance and then apply the model
+update, compile the translations and collect the static files:
+
+```
+uv run --no-sync manage.py migrate
+uv run --no-sync manage.py compilemessages
+uv run --no-sync manage.py collectstatic --noinput
+```
+
+12) Configure the service that runs gunicorn (logged as root/sudo).
+
+Recommended: **systemd**, using the `docs/hub_i3.service` template. Adjust the
+user, paths, port and workers if needed:
+
+```
+cp docs/hub_i3.service /etc/systemd/system/hub_i3.service
+systemctl daemon-reload
+systemctl enable --now hub_i3
+systemctl status hub_i3
+```
+
+Alternative: **Supervisor** (`apt-get install -y supervisor`), using `docs/supervisor.conf`:
+
+```
+cp docs/supervisor.conf /etc/supervisor/conf.d/hub-i3.conf
+supervisorctl reread && supervisorctl update
+```
+
+13) Cron jobs. `django_cron` only runs when `runcrons` is called, so schedule it
+(as webapp, `crontab -e`):
+
+```
+*/5 * * * * cd /var/webapp/hub-i3/src && /var/webapp/hub-i3/.venv/bin/python manage.py runcrons >> /var/webapp/hub-i3/logs/cron.log 2>&1
+```
+
+14) Finally, test your site on browser and be happy!
+
+## Updating an existing installation
+
+Logged as webapp:
+
+```
+cd /var/webapp/hub-i3
+git pull
+uv sync --frozen --no-dev --group prod
 cd src
-python manage.py dbshell
+uv run --no-sync manage.py compilemessages
+uv run --no-sync manage.py collectstatic --noinput
+# only after backing up the database and reviewing the new migrations:
+uv run --no-sync manage.py migrate
 ```
 
-12) Test also the django configuration:
-
-```
-python manage.py check
-```
-
-13) Import your database or create an empty instance and the apply the model update:
-
-```
-python manage.py migrate
-```
-
-14) Configure supervisor
-
-* Copy supervisor.conf template to /etc/supervisor/conf.d/ 
-* Change your path/port
-* Apply supervisor new configuration
-
-```
-cp docs/supervisor.conf /etc/supervisor/conf.d/HUB 3I.conf
-supervisor reload
-```
-
-15) Finally, test your site on browser and be happy!
-
-
+Then restart the service as root/sudo: `systemctl restart hub_i3`
+(or `supervisorctl restart hub-i3` if you use Supervisor).
