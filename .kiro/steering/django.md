@@ -7,47 +7,42 @@ EU-Citizen.Science (`eucs_platform`), mantida no contexto do IBICT/Civis. Para o
 
 ## Stack confirmada
 
-- **Python**: 3.x (venv). O `.travis.yml` legado aponta 3.6.9, mas o alvo atual
-  é mais recente; confirme a versão do venv local antes de assumir.
-- **Django**: < 4.0 — o pin fica em `../../requirements/base.txt` (`django<4.0`).
+- **Python**: 3.10.19 (`requires-python = ">=3.10,<3.11"`). O `.travis.yml`
+  legado aponta 3.6.9 e está defasado.
+- **Django**: < 4.0 — o pin fica em `../../pyproject.toml` (`django<4.0`).
   NÃO subir para 4.x sem uma migração planejada.
 - **Banco**: PostgreSQL com **PostGIS** (engine
   `django.contrib.gis.db.backends.postgis`, via `psycopg2-binary`), com GIS
   (`django.contrib.gis`, `django-leaflet`).
 - **Localização/Tradução**: `translate.sh` (ver seção "Traduções").
 
-## Dependências e ambientes (pip / requirements)
+## Dependências e ambientes (uv)
 
-A gestão de dependências é feita com **pip + arquivos `requirements/*.txt`**
-(não há `pyproject.toml` nem `uv.lock` no repositório).
+A gestão de dependências é feita com **`uv`**: `../../pyproject.toml` +
+`../../uv.lock`, com `package = false` e Python `>=3.10,<3.11` (3.10.19).
 
-- `../../requirements/base.txt` — runtime comum a todos os ambientes (Django,
-  DRF, leaflet, etc.).
-- `../../requirements/development.txt` — `-r base.txt` + ferramentas de dev
-  (`django-debug-toolbar`, `flake8`, `pre-commit`, `fabric`, `werkzeug`).
-- `../../requirements/production.txt` — `-r base.txt` + `gunicorn` e
-  `django[argon2]`.
-- `../../requirements.txt` (raiz) — `-r requirements/development.txt` + extras
-  (`pytz`, `six`, `invoke`, `werkzeug`). É o alvo usado pelo CI (`.travis.yml`:
-  `pip3 install -r requirements.txt`).
+- `[project].dependencies` — runtime comum a todos os ambientes (Django, DRF,
+  leaflet, etc.).
+- `[dependency-groups].dev` — ferramentas de dev (`django-debug-toolbar`,
+  `flake8`, `pre-commit`, `fabric`, `werkzeug`, etc.).
+- `[dependency-groups].prod` — `django[argon2]` e extras de produção.
+- `../../requirements/*.txt` e `../../requirements.txt` — **legado** (pip),
+  mantidos apenas por compatibilidade com o CI antigo (`.travis.yml`). A fonte
+  canônica é o `pyproject.toml`.
 
-Instalação típica (dev):
-
-```
-pip install -r requirements.txt
-```
-
-Instalação em produção:
+Instalação (dev):
 
 ```
-pip install -r requirements/production.txt
+uv sync
 ```
 
-> **Intenção futura (ainda NÃO implementada):** há interesse em migrar a gestão
-> de dependências para **`uv`** (`pyproject.toml` + `uv.lock`, com grupos
-> `dev`/`prod`). Hoje isso **não existe** no repositório — a fonte canônica são
-> os `requirements/*.txt`. Só trate o fluxo `uv` como real quando o
-> `pyproject.toml` existir de fato.
+Execução de comandos Django (a partir de `src/`):
+
+```
+uv run manage.py check
+```
+
+Após editar o `pyproject.toml`, regenere o lock com `uv lock` (na raiz).
 
 ## Módulos de settings
 
@@ -173,11 +168,12 @@ urls, views raiz, dashboard do admin).
 
 ## Dívida técnica conhecida
 
-- **`django<4.0`** (`../../requirements/base.txt`): migrar para Django 4.x é um
+- **`django<4.0`** (`../../pyproject.toml`): migrar para Django 4.x é um
   projeto à parte (mexe em várias dependências, ver abaixo).
 - **`django-rest-swagger` (2.2.0)**: pacote morto, provavelmente incompatível
   com Django 4. Candidato a remoção/substituição por `drf-yasg` na migração.
-- **Intenção de migrar para `uv`** (ver acima) — ainda não iniciada.
+- **`requirements/*.txt` legados** ainda existem ao lado do `pyproject.toml`;
+  remover quando o CI deixar de usá-los.
 
 ## Armadilhas de ambiente
 
