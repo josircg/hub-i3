@@ -2,9 +2,11 @@
 
 ## Contexto
 
-O **Hub I3 (HUB 3I)** é uma plataforma web para **registro e divulgação de iniciativas e projetos de Ciência Cidadã na América Latina**. É um *fork* do [EU-Citizen.Science](https://eu-citizen.science/) (`eucs_platform`), mantido no contexto do **IBICT/Civis**. É **software livre** e **multilíngue**, tendo o **português do Brasil (`pt-br`) como idioma padrão**, além de **espanhol (`es`)** e **inglês (`en`)** (ver `TRANSLATED_LANGUAGES` em `eucs_platform/settings/base.py`).
+O **Hub I3 (HUB 3I)** é um sistema da informação estruturado por ações integradas de pesquisa, desenvolvimento e inovação em informação com o emprego de tecnologias digitais voltadas à elaboração de soluções e recursos digitais que promovam acessibilidade e visibilidade de dados e informações estratégicas para o pensamento crítico acerca das políticas públicas, leis, normas e outros direitos, obedecendo o recorte do ciclo de vida do cidadão e com destaque aos grupos de vulnerabilidade social. 
 
-O sistema é construído em **Django** (código em `src/`, projeto `eucs_platform`) e agrega diferentes tipos de conteúdo de ciência cidadã — organizações, projetos, plataformas, recursos (incluindo recursos de treinamento), eventos, notícias (blog) e dossiês — com moderação editorial, tradução de conteúdo de domínio, mapas georreferenciados, boletins/newsletters e uma API REST ("CÍVIS API").
+O sistema é construído em **Django** (código em `src/`, projeto `eucs_platform`) e agrega diferentes tipos de conteúdo associados à política públicas — organizações, projetos, políticas, leis, publicações (incluindo recursos de treinamento), eventos, notícias (blog) e dossiês — com moderação editorial, tradução de conteúdo de domínio, mapas georreferenciados, boletins/newsletters e uma API REST.
+
+É um *fork* do [EU-Citizen.Science](https://eu-citizen.science/) (`eucs_platform`), mantido no contexto do **IBICT/Civis**. É **software livre** e **multilíngue**, tendo o **português do Brasil (`pt-br`) como idioma padrão**, além de **espanhol (`es`)** e **inglês (`en`)** (ver `TRANSLATED_LANGUAGES` em `eucs_platform/settings/base.py`).
 
 Este documento descreve **o que o sistema faz hoje**, derivado diretamente do código-fonte (models, views, urls, middleware e settings).
 
