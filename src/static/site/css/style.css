@@ -146,38 +146,11 @@
     margin: 40px 0px;
 }
 
-.dossier-forum-banner {
-    border-radius: 8px;
-    border-width: 1px;
-    padding: 16px;
-    background-color: #AE4A74;
-    color: #FFFFFF;
-}
-
-
-.dossier-forum-banner h3{
-    font-weight: 500 !important;
-    font-size: 32px;
-    margin-bottom: 20px;
-}
-
 .dossier-card-title a{
     color: #667085;
 }
 .dossier-card-title a:hover{
     color: #AE4A74;
-}
-
-.dossier-forum-banner a{
-    font-weight: 600;
-    font-size: 20px;
-    color: #fff;
-    
-}
-
-.dossier-forum-banner img{
-    width: 100%;
-    border-radius: 15px;
 }
 
 .posts-number-tag{

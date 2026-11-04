@@ -18,7 +18,6 @@ from django.views.defaults import server_error
 from django.views.generic import TemplateView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from machina import urls as machina_urls
 from rest_framework import permissions
 
 from . import sitemaps
@@ -65,9 +64,6 @@ urlpatterns += [
     path("select2/", include("django_select2.urls")),
     path('captcha/', include('captcha.urls')),
     path('summernote/', include('django_summernote.urls')),
-    path('forum/', include(machina_urls)),
-    path('getTopicsResponded', views.getTopicsResponded, name='getTopicsResponded'),
-    path('getForumResponsesNumber', views.getForumResponsesNumber, name='getForumResponsesNumber'),
     re_path(r'^i18n/', include('django.conf.urls.i18n')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^api/auth/', include('djoser.urls')),

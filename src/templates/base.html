@@ -99,15 +99,6 @@
                     </li>
                     <li class="nav-item top">
                         <div class="d-block">
-                            {% if FORUM_ENABLED %}
-                              <a class="nav-link main {% active_link  'forum' %}" href="{% url 'forum:index' %}">{% trans "Forum" %}</a>
-                            {% else %}
-                              <a class="nav-link main {% active_link  'forum' %}" href="{% url 'coming_soon' %}">{% trans "Forum" %}</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                    <li class="nav-item top">
-                        <div class="d-block">
                             <a class="nav-link main {% active_link  'blog' %}" href="{% url 'blog' %}">{% trans "News" %}</a>
                         </div>
                     </li>
@@ -238,31 +229,6 @@
     <script src="{% static 'scripts/cropper.min.js' %}"></script>
     <script src="{% static 'scripts/jquery-cropper.min.js' %}"></script>
     <script src="{% static 'cookielaw/js/cookielaw.js' %}"></script>
-    <script>
-        $(document).ready(function () {
-
-            getForumResponsesNumber();
-
-            function getForumResponsesNumber() {
-                var request = $.ajax(
-                    {
-                        type: "GET",
-                        url: "{% url 'getForumResponsesNumber' %}",
-                        data: {
-
-                        },
-                        success: function (response) {
-                            var forumresponses = response.forumresponses
-                            if (forumresponses > 0) {
-                                $("#forumHeader").html('<a class="nav-link main" href="/forum">{% trans "FORUM" %}<sup>' + forumresponses + '</sup></a>');
-                            }
-                        }
-                    }
-                );
-            }
-
-        });
-    </script>
     <script>
         $(".navbar-toggler-icon").click(function () {
             if ($(".ribbon-top-left").is(":visible")) {

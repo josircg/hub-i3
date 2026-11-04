@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.validators import validate_email
 from django.db.models import F
 from django.http import HttpResponse, FileResponse
@@ -20,18 +19,16 @@ from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.template import Template, Context
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.views import generic
-from django.views.generic import CreateView
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 from events.models import Event
 from projects.models import Project
 from resources.models import Resource
 
-from .forms import ContactForm, SubmitterContactForm, SubscribeForm, ImportForm, ForumProposalForm
+from .forms import ContactForm, SubmitterContactForm, SubscribeForm, ImportForm
 
 User = get_user_model()
 
@@ -324,28 +321,3 @@ def load_image(request, image_name):
     image.save(response, "PNG")
 
     return response
-
-
-class NewForumProposal(CreateView, LoginRequiredMixin):
-    form_class = ForumProposalForm
-    template_name = 'forum_proposal.html'
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.creator = self.request.user
-        self.object.save()
-        # Save forum proposal and send notification
-        messages.success(self.request, _('Forum Proposal added correctly'))
-        # Subject and notification message must be sent based on settings.LANGUAGE_CODE
-        with translation.override(settings.LANGUAGE_CODE):
-            subject = _('Notification - New Forum Proposal "%s" submitted') % self.object.name
-        template = 'emails/%s/notify_forumproposal.html' % settings.LANGUAGE_CODE
-        change_url = reverse('admin:contact_forumproposal_change', args=(self.object.pk,))
-        message = render_to_string(template, {
-            'forumproposal': self.object.name,
-            'forumproposal_url': f'{settings.DOMAIN}{change_url}'
-        })
-
-        send_email(subject=subject, message=message, reply_to=[self.request.user.email], to=settings.EMAIL_CIVIS)
-
-        return redirect('forum:index')

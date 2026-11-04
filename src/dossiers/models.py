@@ -53,8 +53,6 @@ class Dossier(models.Model):
                                                   'pressing enter</b>. These keywords automatically associate content '
                                                   'registered in Cívis with the dossier. <b>DO NOT</b> include the '
                                                   'expression \'citizen science\' as a keyword.'))
-    forum = models.ForeignKey('forum.Forum', related_name='dossiers', on_delete=models.PROTECT, null=True, blank=True,
-                              limit_choices_to={'type': 0})
     post = models.ForeignKey('blog.Post', verbose_name=_('Call to action'), related_name='dossiers',
                              on_delete=models.PROTECT, null=True, blank=True)
     organisations = models.ManyToManyField('organisations.Organisation', verbose_name=_('Partners'), blank=True,

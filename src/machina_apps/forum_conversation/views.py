@@ -1,1 +1,0 @@
-from machina.apps.forum_conversation.views import * # noqa

@@ -980,45 +980,8 @@ footer #parcerias .parceiros-logos img {
     background-color: #dddddd;
 }
 
-.card.topiclist .card-body .topic-name i {
-    margin-right: 20px;
-    color: var(--pink4);
-}
-
 .card a {
     transition: 0.3s;
-}
-
-.topic-name-link,
-.post-name-link,
-.forum-name-link,
-.subject a {
-    color: black;
-    font-size: 1.4rem;
-}
-
-.topic-name-link:hover,
-.post-name-link:hover,
-.forum-name-link:hover,
-.subject a:hover {
-    color: var(--pink6);
-}
-
-.card.topiclist .topic-created {
-    font-size: 0.9rem;
-}
-
-.card.post-edit .form-group {
-    margin-bottom: 30px;
-}
-
-.forumlist .card-header {
-    border-top: 1px solid #dee2e6;
-    position: -webkit-sticky;
-    position: sticky;
-    z-index: 1;
-    top: 82px;
-    background-color: #f7f7f7;
 }
 
 .nav-tabs {
@@ -1166,12 +1129,6 @@ footer #parcerias .parceiros-logos img {
         background-size: cover;
         height: auto;
     }
-}
-
-@media (max-width: 500px) {
-  .forumlist .card-header {
-      top: 66px;
-  }
 }
 
 .erroPagina {

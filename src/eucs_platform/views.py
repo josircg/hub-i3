@@ -4,7 +4,6 @@ from django.contrib.admin.views.main import SEARCH_VAR
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils import translation
 from django.utils.safestring import mark_safe
@@ -13,9 +12,6 @@ from django.views.i18n import set_language as sl, LANGUAGE_QUERY_PARAMETER
 from django_countries import countries
 from django_countries.templatetags.countries import get_country
 from events.models import Event
-from machina.apps.forum.models import Forum
-from machina.apps.forum_tracking.handler import TrackingHandler
-from machina.core.db.models import get_model
 from organisations.models import Organisation
 from platforms.models import Platform
 from profiles.models import Profile
@@ -24,8 +20,6 @@ from resources.models import Resource, ResourceGroup, ResourcesGrouped, Bookmark
 from utilities.models import SearchIndex
 
 from . import set_language_preference
-
-Topic = get_model('forum_conversation', 'Topic')
 
 
 def home(request):
@@ -218,47 +212,6 @@ def home_autocomplete(request, index_type=None):
         return JsonResponse(list(response), safe=False)
     else:
         return HttpResponse("No cookies")
-
-
-def getTopicsResponded(request):
-    response = {}
-    topics = {}
-    if not request.user.is_anonymous and not request.user.is_staff:
-        own_topics = Topic.objects.get_queryset().filter(status=0, poster_id=request.user, posts_count__gt=1)
-        suscribed_topics = request.user.topic_subscriptions.all()
-        result = own_topics | suscribed_topics
-        result = result.distinct()
-        topics = TrackingHandler.get_unread_topics(request, result, request.user)
-
-    topicshtml = "</br>"
-
-    for topic in topics:
-        slug = '' + topic.slug + '-' + str(topic.id)
-        forum = get_object_or_404(Forum, id=topic.forum_id)
-        forum_slug = forum.slug + '-' + str(forum.id)
-        topicshtml += (
-                '<p class="alert alert-info" role="alert">There is a response in a topic that you follow'
-                ' <a href="' + settings.HOST + '/forum/forum/' + forum_slug + '/topic/' + slug + '">%s</a></p>' %
-                topic.subject
-        )
-
-    response['topics'] = topicshtml
-    return JsonResponse(response)
-
-
-def getForumResponsesNumber(request):
-    response = {}
-    forumresponses = 0
-    if not request.user.is_anonymous and not request.user.is_staff:
-        own_topics = Topic.objects.get_queryset().filter(status=0, poster_id=request.user, posts_count__gt=1)
-        suscribed_topics = request.user.topic_subscriptions.all()
-        result = own_topics | suscribed_topics
-        result = result.distinct()
-        result = TrackingHandler.get_unread_topics(request, result, request.user)
-        forumresponses = len(result)
-
-    response['forumresponses'] = forumresponses
-    return JsonResponse(response)
 
 
 @staff_member_required(login_url='/login')

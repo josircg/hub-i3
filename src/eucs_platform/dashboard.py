@@ -89,11 +89,6 @@ class CustomIndexDashboard(Dashboard):
                         )),
         ]
 
-        self.children.append(modules.ModelList(
-            _('Forum'),
-            models=('machina.*', 'machina_apps.*')
-        ))
-
         self.children.append(
             modules.ModelList(_('Utilities'), models=('utilities.models.Keyword',))
         )

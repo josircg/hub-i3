@@ -51,11 +51,11 @@ class UserInline(admin.TabularInline):
 class DossierAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     list_display = ('title', 'dateCreated', 'status', 'curators')
-    fields = ('title', 'heading', 'content', 'image', 'status', 'keywords', 'forum', 'post')
+    fields = ('title', 'heading', 'content', 'image', 'status', 'keywords', 'post')
     inlines = [
         DossierCuratorInline, DossierTranslationInline, OrganisationInline, UserInline, DossierObjectInline
     ]
-    autocomplete_fields = ['keywords', 'forum']
+    autocomplete_fields = ['keywords']
     raw_id_fields = ['post']
     formfield_overrides = {
         models.TextField: {'widget': CKEditorWidget(config_name='default')},

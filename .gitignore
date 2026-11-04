@@ -72,9 +72,6 @@ src/media/profile_pics/*
 #out
 *.out
 
-#whoosh
-src/whoosh_index
-
 .vscode/
 .idea/
 venv

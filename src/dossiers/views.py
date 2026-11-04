@@ -151,7 +151,7 @@ class DossierDetailView(DetailView):
 
     def get_queryset(self):
         return (
-            super().get_queryset().select_related('post', 'forum').
+            super().get_queryset().select_related('post').
             annotate_dossierobject(self.request.user).with_translations()
         )
 
