@@ -1,102 +1,102 @@
-# Contexto do Projeto — Saudes Raras
+# Contexto do Projeto — Hub I3
 
-Sistema de Informações sobre Doenças Raras que lista organizações, projetos, eventos e notícias sobre o tema. É um software livre e tem repositório público.
+**Hub I3** (HUB 3I) é uma plataforma web para registro e divulgação de
+iniciativas e projetos de **Ciência Cidadã na América Latina**, fork do
+EU-Citizen.Science (`eucs_platform`), mantida no contexto do IBICT/Civis. Para o
+*porquê* do produto, ver `#product`; para a estrutura de apps, ver `#structure`.
 
 ## Stack confirmada
 
-- **Python**: 3.10.19 (virtualenv via uv)
-- **Django**: 3.2.25 — o pin fica em `requirements/base.txt` (`django<4.0`).
-  NÃO subir para 4.x sem uma migração planejada (ver spec de migração Django 4.x).
-- **Banco**: PostgreSQL (via `psycopg2`), com extensões GIS (`django.contrib.gis`,
-  `django-leaflet`).
-- **Interpretador do venv**: uv
-- **Localização/Tradução**: translate.sh
+- **Python**: 3.x (venv). O `.travis.yml` legado aponta 3.6.9, mas o alvo atual
+  é mais recente; confirme a versão do venv local antes de assumir.
+- **Django**: < 4.0 — o pin fica em `../../requirements/base.txt` (`django<4.0`).
+  NÃO subir para 4.x sem uma migração planejada.
+- **Banco**: PostgreSQL com **PostGIS** (engine
+  `django.contrib.gis.db.backends.postgis`, via `psycopg2-binary`), com GIS
+  (`django.contrib.gis`, `django-leaflet`).
+- **Localização/Tradução**: `translate.sh` (ver seção "Traduções").
 
-## Dependências e ambientes (uv)
+## Dependências e ambientes (pip / requirements)
 
-As dependências são geridas pelo `uv` via `pyproject.toml` + `uv.lock`:
+A gestão de dependências é feita com **pip + arquivos `requirements/*.txt`**
+(não há `pyproject.toml` nem `uv.lock` no repositório).
 
-- **Runtime (todos os ambientes)**: lista `[project].dependencies`.
-- **Grupo `dev`** (`[dependency-groups].dev`): ferramentas de desenvolvimento.
-- **Grupo `prod`** (`[dependency-groups].prod`): dependências **só de
-  produção** — hoje o `gunicorn` (servidor WSGI). Grupos não são instalados por
-  padrão; o dev local (`uv sync` / `uv run`) **não** instala o gunicorn.
+- `../../requirements/base.txt` — runtime comum a todos os ambientes (Django,
+  DRF, leaflet, etc.).
+- `../../requirements/development.txt` — `-r base.txt` + ferramentas de dev
+  (`django-debug-toolbar`, `flake8`, `pre-commit`, `fabric`, `werkzeug`).
+- `../../requirements/production.txt` — `-r base.txt` + `gunicorn` e
+  `django[argon2]`.
+- `../../requirements.txt` (raiz) — `-r requirements/development.txt` + extras
+  (`pytz`, `six`, `invoke`, `werkzeug`). É o alvo usado pelo CI (`.travis.yml`:
+  `pip3 install -r requirements.txt`).
 
-Comandos:
+Instalação típica (dev):
 
 ```
-uv sync                 # dev: runtime + grupo dev (sem gunicorn)
-uv sync --group prod    # servidor: adiciona o gunicorn ao .venv
+pip install -r requirements.txt
 ```
 
-O systemd service (`docs/saudesraras.service`) chama `.venv/bin/gunicorn`, que
-só existe após `uv sync --group prod`. Os arquivos `requirements/*.txt` são um
-mecanismo pip paralelo/legado; a fonte canônica das dependências é o
-`pyproject.toml` (o `gunicorn` em `requirements/production.txt` está comentado,
-apontando para o grupo `prod`).
+Instalação em produção:
 
-Ao adicionar uma dependência **só de produção**, coloque no grupo `prod`
-(`uv add --group prod <pacote>`), nunca em `[project].dependencies`.
+```
+pip install -r requirements/production.txt
+```
+
+> **Intenção futura (ainda NÃO implementada):** há interesse em migrar a gestão
+> de dependências para **`uv`** (`pyproject.toml` + `uv.lock`, com grupos
+> `dev`/`prod`). Hoje isso **não existe** no repositório — a fonte canônica são
+> os `requirements/*.txt`. Só trate o fluxo `uv` como real quando o
+> `pyproject.toml` existir de fato.
 
 ## Módulos de settings
 
-Os settings ficam em `src/eucs_platform/settings/`:
+Os settings ficam em `../../src/eucs_platform/settings`:
 
-- `base.py` — configuração comum a todos os ambientes; lê o `local.env`.
+- `base.py` — configuração comum a todos os ambientes; lê o `local.env` via
+  `django-environ`.
 - `development.py` — herda de `base`, adiciona debug toolbar, logging, etc.
-- `production.py` — herda de `base`, template cacheado, logging de produção.
-- `local.env` — variáveis de ambiente (SECRET_KEY, banco, SMTP, chaves de API).
-  **NÃO é versionado** (git-ignored). Há um `local.sample.reference.env` de
-  referência.
+- `production.py` — herda de `base`, template cacheado, Argon2 como password
+  hasher, logging em arquivo, e estende `CRON_CLASSES` com
+  `SendNewsLetterCronJob` e `SendNotConfirmedUsersCronJob`.
+- `local.env` — variáveis de ambiente (SECRET_KEY, banco, SMTP, chaves de API,
+  `VISAO_*`). **NÃO é versionado** (git-ignored); há `local.sample.env` /
+  `local.sample.reference.env` de referência.
 
 **IMPORTANTE — settings padrão:** o `manage.py` usa
-`eucs_platform.settings.production` como default. Ou seja, rodar
+`eucs_platform.settings.production` como default (o comentário no arquivo diz
+"development" mas o código seta production). Ou seja, rodar
 `python manage.py runserver` sem exportar `DJANGO_SETTINGS_MODULE` carrega
-**production**, não development. Ao reproduzir o comportamento do servidor em
-scripts de verificação, use:
+**production**, não development. Para rodar em development, exporte:
 
 ```
-DJANGO_SETTINGS_MODULE=eucs_platform.settings.production uv run manage.py <cmd>
+DJANGO_SETTINGS_MODULE=eucs_platform.settings.development python manage.py <cmd>
 ```
 
 ## Como rodar comandos
 
-Todo o código fica em `src/`. Comandos de manage.py rodam a partir de `src/`.
+Todo o código fica em `../../src`. Comandos de `manage.py` rodam a partir de `src/`.
 
 ```
 cd src
-uv run manage.py check
+python manage.py check
 ```
-
-(ou `workon saudesraras && cd src && python manage.py check` se o virtualenvwrapper
-estiver configurado na máquina.)
 
 ### Comandos de verificação (sempre nesta ordem após mudanças)
 
 1. `python manage.py check` — valida configuração e apps.
 2. `python manage.py makemigrations --check --dry-run` — garante que o modelo em
-   código bate com as migrations. Se acusar mudanças, há drift (ver abaixo).
+   código bate com as migrations. Se acusar mudanças, há drift.
 3. Testes do app afetado (quando existirem).
 4. **Traduções** — ao alterar strings traduzíveis (templates, `_()`/`gettext`,
-   `verbose_name`), rodar o `translate.sh` para extrair/limpar/compilar as
-   mensagens (ver seção "Traduções" abaixo). O passo que efetivamente ativa as
+   `verbose_name`), rodar o `translate.sh` (ver abaixo). O passo que ativa as
    traduções é o `compilemessages` (gera os `.mo`).
 
 ### Testes
 
-A suíte de testes ainda é mínima. Ao criar testes, use o runner padrão do Django
-(`python manage.py test <app>`).
-
-**Banco de teste:** existe um banco **`raras_teste`** pré-criado (vazio, com
-PostGIS) para a suíte, porque o usuário do banco pode não ter `CREATEDB`. O
-settings define `DATABASES['default']['TEST']['NAME']` a partir da env
-`DATABASE_TEST_NAME` (default `raras_teste`). Rode sempre com `--keepdb`
-para reutilizar o banco sem tentar recriá-lo:
-
-```
-cd src
-uv run manage.py test <app> --keepdb
-```
+A suíte é mínima — hoje só `profiles/tests.py` tem conteúdo (é o que o CI roda:
+`python manage.py test profiles`). Ao criar testes, use o runner padrão do
+Django (`python manage.py test <app>`).
 
 ### Traduções
 
@@ -105,125 +105,99 @@ Idiomas: **pt-br** (padrão), **es**, **en**. As mensagens de template/código
 (`django.po` fonte → `django.mo` compilado). O `.mo` é o que o Django carrega em
 runtime; **editar o `.po` sem compilar não muda nada no site**.
 
-Use o script `src/translate.sh`, que roda os três passos na ordem certa:
+Use o script `../../src/translate.sh`, que roda os passos na ordem certa a
+partir de `../../src`:
 
-```
-cd src
-uv run bash translate.sh
-```
-
-O script executa (a partir de `src/`):
 1. `manage.py makemessages --all --no-location` — extrai strings para os `.po`.
 2. `utilities/clean.py` — limpeza dos `.po`.
 3. `manage.py compilemessages` — compila os `.po` em `.mo` (ativa as traduções).
 
+```
+cd src
+bash translate.sh
+```
+
 **Requisito de sistema — GNU gettext:** `makemessages`/`compilemessages`
 dependem dos binários do `gettext` do SO (`msgfmt`, `msguniq`, `xgettext`), que
-**não** vêm pelo `uv`/pip. Instale no SO (uma vez por máquina):
+**não** vêm pelo pip. Instale no SO (uma vez por máquina):
 
 ```
-# Debian/Ubuntu (servidor usa www-data):
+# Debian/Ubuntu:
 sudo apt-get update && sudo apt-get install -y gettext
 ```
 
-Sem o gettext, o erro é `CommandError: Can't find msgfmt/msguniq. Make sure you
-have GNU gettext tools ... installed.`
+**Dev vs. deploy:** os `.mo` são **git-ignored** (`*.mo` no `../../.gitignore`),
+então precisam ser gerados onde a app roda.
+- **Desenvolvimento**: rode o `translate.sh` completo ao alterar texto visível;
+  revise os `.po` (traduza `es`/`en`) e rode de novo.
+- **Deploy/servidor**: rode apenas `python manage.py compilemessages` sobre os
+  `.po` versionados — **não** rode o `translate.sh` inteiro (o `makemessages`
+  reescreveria os `.po`). Exige o `gettext` instalado no servidor.
 
-**Dev vs. deploy (importante):** os `.mo` são **git-ignored** (`*.mo` no
-`.gitignore`), ou seja, não são versionados — precisam ser gerados onde a app
-roda.
-- **Desenvolvimento** (extrair + traduzir + compilar): rode o `translate.sh`
-  completo ao alterar texto visível; revise os `.po` (traduza `es`/`en`) e rode
-  de novo.
-- **Deploy/servidor** (apenas compilar os `.po` versionados): rode
-  `uv run manage.py compilemessages` — **não** rode o `translate.sh` inteiro no
-  servidor (o `makemessages` reescreveria os `.po` fora do controle de versão).
-  Este passo exige o `gettext` instalado no servidor.
 ## Apps locais
 
-São **15 apps**, todos em `src/`: `accounts`, `authors`, `blog`, `contact`,
-`digest`, `diseases`, `events`, `organisations`, `pages`, `platforms`,
-`profiles`, `projects`, `resources`, `utilities`. Além desses, `eucs_platform`
-é o projeto (settings, urls, views raiz, dashboard do admin).
+Ver `#structure` (`.kiro/steering/structure.md`) para o mapa detalhado. A lista
+real em `INSTALLED_APPS` inclui: `profiles`, `accounts`, `projects`,
+`resources`, `digest`, `dossiers`, `platforms`, `blog`, `authors`, `contact`,
+`events`, `pages`, `organisations`, `utilities`, além do módulo de formatos locais
+(`formats`, via `FORMAT_MODULE_PATH`). `eucs_platform` é o projeto (settings,
+urls, views raiz, dashboard do admin).
 
-Para o mapa detalhado de cada app (responsabilidade, models, rotas,
-dependências), ver `#structure` (em `.kiro/steering/structure.md`). desses, `eucs_platform` é o projeto (settings, urls, views
-raiz, `maps.py`).
+> **Nota:** não existe app `diseases` neste repositório. Versões anteriores da
+> documentação citavam esse app por engano.
 
 ## Bibliotecas e integrações relevantes
 
 - **Autenticação**: modelo de usuário customizado via `django-authtools`
-  (`AUTH_USER_MODEL = "authtools.User"`). Forms em `accounts/forms.py` usam
-  `authtools.forms`. Admin do usuário via `authtools.admin.NamedUserAdmin`.
-- **Admin**: `django-admin-tools` (com dashboard customizado em
-  `eucs_platform/dashboard.py`). `poweradmin` também está em `INSTALLED_APPS`.
-- **API/REST**: `djangorestframework`, `rest_framework_swagger`
-  (django-rest-swagger, pacote morto), `drf-yasg`. OAuth/OIDC via
-  `django-oauth-toolkit` e `django-oidc-provider`.
-- **Mapas**: hoje o sistema usa **apenas django-leaflet** (client-side):
-  `LEAFLET_CONFIG` em `base.py`, usado nas páginas de organização/projeto via
-  `{% leaflet_map %}`. O mapa server-side com **folium** descrito na seção
-  "Mapas e a chave CARTO" é uma **feature planejada**, ainda **não
-  implementada** neste repositório (ver aviso naquela seção).
-- **Editores de texto**: `django-ckeditor` e `django-summernote`.
-- **Outros**: `django-countries` (campo `CountryField`), `django-crispy-forms`
-  + `crispy-bootstrap3`, `django-simple-captcha`.
-
-## Mapas e a chave CARTO (feature PLANEJADA — ainda não implementada)
-
-> **Atenção:** esta seção descreve uma feature **planejada para o futuro**, não
-> o estado atual do código. Hoje **não existe** `eucs_platform/maps.py`,
-> `generate_map`, `map_view` nem rota `/map/` neste repositório, e
-> `LEAFLET_CONFIG['TILES']` usa CartoDB Light **sem** `?key=` (não lê
-> `CARTODB_API`). O conteúdo abaixo é a referência de design para quando o mapa
-> server-side com folium for implementado.
-
-Os basemaps da CARTO (CartoDB) passaram a **exigir uma API key** desde ~2026,
-passada como `?key=<KEY>` na URL do tile. Sem a chave, os tiles vêm com a marca
-d'água "API KEY REQUIRED".
-
-- A chave deverá ficar em `CARTODB_API` (lida do `local.env` em `base.py`).
-- **folium** (`maps.py`, a criar): `generate_map` usaria, por padrão, a URL
-  CARTO
-  `https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=<KEY>`
-  com `attr` obrigatório. Passar `tiles` explícito manteria compatibilidade.
-- **leaflet** (`LEAFLET_CONFIG['TILES']`): deverá passar a usar a tupla CARTO
-  Positron com a mesma chave.
-- **folium ≥ 0.18 rejeita coordenadas `None`** com `ValueError` — um único
-  marcador inválido derrubaria o mapa inteiro (HTTP 500). `generate_map` deverá
-  filtrar via `has_valid_location`. As coordenadas vêm como `Decimal`
-  (DecimalField), então a validação deve usar conversão `float()`, não
-  `isinstance(int, float)`.
+  (`AUTH_USER_MODEL = "authtools.User"`). Proteção contra brute force via
+  `accounts.middleware.BruteForceProtectionMiddleware` (`BRUTE_FORCE_THRESHOLD`,
+  `BRUTE_FORCE_TIMEOUT`).
+- **Admin**: `django-admin-tools` (dashboard customizado em
+  `eucs_platform/dashboard.py`). No Windows (`os.name == 'nt'`) o `admin_tools`
+  é removido do `INSTALLED_APPS` em runtime.
+- **API/REST**: `djangorestframework`, `django-rest-swagger` (pacote morto),
+  `drf-yasg`. Auth via token/sessão. OAuth/OIDC via `django-oauth-toolkit` e
+  `django-oidc-provider`.
+- **Mapas**: usa **apenas django-leaflet** (client-side). `LEAFLET_CONFIG` em
+  `base.py` (centro em `(-15.125159, -57.636719)`, zoom 3 — visão América do
+  Sul), usado via `{% leaflet_map %}` nas páginas de organização/projeto.
+- **Editores de texto**: `django-ckeditor` (+ `ckeditor_uploader`) e
+  `django-summernote`.
+- **Integração Visão**: `eucs_platform/visao.py` (geoserver IBICT), configurada
+  por envs `VISAO_*`; consumida por `projects` (cron `UpdateVisaoCronJob`,
+  command `populate_visao`).
+- **Outros**: `django-countries` (`CountryField`, com override de `FK` →
+  "Falkland Islands"), `django-crispy-forms` + `crispy-bootstrap3`,
+  `django-simple-captcha`, `django-honeypot`, `django-cookie-law`,
+  `django-cleanup`, `django-select2`, `django-cron`.
 
 ## Dívida técnica conhecida
 
-- **Pin `setuptools<81`** (`requirements/base.txt`): necessário porque
-  `drf-yasg 1.21.7` e `django-countries 7.5.1` ainda importam `pkg_resources`
-  (removido do setuptools 81+) de forma incondicional no startup. As versões que
-  largam `pkg_resources` (`drf-yasg 1.21.11+`) exigem **Django ≥ 4.0**. Portanto
-  remover o pin está acoplado à migração Django 4.x. (`django-authtools` já foi
-  para 2.0.2 e não depende mais de `pkg_resources`.)
+- **`django<4.0`** (`../../requirements/base.txt`): migrar para Django 4.x é um
+  projeto à parte (mexe em várias dependências, ver abaixo).
 - **`django-rest-swagger` (2.2.0)**: pacote morto, provavelmente incompatível
   com Django 4. Candidato a remoção/substituição por `drf-yasg` na migração.
+- **Intenção de migrar para `uv`** (ver acima) — ainda não iniciada.
 
 ## Armadilhas de ambiente
 
-- Todo o projeto está em `src/`. Comandos de manage.py rodam a partir dali.
+- Todo o projeto está em `../../src`. Comandos de `manage.py` rodam a partir dali.
 - O `runserver` default carrega **production** settings (ver acima).
 - O `local.env` não é lido a quente: alterações nele exigem **reiniciar** o
   `runserver` (o autoreload do Django reage a `.py`, não a `.env`).
 - **Drift de migrations**: edições em models sem rodar `makemigrations` deixam o
   schema em código divergente das migrations. Sempre rode
-  `makemigrations --check --dry-run`. Migrations que só mudam metadados
-  (verbose_name, defaults) geram SQL vazio em `sqlmigrate` — seguras de aplicar.
+  `makemigrations --check --dry-run`.
+- **GDAL/GEOS no Windows**: `base.py` tem bloco específico que configura
+  `OSGEO4W` quando `os.name == 'nt'`.
 
 ## Remote git
 
-- Repositório: `github.com/josircg/saudesraras` (remote `origin`).
-- **`master`**: branch de produção e branch padrão do repositório. Protegida: mudanças
-  por PR com 1 aprovação.
-- **`dev`**: branch de integração, criada a partir da `master`. Protegida: PR com 1
-  aprovação, sem exclusão e sem force push.
+- Repositório: `github.com/josircg/hubi3` (remote `origin`).
+- **`master`**: branch de produção e padrão. Protegida: mudanças por PR com 1
+  aprovação.
+- **`dev`**: branch de integração, criada a partir da `master`. Protegida: PR
+  com 1 aprovação, sem exclusão e sem force push.
 - **Novas branches devem partir do `dev`**, e as PRs devem ter o `dev` como base:
 
   ```
@@ -231,11 +205,8 @@ d'água "API KEY REQUIRED".
   git switch -c issueNNN origin/dev
   ```
 
-- O `dev` é levado para a `master` nas publicações.
-- Ajustes feitos direto na `master` (hotfix) devem ser levados de volta ao `dev` logo
-  em seguida, para os dois não divergirem.
-- O `dev` antigo, anterior à recriação a partir da `master`, está preservado na tag
-  `backup/dev-2026-10-10`.
+- O `dev` é levado para a `master` nas publicações. Hotfixes diretos na `master`
+  devem ser levados de volta ao `dev` logo em seguida.
 
 ## Fluxo de trabalho com specs
 

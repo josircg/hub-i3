@@ -58,8 +58,8 @@ Resumo da abordagem técnica em 2-3 parágrafos.
 
 ## Modelo de dados
 - Novos models / alterações em `cms/models.py` (ou outro app).
-- Relações (lembre: o projeto usa `mptt` para hierarquia e
-  `taggit`/`tagging` para tags — confirme qual se aplica).
+- Relações (lembre: o projeto usa
+  `taggit`/`tagging` para tags — confirme se se aplica).
 - Migration: número esperado (próximo após o último em `cms/migrations/`).
 - Compatibilidade: a migration quebra sites existentes? Precisa de data migration?
 

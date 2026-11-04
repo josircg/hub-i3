@@ -8,7 +8,7 @@ Para alterar a linguagem padrão do sistema, deve-se alterar o parâmetro LANGUA
 
 Na HUB 3I, os arquivos de tradução são mantidos apenas em Português e Espanhol mas o sistema permite que novos idiomas sejam adicionados. 
 
-Os arquivos de tradução estão localizados nas pastas src/locale/django.po e src/forum/locale/django.po
+Os arquivos de tradução estão localizados nas pastas src/locale/django.po
 
 # Gerenciamento de Idioma dos Emails
 
