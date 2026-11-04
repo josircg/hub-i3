@@ -22,18 +22,23 @@ A gestão de dependências é feita com **`uv`**: `../../pyproject.toml` +
 `../../uv.lock`, com `package = false` e Python `>=3.10,<3.11` (3.10.19).
 
 - `[project].dependencies` — runtime comum a todos os ambientes (Django, DRF,
-  leaflet, etc.).
+  leaflet, etc.), com os mesmos pins dos antigos `requirements/base.txt`, mais
+  `setuptools<81` (ver "Dívida técnica").
 - `[dependency-groups].dev` — ferramentas de dev (`django-debug-toolbar`,
-  `flake8`, `pre-commit`, `fabric`, `werkzeug`, etc.).
-- `[dependency-groups].prod` — `django[argon2]` e extras de produção.
+  `flake8`, `pre-commit`, `fabric`, `werkzeug`, `pytz`, `six`, `invoke`, etc.).
+- `[dependency-groups].prod` — **só produção**: `gunicorn` e `django[argon2]`.
+  Não é instalado por padrão. Dependência só de produção entra aqui
+  (`uv add --group prod <pacote>`), nunca em `[project].dependencies`.
 - `../../requirements/*.txt` e `../../requirements.txt` — **legado** (pip),
   mantidos apenas por compatibilidade com o CI antigo (`.travis.yml`). A fonte
-  canônica é o `pyproject.toml`.
+  canônica é o `pyproject.toml`; os `.txt` não são mais atualizados em paralelo
+  a cada mudança de dependência, exceto a remoção do fórum.
 
-Instalação (dev):
+Instalação:
 
 ```
-uv sync
+uv sync                 # dev: runtime + grupo dev (sem gunicorn)
+uv sync --group prod    # servidor: adiciona o gunicorn ao .venv
 ```
 
 Execução de comandos Django (a partir de `src/`):
@@ -50,7 +55,6 @@ Os settings ficam em `../../src/eucs_platform/settings`:
 
 - `base.py` — configuração comum a todos os ambientes; lê o `local.env` via
   `django-environ`.
-- `development.py` — herda de `base`, adiciona debug toolbar, logging, etc.
 - `production.py` — herda de `base`, template cacheado, Argon2 como password
   hasher, logging em arquivo, e estende `CRON_CLASSES` com
   `SendNewsLetterCronJob` e `SendNotConfirmedUsersCronJob`.
@@ -58,15 +62,11 @@ Os settings ficam em `../../src/eucs_platform/settings`:
   `VISAO_*`). **NÃO é versionado** (git-ignored); há `local.sample.env` /
   `local.sample.reference.env` de referência.
 
-**IMPORTANTE — settings padrão:** o `manage.py` usa
-`eucs_platform.settings.production` como default (o comentário no arquivo diz
-"development" mas o código seta production). Ou seja, rodar
-`python manage.py runserver` sem exportar `DJANGO_SETTINGS_MODULE` carrega
-**production**, não development. Para rodar em development, exporte:
-
-```
-DJANGO_SETTINGS_MODULE=eucs_platform.settings.development python manage.py <cmd>
-```
+**IMPORTANTE — settings:** hoje só existem `base.py` e `production.py` (não há
+`development.py`). O `manage.py` usa `eucs_platform.settings.production` como
+default (o comentário no arquivo diz "development", mas o código seta
+production). Portanto todo comando `manage.py` carrega **production**; controle
+o comportamento (ex.: `DEBUG`) pelo `local.env`.
 
 ## Como rodar comandos
 
@@ -172,6 +172,12 @@ urls, views raiz, dashboard do admin).
   projeto à parte (mexe em várias dependências, ver abaixo).
 - **`django-rest-swagger` (2.2.0)**: pacote morto, provavelmente incompatível
   com Django 4. Candidato a remoção/substituição por `drf-yasg` na migração.
+- **Pin `setuptools<81`** (`../../pyproject.toml`): `drf-yasg 1.21.7` e
+  `django-countries 7.5.1` ainda importam `pkg_resources` (o `django-authtools`
+  já foi para 2.1.0 e não depende mais dele),
+  removido do setuptools 81+. Com `uv` o `setuptools` não vem por padrão, então
+  ele foi adicionado ao runtime. Remover o pin está acoplado à migração Django
+  4.x.
 - **`requirements/*.txt` legados** ainda existem ao lado do `pyproject.toml`;
   remover quando o CI deixar de usá-los.
 

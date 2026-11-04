@@ -6,7 +6,7 @@ O **Hub I3 (HUB 3I)** é uma plataforma web para **registro e divulgação de in
 
 O sistema é construído em **Django** (código em `src/`, projeto `eucs_platform`) e agrega diferentes tipos de conteúdo de ciência cidadã — organizações, projetos, plataformas, recursos (incluindo recursos de treinamento), eventos, notícias (blog) e dossiês — com moderação editorial, tradução de conteúdo de domínio, mapas georreferenciados, boletins/newsletters e uma API REST ("CÍVIS API").
 
-Este documento descreve **o que o sistema faz hoje**, derivado diretamente do código-fonte (models, views, urls, middleware e settings). Itens cujo comportamento não pôde ser confirmado apenas pela leitura dos arquivos lidos estão marcados com **(a confirmar)**.
+Este documento descreve **o que o sistema faz hoje**, derivado diretamente do código-fonte (models, views, urls, middleware e settings).
 
 > Observação de marca: no código, o título do admin e vários textos de e-mail/API usam o nome **"Cívis"** (ex.: `admin.site.site_header = "Cívis Administração"`, API `CÍVIS API`). Trata-se da mesma plataforma aqui chamada Hub I3.
 
@@ -78,7 +78,7 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 1. QUANDO um usuário autenticado salva uma plataforma (`savePlatformAjax`) O SISTEMA DEVE persistir nome, URL, descrição, extensão geográfica (`geoExtend`), países (`countries`), palavras-chave, organizações e imagens (logo e imagem de perfil).
 2. SE o criador for `is_staff` na criação ENTÃO O SISTEMA DEVE ativar a plataforma automaticamente (`active = creator.is_staff`); caso contrário `active = False`.
 3. ENQUANTO `active` for `False` O SISTEMA DEVE mantê-la fora da listagem pública (a home filtra `active=True`).
-4. QUANDO o usuário edita (`editPlatform`) ou exclui (`deletePlatformAjax`) uma plataforma O SISTEMA DEVE aplicar as regras de permissão do app. **(a confirmar — regra exata de quem pode editar/excluir; não foi lido `platforms/views.py`.)**
+4. QUANDO o usuário edita (`editPlatform`) ou exclui (`deletePlatformAjax`) uma plataforma O SISTEMA DEVE exigir usuário `is_staff` (`staff_member_required`, login em `/login`) e, adicionalmente, permitir a operação somente ao criador da plataforma (`platform.creator`) ou a um usuário `is_staff`; na edição, quem não atende é redirecionado para `../platforms`. Na prática, como o decorador já restringe o acesso a `is_staff`, qualquer membro da equipe pode editar e excluir qualquer plataforma. A exclusão responde JSON `Platform deleted: OK` (200).
 5. O conteúdo de domínio de plataforma (ex.: extensão geográfica) DEVE ser traduzível via o framework de tradução genérica (`AbstractTranslatedModel`).
 
 ### Requisito 7 — Recursos e recursos de treinamento
@@ -98,8 +98,8 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 
 #### Critérios de Aceitação (EARS)
 1. QUANDO um visitante acessa `blog` O SISTEMA DEVE listar os posts (ordenados por data de criação descendente) e `blog/<ano>/<mês>/<dia>/<slug>/` DEVE exibir o detalhe do post.
-2. ENQUANTO o `status` do post não for `PUBLISHED` O SISTEMA DEVE tratá-lo como não publicado (`published` é `True` apenas quando `status == PUBLISHED`). **(a confirmar — filtro exato aplicado na listagem pública; não foi lido `blog/views.py`.)**
-3. QUANDO um post tem `sticky` definido O SISTEMA DEVE priorizá-lo conforme a escolha de fixação (`PostSticky`).
+2. ENQUANTO o `status` do post não for `PUBLISHED` O SISTEMA DEVE tratá-lo como não publicado: a listagem (`PostList`, 12 por página) e o detalhe (`post_detail`) usam `Post.objects.published()` (`filter(status=PostStatus.PUBLISHED)`), sem outro filtro (o detalhe resolve apenas por `slug`; ano/mês/dia da URL não são usados na consulta), e posts não publicados retornam 404 no detalhe.
+3. QUANDO um post tem `sticky` definido O SISTEMA DEVE priorizá-lo conforme a escolha de fixação (`PostSticky`); a listagem ordena por `-sticky` e depois `-created_on`.
 4. O post DEVE ter título e slug únicos e poder ter múltiplos autores (`authors`), expondo `authors_names` que ignora o nome placeholder "Empty user".
 
 ### Requisito 9 — Dossiês (coleções curadas)
@@ -165,14 +165,14 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 2. QUANDO um cliente autentica via djoser (`/api/auth/`) por token ou sessão O SISTEMA DEVE emitir/validar as credenciais; e a documentação (`/swagger/`, `/redoc/`) DEVE exigir login (`login_required`).
 3. ENQUANTO o esquema OpenAPI é servido (`CÍVIS API`, drf-yasg) O SISTEMA DEVE tratá-lo como não público, exigindo usuário autenticado (`IsAuthenticated`).
 4. O SISTEMA DEVE oferecer provedor OAuth2 (`/o/`, oauth2_provider) e OpenID Connect (`/openid/`, oidc_provider).
-5. O SISTEMA DEVE suportar renderização de respostas de API em CSV (renderer no app `utilities`). **(a confirmar — quais endpoints habilitam o CSV renderer.)**
+5. O SISTEMA DEVE suportar renderização de respostas de API em CSV: `utilities.renderers.CSVRenderer` (baseado em `rest_framework_csv`) é registrado globalmente em `REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES']` (`settings/base.py`), ao lado de `JSONRenderer`, valendo para todas as views DRF que não definam `renderer_classes`. Nenhum `api/` de app define renderer próprio; portanto todos os endpoints da API aceitam CSV via negociação de conteúdo.
 
 ### Requisito 15 — Integração "Visão" / Geoserver (mapas de projetos)
 **User Story:** Como administrador, quero integrar os projetos georreferenciados ao serviço "Visão"/Geoserver, para exibir e comparar iniciativas em mapas temáticos.
 
 #### Critérios de Aceitação (EARS)
 1. SE `VISAO_USERNAME` estiver configurado ENTÃO O SISTEMA DEVE montar na home os endpoints de visualização por grupo/camada e os tópicos de projeto com `external_url`; caso contrário O SISTEMA DEVE omitir esses elementos.
-2. QUANDO um projeto aprovado com latitude/longitude é salvo e `VISAO_USERNAME` está configurado O SISTEMA DEVE marcar os tópicos relacionados como `updated = False` para resincronização. **(a confirmar — o envio efetivo ao Visão no `save` está comentado no código; a exclusão (`delete`) chama `visao.delete_project`.)**
+2. QUANDO um projeto aprovado com latitude/longitude é salvo e `VISAO_USERNAME` está configurado O SISTEMA DEVE marcar os tópicos relacionados como `updated = False` para resincronização. O `save()` de `Project` NÃO envia nada ao Visão (a chamada a `visao.save_project` está comentada); o envio é feito de forma assíncrona pelo cron `projects.cron.UpdateVisaoCronJob` (a cada 5 minutos, código `eucs_platform.update_visao`), que executa `populate_visao --update` (`update_all`): se não há tópicos com `updated = False` nada é feito; caso contrário atualiza a camada geral (`VISAO_LAYER`) com todos os projetos aprovados e cria/atualiza o dataset de cada tópico pendente (gravando `external_url` e `updated = True`; tópicos sem projetos têm `external_url` limpo). Já a exclusão de projeto (`delete`), com `VISAO_USERNAME` configurado, chama `visao.delete_project` imediatamente, registrando erros em log.
 3. QUANDO um administrador aciona `test_visao` O SISTEMA DEVE tentar autenticar no serviço e reportar sucesso ou falha.
 
 ### Requisito 16 — Moderação transversal de conteúdo
@@ -201,7 +201,7 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 
 #### Critérios de Aceitação (EARS)
 1. O SISTEMA DEVE armazenar a localização de organizações como `PointField` e a localização de projetos como `MultiPolygonField` (`projectGeographicLocation`), além de latitude/longitude.
-2. QUANDO uma página com mapa é renderizada O SISTEMA DEVE exibir os pontos/áreas client-side via django-leaflet. **(a confirmar — renderização nos templates; verificado via models e contexto das views.)**
+2. QUANDO uma página de organização ou projeto (detalhe e formulário) é renderizada O SISTEMA DEVE exibir o mapa client-side via django-leaflet, com `{% leaflet_map "map" callback="window.map_init_basic" %}` (templates `organisation.html`, `organisation_form.html`, `project.html` e `project_form.html`).
 3. QUANDO `downloadProjects` é acionado O SISTEMA DEVE exportar coordenadas dos projetos aprovados em CSV para uso em camadas de mapa.
 4. O SISTEMA DEVE permitir filtrar projetos e organizações por país.
 
@@ -211,14 +211,14 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 #### Critérios de Aceitação (EARS)
 1. O SISTEMA DEVE permitir montar um `Digest` definindo o período (`dateOrg`/`dateEnd`) e quais tipos incluir (posts, eventos, organizações, projetos, recursos, treinamentos).
 2. QUANDO um digest é gerado O SISTEMA DEVE calcular e armazenar as contagens por tipo (`nPosts`, `nEvents`, ...) e marcar `sent` ao ser enviado.
-3. QUANDO um usuário acessa `showDigests`/`showDigest/<pk>` O SISTEMA DEVE listar e exibir os digests. **(a confirmar — visibilidade pública vs. restrita; não lido `digest/views.py`.)**
+3. QUANDO um usuário acessa `showDigests`/`showDigest/<pk>` O SISTEMA DEVE listar e exibir os digests. Ambas as views são públicas: não possuem decorador de login/staff e as rotas não impõem restrição; `showDigests` apenas renderiza `show_digests.html` e `showDigest` busca o `Digest` por id (404 se inexistente), montando posts (`status=1`), eventos aprovados, organizações aprovadas, projetos aprovados e recursos conforme as flags `include*` do digest e o período.
 4. ENQUANTO `profile.digest` for `True` O SISTEMA DEVE considerar o usuário como inscrito no boletim.
 
 ### Requisito 20 — Infraestrutura de manutenção (crons/limpeza)
 **User Story:** Como operador, quero rotinas automáticas de limpeza, para manter o banco saudável.
 
 #### Critérios de Aceitação (EARS)
-1. O SISTEMA DEVE prover crons utilitários para limpeza (ex.: captcha e sessões). **(a confirmar — nomes e agendamento exatos; `utilities` descrito como biblioteca interna, crons não lidos em detalhe.)**
+1. O SISTEMA DEVE registrar rotinas `django_cron` em `CRON_CLASSES`. Em todos os ambientes (`settings/base.py`): `projects.cron.UpdateVisaoCronJob` (a cada 5 min; `populate_visao --update`), `utilities.cron.CleanExpiredCaptchaCronJob` (a cada 24 h; `captcha_clean`; código `eucs_platform.clean_expired_captcha`) e `utilities.cron.ClearSessions` (a cada 24 h; `clearsessions`; código `django.clearsessions`). Somente em produção (`settings/production.py`) são acrescentados `contact.cron.SendNewsLetterCronJob` (a cada 24 h; `send_newsletter --mass`; código `eucs_platform.send_newsletter`) e `accounts.cron.SendNotConfirmedUsersCronJob` (a cada 24 h; envia ao e-mail `EMAIL_CIVIS` a contagem de usuários sem confirmação de cadastro; código `eucs_platform.send_not_confirmed_users`). O agendamento é definido por `RUN_EVERY_MINS` em cada classe (nenhuma configuração global); a execução depende de `python manage.py runcrons` ser invocado periodicamente por agendador externo (não verificado no repositório).
 2. O SISTEMA DEVE manter `Keyword` normalizada em minúsculas e única (lowercase no `save`/`validate_unique`).
 
 ---
@@ -230,7 +230,6 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 - **Não é um e-commerce** nem processa pagamentos.
 - Não é uma ferramenta de edição colaborativa em tempo real; a colaboração é por permissões/convites de editores, não edição simultânea.
 - Não implementa coleta de dados de campo da ciência cidadã em si (não é um app de surveys/observações); registra e divulga iniciativas, recursos e eventos.
-- Itens marcados **(a confirmar)** ao longo do documento representam comportamentos cujo detalhe não foi validado apenas com os arquivos lidos.
 
 ## Papéis / atores (glossário)
 
