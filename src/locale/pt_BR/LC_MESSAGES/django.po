@@ -264,19 +264,6 @@ msgstr "Acessar dossiês associados"
 msgid "Indicate to Dossier"
 msgstr "Indicar para Dossiê"
 
-msgid "Not moderated"
-msgstr "Não moderado"
-
-msgid "Community Forums"
-msgstr "Fóruns da comunidade"
-
-msgid "Forum proposal created"
-msgstr "Proposta de fórum criada"
-
-#, python-format
-msgid "Your forum \"%s\" has been created!"
-msgstr "Seu fórum \"%s\" foi criado!"
-
 msgid "Newsletters"
 msgstr ""
 
@@ -374,21 +361,6 @@ msgstr "E-mails lidos"
 msgid "Newsletter Type"
 msgstr "Tipo de Newsletter"
 
-msgid "Description"
-msgstr "Descrição"
-
-msgid "Forum image"
-msgstr "Imagem do Fórum"
-
-msgid "Approved"
-msgstr "Aprovado"
-
-msgid "Forum Proposal"
-msgstr "Proposta de Fórum"
-
-msgid "Forum Proposals"
-msgstr "Propostas de Fórum"
-
 msgid "Send Newsletter"
 msgstr "Enviar Newsletter"
 
@@ -413,13 +385,6 @@ msgstr "Atualizar captcha"
 
 msgid "Send"
 msgstr "Enviar"
-
-msgctxt "fem"
-msgid "New"
-msgstr "Nova"
-
-msgid "Save"
-msgstr "Salvar"
 
 msgid "Select a CSV UTF-8 file with the following fields separated by commas"
 msgstr ""
@@ -535,13 +500,6 @@ msgstr "%d assinantes adicionados"
 msgid "Opened newsletter %s email"
 msgstr "Abriu o e-mail da newsletter %s"
 
-msgid "Forum Proposal added correctly"
-msgstr "Proposta de Fórum adicionada com sucesso!"
-
-#, python-format
-msgid "Notification - New Forum Proposal \"%s\" submitted"
-msgstr "Notificação - Nova Proposta de Fórum \"%s\" submetida"
-
 #, python-format
 msgid "%d test email was sent"
 msgid_plural "%d test mails were sent"
@@ -571,6 +529,9 @@ msgstr "Resumo"
 
 msgid "Briefly explain the dossier (max 300 characters)."
 msgstr "Explique resumidamente o dossiê (máximo 300 caracteres)."
+
+msgid "Description"
+msgstr "Descrição"
 
 msgid ""
 "Describe what the dossier is about, its title/theme, objectives, context and "
@@ -630,6 +591,12 @@ msgstr "Organizadores do Dossiê"
 msgid "Order"
 msgstr "Ordem"
 
+msgid "Approved"
+msgstr "Aprovado"
+
+msgid "Not moderated"
+msgstr "Não moderado"
+
 msgid "Not approved"
 msgstr "Não aprovado"
 
@@ -668,6 +635,9 @@ msgstr "Inclui novos itens ao dossiê a partir das palavras-chaves"
 msgid "Search content"
 msgstr "Buscar conteúdo"
 
+msgid "Save"
+msgstr "Salvar"
+
 msgid "Save and view"
 msgstr "Salvar e visualizar"
 
@@ -682,11 +652,11 @@ msgstr "Última atualização"
 
 #, python-format
 msgid ""
-"There are %(pending)s contents awaiting moderation. <a href=\"%(detail_url)s"
-"\">Access here</a>."
+"There are %(pending)s contents awaiting moderation. <a "
+"href=\"%(detail_url)s\">Access here</a>."
 msgstr ""
-"Existem %(pending)s conteúdos aguardando moderação. <a href=\"%(detail_url)s"
-"\">Acesse aqui</a>."
+"Existem %(pending)s conteúdos aguardando moderação. <a "
+"href=\"%(detail_url)s\">Acesse aqui</a>."
 
 #, python-format
 msgid ""
@@ -697,12 +667,6 @@ msgstr ""
 
 msgid "Help spread the word"
 msgstr "Ajude a divulgar"
-
-msgid "Join the forum"
-msgstr "Participe do fórum"
-
-msgid "Posts"
-msgstr "Posts"
 
 msgid "See more"
 msgstr "Veja mais"
@@ -721,9 +685,6 @@ msgstr "Iniciativas"
 
 msgid "Latin America and the Caribbean"
 msgstr "América Latina e Caribe"
-
-msgid "In other regions"
-msgstr "Em outras regiões"
 
 msgid "Resources"
 msgstr "Ferramentas"
@@ -745,8 +706,8 @@ msgid ""
 "Follow the steps below, or, if you prefer, send your suggestion via the <a a "
 "class=\"text-pink5\" href=\"%(contact_url)s\">contact form</a>."
 msgstr ""
-"Siga os passos abaixo ou, se preferir, envie sua sugestão via <a class="
-"\"text-pink5\" href=\"%(contact_url)s\">formulário de contato</a>."
+"Siga os passos abaixo ou, se preferir, envie sua sugestão via <a "
+"class=\"text-pink5\" href=\"%(contact_url)s\">formulário de contato</a>."
 
 msgid "Add existing content in Cívis to the dossier"
 msgstr "Associe ao dossiê conteúdos já existentes na Cívis"
@@ -810,11 +771,11 @@ msgstr "Acesse os conteúdos para moderação"
 
 #, python-format
 msgid ""
-"Want to suggest a new dossier? <a class=\"text-pink5\" href=\"%(contact_url)s"
-"\">Contact us.</a>"
+"Want to suggest a new dossier? <a class=\"text-pink5\" "
+"href=\"%(contact_url)s\">Contact us.</a>"
 msgstr ""
-"Quer sugerir um novo dossiê? <a class=\"text-pink5\" href=\"%(contact_url)s"
-"\">Entre em contato.</a>"
+"Quer sugerir um novo dossiê? <a class=\"text-pink5\" "
+"href=\"%(contact_url)s\">Entre em contato.</a>"
 
 msgid "No dossiers."
 msgstr "Sem dossiês."
@@ -907,9 +868,6 @@ msgstr "Comunicações"
 
 msgid "Authentication"
 msgstr "Autenticação"
-
-msgid "Forum"
-msgstr "Fórum"
 
 msgid "Utilities"
 msgstr "Utilitários"
@@ -1119,19 +1077,6 @@ msgstr "Evento não aprovado"
 msgid "Only staff can approve object"
 msgstr "Somente administradores podem aprovar"
 
-msgid "Flagged"
-msgstr "Sinalizado"
-
-#, python-format
-msgid "%(name)s \"%(description)s\" has been flagged!"
-msgstr "%(name)s \"%(description)s\" foi sinalizado!"
-
-msgid "This topic has been flagged successfully."
-msgstr "Este tópico foi sinalizado com sucesso"
-
-msgid "This post has been flagged successfully."
-msgstr "Este post foi sinalizado com sucesso"
-
 msgid "Organisation name"
 msgstr "Nome da organização"
 
@@ -1227,6 +1172,10 @@ msgstr "organização"
 
 msgid "found"
 msgstr "encontradas"
+
+msgctxt "fem"
+msgid "New"
+msgstr "Nova"
 
 msgid ""
 "Thank you for registering your citizen science organisation or network on "
@@ -2357,8 +2306,8 @@ msgstr "Idioma principal em que a ferramenta está disponível"
 
 msgid ""
 "Please select the organisation(s) contributing the resource, if any. If not "
-"listed, please add them <a href=\"/new_organisation\" target=\"_blank"
-"\">here</a > before submitting the resource."
+"listed, please add them <a href=\"/new_organisation\" "
+"target=\"_blank\">here</a > before submitting the resource."
 msgstr ""
 "Organização que desenvolveu a ferramenta, se houver. Se não estiver listada, "
 "será necessário adicioná-la <a href='http://civis.ibict.br/"
@@ -2439,8 +2388,8 @@ msgstr ""
 
 msgid ""
 "Please select the organisation(s) contributing the training resource, if "
-"any. If not listed, please add them <a href=\"/new_organisation\" target="
-"\"_blank\">here</a > before submitting the training resource."
+"any. If not listed, please add them <a href=\"/new_organisation\" "
+"target=\"_blank\">here</a > before submitting the training resource."
 msgstr ""
 "Organização que desenvolveu a formação, se houver. Se não estiver listada, "
 "será necessário adicioná-la <a href='http://civis.ibict.br/"
@@ -2736,8 +2685,18 @@ msgstr "Cortar a fotografia"
 msgid "Crop and upload"
 msgstr "Cortar e submeter"
 
-msgid "Citizen science platform developed using open-source code based on the"
-msgstr "Plataforma de ciência cidadã desenvolvida em código aberto a partir da"
+msgid "Hub-i3"
+msgstr ""
+
+msgid ""
+"Plataforma de consulta a políticas públicas voltadas à inclusão social, "
+"desenvolvida com tecnologias de código aberto pelo IBICT."
+msgstr ""
+
+#, fuzzy
+#| msgid "Platform"
+msgid "Plataforma"
+msgstr "Plataforma"
 
 msgid "About"
 msgstr "Sobre"
@@ -2745,17 +2704,20 @@ msgstr "Sobre"
 msgid "FAQ"
 msgstr ""
 
-msgid "Newsletter"
-msgstr ""
+msgid "Events "
+msgstr "Eventos"
 
-msgid "Policies"
-msgstr "Políticas"
+msgid "Políticas e dados"
+msgstr ""
 
 msgid "Terms of Use"
 msgstr "Termos de Uso"
 
 msgid "Privacy"
 msgstr "Privacidade"
+
+msgid "Manual de uso"
+msgstr ""
 
 msgid "Source Code"
 msgstr "Código Fonte"
@@ -2874,8 +2836,8 @@ msgstr "%(object)s está na Cívis, plataforma de ciência cidadã %(object_url)
 msgid ""
 "%(object)s is on Cívis, a #CitizenScience platform %(object_url)s @HUB 3Ibr"
 msgstr ""
-"%(object)s está na Cívis, plataforma de #cienciacidada %(object_url)s "
-"@HUB 3Ibr"
+"%(object)s está na Cívis, plataforma de #cienciacidada %(object_url)s @HUB "
+"3Ibr"
 
 msgid "Share on X"
 msgstr "Compartilhar no X"
@@ -2929,14 +2891,24 @@ msgstr "Prioridade da ordenação: %(priority_number)s"
 msgid "Toggle sorting"
 msgstr "Alternar ordenção"
 
-msgid "Cívis - Citizen Science Platform"
-msgstr "Cívis - Plataforma de Ciência Cidadã"
+msgid "Hub-i3 - Hub de Informação e Inovação Inclusivas"
+msgstr ""
 
-msgid "Citizen Science <br> Platform"
-msgstr "Plataforma de<br>Ciência Cidadã"
+msgid "Policies"
+msgstr "Políticas"
 
-msgid "Events "
-msgstr "Eventos"
+#, fuzzy
+#| msgid "Updated"
+msgid "Updates"
+msgstr "Última atualização"
+
+msgid "News"
+msgstr ""
+
+#, fuzzy
+#| msgid "Sections"
+msgid "Collections"
+msgstr "Seções"
 
 msgid "Map"
 msgstr "Mapa"
@@ -2968,9 +2940,6 @@ msgstr "Sair"
 msgid "New submission"
 msgstr "Nova submissão"
 
-msgid "FORUM"
-msgstr "FÓRUM"
-
 msgid "profile"
 msgstr "perfil"
 
@@ -2982,21 +2951,6 @@ msgstr "Empresa"
 
 msgid "Connect with us on"
 msgstr "Entre em cotato com a Cívis"
-
-msgid "Want to join the discussion? Log in or register with Cívis"
-msgstr "Deseja participar da discussão? Entre ou cadastre-se na Cívis"
-
-msgid "Fórum"
-msgstr "Fórum"
-
-msgid "Subscriptions of topics"
-msgstr "Tópicos seguidos por você"
-
-msgid "View my posts"
-msgstr "Ver meus posts"
-
-msgid "Moderation queue"
-msgstr "Aguardando moderação"
 
 msgid "Coming Soon"
 msgstr "Em breve"
@@ -3048,451 +3002,53 @@ msgstr ""
 msgid "Development"
 msgstr "Desenvolvimento"
 
-msgid "Mark subforums as read"
-msgstr "Marcar subfóruns como lidos"
-
-msgid "New topic"
-msgstr "Novo tópico"
-
-msgid "Mark topics read"
-msgstr "Marcar tópicos como lidos"
-
-msgid "Announcements"
-msgstr "Avisos"
-
-msgid "Topics"
-msgstr "Tópicos"
-
-msgid "Last post"
-msgstr "Último post"
-
-msgid "Forums"
-msgstr "Fórum"
-
-msgid "RSS feed"
-msgstr "RSS"
-
-#, python-format
-msgid "By: <a href=\"%(poster_url)s\">%(username)s</a>"
-msgstr "Por: <a href=\"%(poster_url)s\">%(username)s</a>"
-
-#, python-format
-msgid "By: %(poster_username)s"
-msgstr "Por: %(poster_username)s"
-
-msgid "No posts"
-msgstr "Sem posts"
-
-msgid "Total redirects:"
-msgstr "Redirecionamentos totais:"
-
-msgid "Subforums:"
-msgstr "Subfóruns:"
-
-msgid "No forums."
-msgstr "Sem fóruns."
-
-msgid "Index"
-msgstr "Índice"
-
-msgid "Mark forums as read"
-msgstr "Marcar fóruns como lidos"
-
-msgid "View unread topics"
-msgstr "Ver tópicos não lidos"
-
-msgid "Statistics"
-msgstr "Estatísticas"
-
-msgid "Total posts:"
-msgstr "Total de posts:"
-
-msgid "Total topics:"
-msgstr "Total de tópicos:"
-
-msgid "(optional)"
-msgstr "(opcional)"
-
-msgid "Add another file"
-msgstr "Incluir outro arquivo"
-
-msgid "Attachments"
-msgstr "Anexos"
-
-msgid "You may select <b>1</b> option"
-msgstr "Você pode selecionar <b>1</b> opção"
-
-#, python-format
-msgid "You may select up to <b>%(max_options)s</b> options"
-msgstr "Você pode selecionar no máximo <b>%(max_options)s</b> opções"
-
-msgid "Vote"
-msgstr "Votar"
-
-msgid "Change your vote"
-msgstr "Mude seu voto"
-
-msgid "Poll options"
-msgstr "Opções da enquete"
-
-msgid "Add a poll option"
-msgstr "Inclua uma opção na enquete"
-
 msgid ""
-"<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the "
-"associated votes."
-msgstr ""
-"<b>Atenção:</b>&nbsp;Excluir opções de uma enquete já existente irá "
-"invalidar os respectivos votos."
-
-msgid "Preview:"
-msgstr "Visualizar:"
-
-msgid "Results are currently hidden."
-msgstr "Resultados estão ocultos"
-
-msgid "Total votes:"
-msgstr "Votos totais:"
-
-msgid "Submit"
-msgstr "Enviar"
-
-msgid "View results"
-msgstr "Ver resultados"
-
-msgid "Options"
-msgstr "Opções"
-
-msgid "Post reply"
-msgstr "Responder post"
-
-msgid "Subscribe"
-msgstr "Seguir"
-
-msgid "Unsubscribe"
-msgstr "Deixar de seguir"
-
-msgid "Flag topic"
-msgstr "Sinalizar tópico"
-
-msgid "Lock topic"
-msgstr "Bloquear tópico"
-
-msgid "Unlock topic"
-msgstr "Desbloquear tópico"
-
-msgid "Delete topic"
-msgstr "Excluir tópico"
-
-msgid "Move topic"
-msgstr "Mover tópico"
-
-msgid "Change to sticky topic"
-msgstr "Alterar para tópico fixo"
-
-msgid "Change to announce"
-msgstr "Alterar para anúncio"
-
-msgid "Change to standard topic"
-msgstr "Alterar para tópico padrão"
-
-msgid "Poll"
-msgstr "Enquete"
-
-msgid "Post a reply"
-msgstr "Postar uma resposta"
-
-msgid "Topic review"
-msgstr "Revisar tópico"
-
-#, python-format
-msgid "By: <a href=\"%(poster_url)s\">%(username)s</a> on %(creation_date)s"
-msgstr "Por: <a href=\"%(poster_url)s\">%(username)s</a> em %(creation_date)s"
-
-#, python-format
-msgid "By: %(poster_username)s on %(creation_date)s"
-msgstr "Por: %(poster_username)s em %(creation_date)s"
-
-msgid "Delete post"
-msgstr "Excluir post"
-
-msgid "Are you sure you want to delete this post?"
-msgstr "Confirmar exclusão de post?"
-
-msgid "Yes, I'm sure"
-msgstr "Sim, confirmar"
-
-msgid "No, take me back"
-msgstr "Não, voltar"
-
-msgid "Edit post"
-msgstr "Editar post"
-
-msgid "Post a new topic"
-msgstr "Publique um novo tópico"
-
-msgid "Last edited by:"
-msgstr "Editado por:"
-
-msgid "on"
-msgstr "em"
-
-#, python-format
-msgid "edited %(counter)s time in total."
-msgid_plural "edited %(counter)s times in total."
-msgstr[0] "editado %(counter)s vez."
-msgstr[1] "editado %(counter)s vezes."
-
-msgid "Reason:"
-msgstr "Razão:"
-
-msgid "Flag post"
-msgstr "Sinalizar post"
-
-msgid "Posts:"
-msgstr "Posts:"
-
-msgid "Anonymous user"
-msgstr "Usuário anônimo"
-
-msgid "Replies"
-msgstr "Respostas"
-
-msgid "Views"
-msgstr "Visualizações"
-
-msgid "This topic is locked"
-msgstr "Este tópico está bloqueado"
-
-msgid "There are no topics in this forum."
-msgstr "Não há tópicos neste fórum."
-
-msgid "Go to the page:"
-msgstr "Vá para a página:"
-
-msgid "Posted by"
-msgstr "Postado por"
-
-#, python-format
-msgid "%(username)s profile"
-msgstr "Perfil de %(username)s"
-
-#, python-format
-msgid ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p><small>Post</small></p>"
-msgid_plural ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p class=\"mb-1\"><small>Posts</small></p>"
-msgstr[0] ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p><small>Post</small></p>"
-msgstr[1] ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p class=\"mb-1\"><small>Posts</small></p>"
-
-#, python-format
-msgid ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p><small>Topic</small></p>"
-msgid_plural ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p class=\"mb-1\"><small>Topics</small></p>"
-msgstr[0] ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p><small>Tópico</small></p>"
-msgstr[1] ""
-"<h2><strong>%(counter)s</strong></h2>\n"
-"                      <p class=\"mb-1\"><small>Tópicos</small></p>"
-
-msgid "Recent posts"
-msgstr "Posts recentes"
-
-msgid "View all"
-msgstr "Ver tudo"
-
-#, python-format
-msgid "On %(creation_date)s"
-msgstr "Em %(creation_date)s"
-
-msgid "Edit forum profile"
-msgstr "Editar perfil do fórum"
-
-msgid "Edit forum"
-msgstr "Editar fórum"
-
-msgid "Topics that you are subscribed to"
-msgstr "Tópicos que você assinou"
-
-#, python-format
-msgid "%(counter)s topic found"
-msgid_plural "%(counter)s topics found"
-msgstr[0] "%(counter)s tópico encontrado"
-msgstr[1] "%(counter)s tópicos encontrados"
-
-msgid "No topics found."
-msgstr "Nenhum tópico encontrado."
-
-msgid "Subscribe to topic"
-msgstr "Assinar tópico"
-
-msgid "Would you like to subscribe to this topic?"
-msgstr "Gostaria de assinar este tópico?"
-
-msgid "Unsubscribe from topic"
-msgstr "Cancelar assinatura do tópico"
-
-msgid "Would you like to unsubscribe from this topic?"
-msgstr "Gostaria de cancelar a assinatura deste tópico?"
-
-msgid "My messages"
-msgstr "Minhas mensagens"
-
-#, python-format
-msgid "%(username)s's posts"
-msgstr "Posts de %(username)s"
-
-#, python-format
-msgid "%(counter)s post found"
-msgid_plural "%(counter)s posts found"
-msgstr[0] "%(counter)s post encontrado"
-msgstr[1] "%(counter)s posts encontrados"
-
-msgid "No posts found"
-msgstr "Nenhum post encontrado"
-
-msgid "Flag"
+"Hub-i3 é uma plataforma digital de consulta a políticas públicas voltadas a "
+"grupos em situação de vulnerabilidade social."
 msgstr ""
 
-msgid "Are you sure you want to flag"
-msgstr "Deseja sinalizar"
-
-msgid "Disapprove"
-msgstr "Não aprovar"
-
-msgid "New post"
-msgstr "Novo post"
-
-msgid "<b>1</b> option may be selected"
-msgstr "<b>1</b> opção pode ser selecionada"
-
-#, python-format
-msgid "Up to <b>%(max_options)s</b> options may be selected"
-msgstr "Até <b>%(max_options)s</b> opções podem ser selecionadas"
-
-#, python-format
-msgid "%(topic_length)s posts found"
-msgstr "%(topic_length)s posts encontrados"
-
-msgid "Topic"
-msgstr "Tópico"
-
-msgid "No posts awaiting approval."
-msgstr "Nenhum post para aprovação"
-
-msgid "Approve post"
-msgstr "Aprovar post"
-
-msgid "Are you sure you want to approve this post?"
-msgstr "Aprovar este post?"
-
-msgid "Disapprove post"
-msgstr "Não aprovar"
-
 msgid ""
-"Are you sure you want to disapprove this post? This post will be deleted."
-msgstr "Confirmar a não aprovação do post? Ele será deletado."
-
-msgid "Are you sure you want to delete this topic?"
-msgstr "Confirmar a não aprovação do tópico?"
-
-msgid "Are you sure you want to lock this topic?"
-msgstr "Confirmar o bloqueio do tópico?"
-
-msgid "Are you sure you want to unlock this topic?"
-msgstr "Confirmar o desbloqueio do tópico?"
-
-msgid "Change topic type"
-msgstr "Alterar tipo do tópico"
-
-msgid "Search forums"
-msgstr "Busca"
-
-msgid "New search"
-msgstr "Nova busca"
-
-#, python-format
-msgid "Your search has returned <b>%(number_of_results)s</b> result"
-msgid_plural "Your search has returned <b>%(number_of_results)s</b> results"
-msgstr[0] "Sua busca retornou <b>%(number_of_results)s</b> resultado"
-msgstr[1] "Sua busca retornou <b>%(number_of_results)s</b> resultados"
-
-msgid "Results"
-msgstr "Resultados"
-
-msgid "No results."
-msgstr "Nenhum resultado encontrado"
-
-msgid "Are you sure you want to mark forums as read?"
-msgstr "Confirmar fóruns lidos?"
-
-msgid "Are you sure you want to mark topics as read?"
-msgstr "Confirmar tópicos lidos?"
-
-#, python-format
-msgid "%(topic_length)s unread topic found"
-msgid_plural "%(topic_length)s unread topics found"
-msgstr[0] "%(topic_length)s tópico não lido encontrado"
-msgstr[1] "%(topic_length)s tópicos não lidos encontrados"
-
-msgid "There are no unread topics."
-msgstr "Não existem tópicos não lidos."
-
-msgid ""
-"Cívis is a citizen science platform developed by the Brazilian Institute of "
-"Information in Science and Technology (IBICT) using open-source code, based "
-"on "
+"O sistema organiza as políticas por ciclo de vida e grupo populacional, com "
+"recursos de busca, filtragem e navegação, conforme os requisitos iniciais do "
+"projeto."
 msgstr ""
-"A Cívis é uma plataforma de Ciência Cidadã, desenvolvida pelo IBICT em "
-"código aberto a partir da "
+
+msgid "Informação pública inclusiva para todas as pessoas"
+msgstr ""
+
+msgid "Explore as políticas"
+msgstr ""
+
+#, fuzzy
+#| msgid "See all platforms"
+msgid "Sobre a plataforma"
+msgstr "Ver todas as plataformas"
+
+msgid "O que é o Hub-i3?"
+msgstr ""
 
 msgid ""
-"Our goal is to provide infrastructure and content that help broaden the "
-"understanding of citizen science, promote its use, and support the "
-"development of initiatives and the application of methodologies in this "
-"field, with a focus on Latin America and the Caribbean."
+"O Hub de Informação e Inovação Inclusivas (Hub-i3) reúne e organiza "
+"informações sobre políticas públicas para grupos em situação de "
+"vulnerabilidade social."
 msgstr ""
-"Nosso objetivo é oferecer infraestrutura e conteúdos que contribuam para "
-"ampliar o entendimento sobre Ciência Cidadã, disseminar seu uso e dar "
-"suporte ao desenvolvimento de iniciativas e à aplicação de metodologias "
-"nesse campo, com foco na América Latina e no Caribe."
-
-msgid "Science built through collaboration among everyone"
-msgstr "A ciência construída por meio da colaboração entre"
-
-msgid "Join us"
-msgstr "Junte-se"
-
-msgid "About the platform"
-msgstr "Sobre a plataforma"
-
-msgid "What is Cívis?"
-msgstr "O que é a Cívis?"
-
-msgid "What is citizen science?"
-msgstr "O que é Ciência Cidadã?"
 
 msgid ""
-"Citizen science is a branch of the open science movement. It focuses on "
-"promoting non-scientist contributions and engagement in knowledge, data, and "
-"information analysis and production that are relevant to science and issues "
-"of social, environmental, and territorial importance."
+"A plataforma facilita o acesso por meio de busca textual, filtros por ciclo "
+"de vida e grupo populacional e navegação por categorias."
 msgstr ""
-"A Ciência Cidadã é uma das vertentes do movimento pela ciência aberta. Tem "
-"como foco promover a contribuição e o engajamento de não cientistas nas "
-"atividades de produção e análise de conhecimentos, dados e informações "
-"relevantes à ciência e às questões de importância social, ambiental e "
-"territorial."
+
+msgid "Objetivo do Hub-i3"
+msgstr ""
+
+msgid ""
+"O objetivo é garantir acesso livre e acessível a informações de interesse "
+"público, apoiar a manutenção contínua da base e fornecer métricas de uso "
+"para a gestão da plataforma."
+msgstr ""
+
+msgid "Saiba mais"
+msgstr ""
 
 #, python-format
 msgid "There is one content awaiting moderation"
@@ -3815,8 +3371,8 @@ msgid ""
 "resource."
 msgstr "#missing"
 
-msgid "Forum index"
-msgstr "Fórum"
+msgid "Sobre o"
+msgstr ""
 
 msgid "NOT YET MODERATED"
 msgstr "AINDA NÃO MODERADO"
@@ -3879,6 +3435,533 @@ msgstr "Palavra-chave"
 
 msgid "TOTALS"
 msgstr "Totais"
+
+#~ msgid "Community Forums"
+#~ msgstr "Fóruns da comunidade"
+
+#~ msgid "Forum proposal created"
+#~ msgstr "Proposta de fórum criada"
+
+#, python-format
+#~ msgid "Your forum \"%s\" has been created!"
+#~ msgstr "Seu fórum \"%s\" foi criado!"
+
+#~ msgid "Forum image"
+#~ msgstr "Imagem do Fórum"
+
+#~ msgid "Forum Proposal"
+#~ msgstr "Proposta de Fórum"
+
+#~ msgid "Forum Proposals"
+#~ msgstr "Propostas de Fórum"
+
+#~ msgid "Forum Proposal added correctly"
+#~ msgstr "Proposta de Fórum adicionada com sucesso!"
+
+#, python-format
+#~ msgid "Notification - New Forum Proposal \"%s\" submitted"
+#~ msgstr "Notificação - Nova Proposta de Fórum \"%s\" submetida"
+
+#~ msgid "Join the forum"
+#~ msgstr "Participe do fórum"
+
+#~ msgid "Posts"
+#~ msgstr "Posts"
+
+#~ msgid "In other regions"
+#~ msgstr "Em outras regiões"
+
+#~ msgid "Forum"
+#~ msgstr "Fórum"
+
+#~ msgid "Flagged"
+#~ msgstr "Sinalizado"
+
+#, python-format
+#~ msgid "%(name)s \"%(description)s\" has been flagged!"
+#~ msgstr "%(name)s \"%(description)s\" foi sinalizado!"
+
+#~ msgid "This topic has been flagged successfully."
+#~ msgstr "Este tópico foi sinalizado com sucesso"
+
+#~ msgid "This post has been flagged successfully."
+#~ msgstr "Este post foi sinalizado com sucesso"
+
+#~ msgid ""
+#~ "Citizen science platform developed using open-source code based on the"
+#~ msgstr ""
+#~ "Plataforma de ciência cidadã desenvolvida em código aberto a partir da"
+
+#~ msgid "Cívis - Citizen Science Platform"
+#~ msgstr "Cívis - Plataforma de Ciência Cidadã"
+
+#~ msgid "Citizen Science <br> Platform"
+#~ msgstr "Plataforma de<br>Ciência Cidadã"
+
+#~ msgid "FORUM"
+#~ msgstr "FÓRUM"
+
+#~ msgid "Want to join the discussion? Log in or register with Cívis"
+#~ msgstr "Deseja participar da discussão? Entre ou cadastre-se na Cívis"
+
+#~ msgid "Fórum"
+#~ msgstr "Fórum"
+
+#~ msgid "Subscriptions of topics"
+#~ msgstr "Tópicos seguidos por você"
+
+#~ msgid "View my posts"
+#~ msgstr "Ver meus posts"
+
+#~ msgid "Moderation queue"
+#~ msgstr "Aguardando moderação"
+
+#~ msgid "Mark subforums as read"
+#~ msgstr "Marcar subfóruns como lidos"
+
+#~ msgid "New topic"
+#~ msgstr "Novo tópico"
+
+#~ msgid "Mark topics read"
+#~ msgstr "Marcar tópicos como lidos"
+
+#~ msgid "Announcements"
+#~ msgstr "Avisos"
+
+#~ msgid "Topics"
+#~ msgstr "Tópicos"
+
+#~ msgid "Last post"
+#~ msgstr "Último post"
+
+#~ msgid "Forums"
+#~ msgstr "Fórum"
+
+#~ msgid "RSS feed"
+#~ msgstr "RSS"
+
+#, python-format
+#~ msgid "By: <a href=\"%(poster_url)s\">%(username)s</a>"
+#~ msgstr "Por: <a href=\"%(poster_url)s\">%(username)s</a>"
+
+#, python-format
+#~ msgid "By: %(poster_username)s"
+#~ msgstr "Por: %(poster_username)s"
+
+#~ msgid "No posts"
+#~ msgstr "Sem posts"
+
+#~ msgid "Total redirects:"
+#~ msgstr "Redirecionamentos totais:"
+
+#~ msgid "Subforums:"
+#~ msgstr "Subfóruns:"
+
+#~ msgid "No forums."
+#~ msgstr "Sem fóruns."
+
+#~ msgid "Index"
+#~ msgstr "Índice"
+
+#~ msgid "Mark forums as read"
+#~ msgstr "Marcar fóruns como lidos"
+
+#~ msgid "View unread topics"
+#~ msgstr "Ver tópicos não lidos"
+
+#~ msgid "Statistics"
+#~ msgstr "Estatísticas"
+
+#~ msgid "Total posts:"
+#~ msgstr "Total de posts:"
+
+#~ msgid "Total topics:"
+#~ msgstr "Total de tópicos:"
+
+#~ msgid "(optional)"
+#~ msgstr "(opcional)"
+
+#~ msgid "Add another file"
+#~ msgstr "Incluir outro arquivo"
+
+#~ msgid "Attachments"
+#~ msgstr "Anexos"
+
+#~ msgid "You may select <b>1</b> option"
+#~ msgstr "Você pode selecionar <b>1</b> opção"
+
+#, python-format
+#~ msgid "You may select up to <b>%(max_options)s</b> options"
+#~ msgstr "Você pode selecionar no máximo <b>%(max_options)s</b> opções"
+
+#~ msgid "Vote"
+#~ msgstr "Votar"
+
+#~ msgid "Change your vote"
+#~ msgstr "Mude seu voto"
+
+#~ msgid "Poll options"
+#~ msgstr "Opções da enquete"
+
+#~ msgid "Add a poll option"
+#~ msgstr "Inclua uma opção na enquete"
+
+#~ msgid ""
+#~ "<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete "
+#~ "the associated votes."
+#~ msgstr ""
+#~ "<b>Atenção:</b>&nbsp;Excluir opções de uma enquete já existente irá "
+#~ "invalidar os respectivos votos."
+
+#~ msgid "Preview:"
+#~ msgstr "Visualizar:"
+
+#~ msgid "Results are currently hidden."
+#~ msgstr "Resultados estão ocultos"
+
+#~ msgid "Total votes:"
+#~ msgstr "Votos totais:"
+
+#~ msgid "Submit"
+#~ msgstr "Enviar"
+
+#~ msgid "View results"
+#~ msgstr "Ver resultados"
+
+#~ msgid "Options"
+#~ msgstr "Opções"
+
+#~ msgid "Post reply"
+#~ msgstr "Responder post"
+
+#~ msgid "Subscribe"
+#~ msgstr "Seguir"
+
+#~ msgid "Unsubscribe"
+#~ msgstr "Deixar de seguir"
+
+#~ msgid "Flag topic"
+#~ msgstr "Sinalizar tópico"
+
+#~ msgid "Lock topic"
+#~ msgstr "Bloquear tópico"
+
+#~ msgid "Unlock topic"
+#~ msgstr "Desbloquear tópico"
+
+#~ msgid "Delete topic"
+#~ msgstr "Excluir tópico"
+
+#~ msgid "Move topic"
+#~ msgstr "Mover tópico"
+
+#~ msgid "Change to sticky topic"
+#~ msgstr "Alterar para tópico fixo"
+
+#~ msgid "Change to announce"
+#~ msgstr "Alterar para anúncio"
+
+#~ msgid "Change to standard topic"
+#~ msgstr "Alterar para tópico padrão"
+
+#~ msgid "Poll"
+#~ msgstr "Enquete"
+
+#~ msgid "Post a reply"
+#~ msgstr "Postar uma resposta"
+
+#~ msgid "Topic review"
+#~ msgstr "Revisar tópico"
+
+#, python-format
+#~ msgid "By: <a href=\"%(poster_url)s\">%(username)s</a> on %(creation_date)s"
+#~ msgstr ""
+#~ "Por: <a href=\"%(poster_url)s\">%(username)s</a> em %(creation_date)s"
+
+#, python-format
+#~ msgid "By: %(poster_username)s on %(creation_date)s"
+#~ msgstr "Por: %(poster_username)s em %(creation_date)s"
+
+#~ msgid "Delete post"
+#~ msgstr "Excluir post"
+
+#~ msgid "Are you sure you want to delete this post?"
+#~ msgstr "Confirmar exclusão de post?"
+
+#~ msgid "Yes, I'm sure"
+#~ msgstr "Sim, confirmar"
+
+#~ msgid "No, take me back"
+#~ msgstr "Não, voltar"
+
+#~ msgid "Edit post"
+#~ msgstr "Editar post"
+
+#~ msgid "Post a new topic"
+#~ msgstr "Publique um novo tópico"
+
+#~ msgid "Last edited by:"
+#~ msgstr "Editado por:"
+
+#~ msgid "on"
+#~ msgstr "em"
+
+#, python-format
+#~ msgid "edited %(counter)s time in total."
+#~ msgid_plural "edited %(counter)s times in total."
+#~ msgstr[0] "editado %(counter)s vez."
+#~ msgstr[1] "editado %(counter)s vezes."
+
+#~ msgid "Reason:"
+#~ msgstr "Razão:"
+
+#~ msgid "Flag post"
+#~ msgstr "Sinalizar post"
+
+#~ msgid "Posts:"
+#~ msgstr "Posts:"
+
+#~ msgid "Anonymous user"
+#~ msgstr "Usuário anônimo"
+
+#~ msgid "Replies"
+#~ msgstr "Respostas"
+
+#~ msgid "Views"
+#~ msgstr "Visualizações"
+
+#~ msgid "This topic is locked"
+#~ msgstr "Este tópico está bloqueado"
+
+#~ msgid "There are no topics in this forum."
+#~ msgstr "Não há tópicos neste fórum."
+
+#~ msgid "Go to the page:"
+#~ msgstr "Vá para a página:"
+
+#~ msgid "Posted by"
+#~ msgstr "Postado por"
+
+#, python-format
+#~ msgid "%(username)s profile"
+#~ msgstr "Perfil de %(username)s"
+
+#, python-format
+#~ msgid ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p><small>Post</small></p>"
+#~ msgid_plural ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p class=\"mb-1\"><small>Posts</small></p>"
+#~ msgstr[0] ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p><small>Post</small></p>"
+#~ msgstr[1] ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p class=\"mb-1\"><small>Posts</small></p>"
+
+#, python-format
+#~ msgid ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p><small>Topic</small></p>"
+#~ msgid_plural ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p class=\"mb-1\"><small>Topics</small></p>"
+#~ msgstr[0] ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p><small>Tópico</small></p>"
+#~ msgstr[1] ""
+#~ "<h2><strong>%(counter)s</strong></h2>\n"
+#~ "                      <p class=\"mb-1\"><small>Tópicos</small></p>"
+
+#~ msgid "Recent posts"
+#~ msgstr "Posts recentes"
+
+#~ msgid "View all"
+#~ msgstr "Ver tudo"
+
+#, python-format
+#~ msgid "On %(creation_date)s"
+#~ msgstr "Em %(creation_date)s"
+
+#~ msgid "Edit forum profile"
+#~ msgstr "Editar perfil do fórum"
+
+#~ msgid "Edit forum"
+#~ msgstr "Editar fórum"
+
+#~ msgid "Topics that you are subscribed to"
+#~ msgstr "Tópicos que você assinou"
+
+#, python-format
+#~ msgid "%(counter)s topic found"
+#~ msgid_plural "%(counter)s topics found"
+#~ msgstr[0] "%(counter)s tópico encontrado"
+#~ msgstr[1] "%(counter)s tópicos encontrados"
+
+#~ msgid "No topics found."
+#~ msgstr "Nenhum tópico encontrado."
+
+#~ msgid "Subscribe to topic"
+#~ msgstr "Assinar tópico"
+
+#~ msgid "Would you like to subscribe to this topic?"
+#~ msgstr "Gostaria de assinar este tópico?"
+
+#~ msgid "Unsubscribe from topic"
+#~ msgstr "Cancelar assinatura do tópico"
+
+#~ msgid "Would you like to unsubscribe from this topic?"
+#~ msgstr "Gostaria de cancelar a assinatura deste tópico?"
+
+#~ msgid "My messages"
+#~ msgstr "Minhas mensagens"
+
+#, python-format
+#~ msgid "%(username)s's posts"
+#~ msgstr "Posts de %(username)s"
+
+#, python-format
+#~ msgid "%(counter)s post found"
+#~ msgid_plural "%(counter)s posts found"
+#~ msgstr[0] "%(counter)s post encontrado"
+#~ msgstr[1] "%(counter)s posts encontrados"
+
+#~ msgid "No posts found"
+#~ msgstr "Nenhum post encontrado"
+
+#~ msgid "Are you sure you want to flag"
+#~ msgstr "Deseja sinalizar"
+
+#~ msgid "Disapprove"
+#~ msgstr "Não aprovar"
+
+#~ msgid "New post"
+#~ msgstr "Novo post"
+
+#~ msgid "<b>1</b> option may be selected"
+#~ msgstr "<b>1</b> opção pode ser selecionada"
+
+#, python-format
+#~ msgid "Up to <b>%(max_options)s</b> options may be selected"
+#~ msgstr "Até <b>%(max_options)s</b> opções podem ser selecionadas"
+
+#, python-format
+#~ msgid "%(topic_length)s posts found"
+#~ msgstr "%(topic_length)s posts encontrados"
+
+#~ msgid "Topic"
+#~ msgstr "Tópico"
+
+#~ msgid "No posts awaiting approval."
+#~ msgstr "Nenhum post para aprovação"
+
+#~ msgid "Approve post"
+#~ msgstr "Aprovar post"
+
+#~ msgid "Are you sure you want to approve this post?"
+#~ msgstr "Aprovar este post?"
+
+#~ msgid "Disapprove post"
+#~ msgstr "Não aprovar"
+
+#~ msgid ""
+#~ "Are you sure you want to disapprove this post? This post will be deleted."
+#~ msgstr "Confirmar a não aprovação do post? Ele será deletado."
+
+#~ msgid "Are you sure you want to delete this topic?"
+#~ msgstr "Confirmar a não aprovação do tópico?"
+
+#~ msgid "Are you sure you want to lock this topic?"
+#~ msgstr "Confirmar o bloqueio do tópico?"
+
+#~ msgid "Are you sure you want to unlock this topic?"
+#~ msgstr "Confirmar o desbloqueio do tópico?"
+
+#~ msgid "Change topic type"
+#~ msgstr "Alterar tipo do tópico"
+
+#~ msgid "Search forums"
+#~ msgstr "Busca"
+
+#~ msgid "New search"
+#~ msgstr "Nova busca"
+
+#, python-format
+#~ msgid "Your search has returned <b>%(number_of_results)s</b> result"
+#~ msgid_plural "Your search has returned <b>%(number_of_results)s</b> results"
+#~ msgstr[0] "Sua busca retornou <b>%(number_of_results)s</b> resultado"
+#~ msgstr[1] "Sua busca retornou <b>%(number_of_results)s</b> resultados"
+
+#~ msgid "Results"
+#~ msgstr "Resultados"
+
+#~ msgid "No results."
+#~ msgstr "Nenhum resultado encontrado"
+
+#~ msgid "Are you sure you want to mark forums as read?"
+#~ msgstr "Confirmar fóruns lidos?"
+
+#~ msgid "Are you sure you want to mark topics as read?"
+#~ msgstr "Confirmar tópicos lidos?"
+
+#, python-format
+#~ msgid "%(topic_length)s unread topic found"
+#~ msgid_plural "%(topic_length)s unread topics found"
+#~ msgstr[0] "%(topic_length)s tópico não lido encontrado"
+#~ msgstr[1] "%(topic_length)s tópicos não lidos encontrados"
+
+#~ msgid "There are no unread topics."
+#~ msgstr "Não existem tópicos não lidos."
+
+#~ msgid ""
+#~ "Cívis is a citizen science platform developed by the Brazilian Institute "
+#~ "of Information in Science and Technology (IBICT) using open-source code, "
+#~ "based on "
+#~ msgstr ""
+#~ "A Cívis é uma plataforma de Ciência Cidadã, desenvolvida pelo IBICT em "
+#~ "código aberto a partir da "
+
+#~ msgid ""
+#~ "Our goal is to provide infrastructure and content that help broaden the "
+#~ "understanding of citizen science, promote its use, and support the "
+#~ "development of initiatives and the application of methodologies in this "
+#~ "field, with a focus on Latin America and the Caribbean."
+#~ msgstr ""
+#~ "Nosso objetivo é oferecer infraestrutura e conteúdos que contribuam para "
+#~ "ampliar o entendimento sobre Ciência Cidadã, disseminar seu uso e dar "
+#~ "suporte ao desenvolvimento de iniciativas e à aplicação de metodologias "
+#~ "nesse campo, com foco na América Latina e no Caribe."
+
+#~ msgid "Science built through collaboration among everyone"
+#~ msgstr "A ciência construída por meio da colaboração entre"
+
+#~ msgid "Join us"
+#~ msgstr "Junte-se"
+
+#~ msgid "About the platform"
+#~ msgstr "Sobre a plataforma"
+
+#~ msgid "What is Cívis?"
+#~ msgstr "O que é a Cívis?"
+
+#~ msgid "What is citizen science?"
+#~ msgstr "O que é Ciência Cidadã?"
+
+#~ msgid ""
+#~ "Citizen science is a branch of the open science movement. It focuses on "
+#~ "promoting non-scientist contributions and engagement in knowledge, data, "
+#~ "and information analysis and production that are relevant to science and "
+#~ "issues of social, environmental, and territorial importance."
+#~ msgstr ""
+#~ "A Ciência Cidadã é uma das vertentes do movimento pela ciência aberta. "
+#~ "Tem como foco promover a contribuição e o engajamento de não cientistas "
+#~ "nas atividades de produção e análise de conhecimentos, dados e "
+#~ "informações relevantes à ciência e às questões de importância social, "
+#~ "ambiental e territorial."
+
+#~ msgid "Forum index"
+#~ msgstr "Fórum"
 
 #~ msgid "Frequently <span class='text-pink6'>asked questions</span>"
 #~ msgstr "Perguntas <span class='text-pink6'>frequentes</span>"
@@ -4054,8 +4137,8 @@ msgstr "Totais"
 #~ "\n"
 #~ "    <p>Hello,</p>\n"
 #~ "    <p>\n"
-#~ "      We are pleased to inform you that the event <a href=\"%(domain)s"
-#~ "%(event_url)s\">%(title)s</a>\n"
+#~ "      We are pleased to inform you that the event <a "
+#~ "href=\"%(domain)s%(event_url)s\">%(title)s</a>\n"
 #~ "      has been approved.\n"
 #~ "    </p>\n"
 #~ "    <p>If you want to get in touch with us, write to civil@ibict.br.</p>\n"
@@ -4066,8 +4149,8 @@ msgstr "Totais"
 #~ msgstr ""
 #~ "\n"
 #~ "    <p>Olá,</p>\n"
-#~ "    <p>Temos o prazer de informar que o evento <a href=\"%(domain)s"
-#~ "%(event_url)s\">%(title)s</a> foi aprovado.</p>\n"
+#~ "    <p>Temos o prazer de informar que o evento <a "
+#~ "href=\"%(domain)s%(event_url)s\">%(title)s</a> foi aprovado.</p>\n"
 #~ "    <p>Se quiser entrar em contato conosco, escreva para civis@ibict.br.</"
 #~ "p>\n"
 #~ "    <p>Este é um e-mail automático, NÃO responda.</p>\n"
