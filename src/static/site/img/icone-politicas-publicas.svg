@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title">
+<title id="title">Consulta de políticas públicas</title>
+<rect x="12" y="9" width="47" height="59" rx="6" fill="none" stroke="#ffffff" stroke-width="4"/>
+<path d="M22 23h26M22 33h20M22 43h16" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+<circle cx="53" cy="53" r="13" fill="#ffffff" stroke="#ffffff" stroke-width="3"/>
+<circle cx="53" cy="53" r="8" fill="none" stroke="#17382d" stroke-width="3"/>
+<path d="m59 59 11 11" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+</svg>

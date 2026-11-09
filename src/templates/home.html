@@ -30,9 +30,9 @@
                 <div class="">
                     <span class="mt-4 mb-2 whiteText headerTitle">
                         {% trans "Informação pública inclusiva para todas as pessoas" %}
-                        {% if LANGUAGE_CODE == "pt-br" or LANGUAGE_CODE == "es" %}
-                            <img data-src="{% static 'site/img/todxs.gif' %}" alt="todos" style="width: 127px; margin-bottom: 7px;" class="lazyload">
-                        {% endif %}
+                        <img src="{% static 'site/img/icone-politicas-publicas.svg' %}"
+                             alt="" aria-hidden="true" width="66" height="66"
+                             style="width: 66px; height: 66px; vertical-align: middle; margin: 0 0 7px 12px;">
                     </span>
                     <span class="headerSubTitle">
                         <a href="{% url 'projects' %}">{% trans "Explore as políticas" %}</a>! 
