@@ -6,7 +6,7 @@ inclusion: manual
 
 Use este template como ponto de partida ao criar uma spec de feature neste
 projeto. Ele adapta o fluxo padrão de spec do Kiro (Requirements → Design →
-Tasks) às particularidades de um CMS em Django 3.2.
+Tasks) às particularidades de um CMS em Django 5.2.
 
 Para usar: copie as três seções abaixo para os arquivos
 `.kiro/specs/<nome-da-feature>/requirements.md`, `design.md` e `tasks.md`,

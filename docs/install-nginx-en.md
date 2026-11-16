@@ -6,11 +6,11 @@ user `webapp`, gunicorn listening on `127.0.0.1:5000`.
 1) Install NGINX and system packages (logged as root):
 
 ````
-apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev
+apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev libcairo2
 dpkg-reconfigure tzdata
 ````
 
-(`gettext` is required by `compilemessages`; `gdal-bin`/`libgdal-dev` by GeoDjango.)
+(`gettext` is required by `compilemessages`; `gdal-bin`/`libgdal-dev` by GeoDjango; `libcairo2` by `cairosvg`, which converts SVG images.)
 
 2) Create webapp user and permissions (logged as root)
 
@@ -38,7 +38,7 @@ cd .ssh
 cat id_rsa.pub
 ````
 
-4) Logged as webapp, install `uv` (it manages the virtualenv and Python 3.10):
+4) Logged as webapp, install `uv` (it manages the virtualenv and Python 3.14):
 
 ````
 curl -LsSf https://astral.sh/uv/install.sh | sh

@@ -2,7 +2,7 @@
 
 ## Requirements
 
-    sudo apt install python3-pip libpq-dev gettext python-is-python3 libjpeg-dev zlib1g-dev gdal-bin libgdal-dev
+    sudo apt install python3-pip libpq-dev gettext python-is-python3 libjpeg-dev zlib1g-dev gdal-bin libgdal-dev libcairo2
 
 Install `uv` (dependency and virtualenv manager used by this project):
 
@@ -56,7 +56,7 @@ cp eucs_platform/settings/local.sample.reference.env eucs_platform/settings/loca
 In `local.env`, set `DATABASE_NAME=hub_i3`, `DATABASE_USER=i3_user`, `DATABASE_PASSWORD` (the password chosen above)
 and `DATABASE_HOST=localhost` (also update `DATABASE_URL` accordingly).
 
-`uv sync` creates the `.venv` (Python 3.10.19, downloaded automatically by uv
+`uv sync` creates the `.venv` (Python 3.14, downloaded automatically by uv
 if not present) and installs runtime + the `dev` dependency group (debug
 toolbar, ruff, pre-commit, etc.), without `gunicorn`.
 
