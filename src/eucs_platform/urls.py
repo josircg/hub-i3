@@ -7,9 +7,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path, re_path
 from django.views.defaults import server_error
 from django.views.generic import TemplateView
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 import accounts.urls
 import contact.urls
@@ -22,16 +20,6 @@ import projects.urls
 import resources.urls
 
 from . import sitemaps, views
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="CÍVIS API",
-        default_version='v1',
-        description="CÍVIS API",
-    ),
-    public=False,
-    permission_classes=(permissions.IsAuthenticated,),
-)
 
 # Personalized admin site settings like title and header
 admin.site.site_title = "Cívis Administração"
@@ -67,11 +55,10 @@ urlpatterns += [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^api/auth/', include('djoser.urls')),
     re_path(r'^api/auth/', include('djoser.urls.authtoken')),
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', login_required(schema_view.with_ui('swagger', cache_timeout=0), login_url='/login'),
-            name='schema-swagger-ui'),
-    re_path(r'^redoc/$', login_required(schema_view.with_ui('redoc', cache_timeout=0), login_url='/login'),
-            name='schema-redoc'),
+    path('schema/', login_required(SpectacularAPIView.as_view(), login_url='/login'), name='schema'),
+    path('swagger/', login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='/login'),
+         name='swagger'),
+    path('redoc/', login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='/login'), name='redoc'),
     re_path(r'^openid/', include('oidc_provider.urls', namespace='oidc_provider')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
