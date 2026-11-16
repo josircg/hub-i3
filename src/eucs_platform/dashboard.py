@@ -97,7 +97,7 @@ class CustomIndexDashboard(Dashboard):
 
         self.children.append(modules.ModelList(
             title=_('Administration'),
-            models=('django_cron.*', 'django_summernote.*', 'oauth2_provider.*', 'oidc_provider.*'),
+            models=('django_cron.*', 'oauth2_provider.*', 'oidc_provider.*'),
             extra=[
                 {'title': _('Countries'), 'change_url': reverse('country_list')},
             ]

@@ -50,7 +50,6 @@ urlpatterns += [
     path("admin_tools/", include('admin_tools.urls')),
     path("select2/", include("django_select2.urls")),
     path('captcha/', include('captcha.urls')),
-    path('summernote/', include('django_summernote.urls')),
     re_path(r'^i18n/', include('django.conf.urls.i18n')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^api/auth/', include('djoser.urls')),

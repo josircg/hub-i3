@@ -8,8 +8,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext
 from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget
-from django_summernote.widgets import SummernoteWidget
-from eucs_platform.logger import log_message
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders import Nominatim
 
