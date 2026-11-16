@@ -1,6 +1,5 @@
 import csv
 
-from django.conf import settings
 from django.contrib.admin.utils import display_for_field, display_for_value, label_for_field, lookup_field
 from django.db import models
 from django.db.models.constants import LOOKUP_SEP
@@ -26,7 +25,7 @@ def get_field_value(field_name, obj, model_admin):
             f, attr, value = lookup_field(field_name, obj, model_admin)
             if isinstance(value, (datetime.datetime, datetime.date)):
                 # Format a date based on settings.DATE_FORMAT/settings.DATE_TIME_FORMAT
-                value = localize(value, settings.USE_L10N)
+                value = localize(value)
 
     except AttributeError:
         pass

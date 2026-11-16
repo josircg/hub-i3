@@ -5,7 +5,7 @@ from xml.dom.minidom import parse
 
 from django.conf import settings
 from django.contrib import messages
-from django.core.files.storage import get_storage_class
+from django.core.files.storage import default_storage
 from django.utils.translation import gettext_lazy as _
 from PIL import Image, ImageOps
 
@@ -13,14 +13,13 @@ logger = logging.getLogger("django.request")
 
 
 def save_image_with_path(image, photo_name):
-    """Generate a random filename. Uses DEFAULT_FILE_STORAGE to validate filename"""
+    """Generate a random filename. Uses the default storage to validate filename"""
     ext = os.path.splitext(photo_name)[1]
 
     image_path = f'images/{uuid.uuid4()}{ext}'
 
-    fs = get_storage_class()()
     # Generate a new name if exists
-    image_path = fs.get_available_name(image_path)
+    image_path = default_storage.get_available_name(image_path)
 
     image.save(os.path.join(settings.MEDIA_ROOT, image_path))
 
@@ -100,10 +99,8 @@ def assign_image(image_filename, image_field, width=600, height=400):
     """
     import cairosvg
 
-    fs = get_storage_class()()
-
-    if fs.exists(image_filename):
-        image_path = fs.path(image_filename)
+    if default_storage.exists(image_filename):
+        image_path = default_storage.path(image_filename)
         file_path, file_ext = os.path.splitext(image_path)
 
         if file_ext.upper() == '.SVG':
