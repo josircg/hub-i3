@@ -107,6 +107,7 @@ TEMPLATES = [
 env = environ.Env(
     FEATURED_MGT=(bool, True),
     ADMIN_EMAIL=(str, ''),
+    CARTODB_API=(str, ''),
     DEBUG=(bool, False),
 )
 
@@ -126,6 +127,7 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = []
 
 ADMIN_EMAIL = env("ADMIN_EMAIL")
+CARTODB_API = env("CARTODB_API")
 
 if ADMIN_EMAIL:
     ADMINS = [(email.split('@')[0], email) for email in ADMIN_EMAIL.split(',')]
@@ -288,11 +290,16 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 18,
     'TILES': [
         (
-            'CartoDB Light',
-            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors &copy; '
-            '<a href="https://carto.com">CARTO</a>'
-        )
+            'CartoDB Positron',
+            'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=' + CARTODB_API,
+            {
+                'attribution': (
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
+                    '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+                ),
+                'maxZoom': 20,
+            },
+        ),
     ],
 }
 
