@@ -158,7 +158,6 @@ INSTALLED_APPS = (
     "platforms",
     "django_select2",
     "blog",
-    "django_summernote",
     "leaflet",
     "django_countries",
     "authors",
@@ -300,18 +299,6 @@ LEAFLET_CONFIG = {
             },
         ),
     ],
-}
-
-SUMMERNOTE_THEME = 'bs4'
-
-SUMMERNOTE_CONFIG = {
-    'iframe': True,
-    'summernote': {
-        'airMode': False,
-        'width': '100%',
-        'height': '300',
-        'toolbar': ['bold', 'italic', 'underline'],
-    },
 }
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
