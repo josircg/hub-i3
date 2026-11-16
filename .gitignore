@@ -86,3 +86,6 @@ venv
 
 # Claude Code: configuração local (CLAUDE.md e .claude/commands/ são versionados)
 .claude/settings.local.json
+
+# Claude Code: documentos e relatórios gerados localmente
+.claude/docs/
