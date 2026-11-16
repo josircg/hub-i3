@@ -138,7 +138,7 @@ def home(request):
     clanguage = request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME, '')
     # Only set language for anonymous users. Authenticated user has default language defined in his profile.
     if current_language != clanguage and not request.user.is_authenticated:
-        response = set_language_preference(request, response, current_language)
+        response = set_language_preference(response, current_language)
 
     return response
 

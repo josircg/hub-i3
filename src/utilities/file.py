@@ -6,7 +6,7 @@ from xml.dom.minidom import parse
 from django.conf import settings
 from django.contrib import messages
 from django.core.files.storage import get_storage_class
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from PIL import Image, ImageOps
 
 logger = logging.getLogger("django.request")

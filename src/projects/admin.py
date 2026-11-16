@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
-from django.utils.translation import pgettext
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext
 from organisations.models import Organisation
 from utilities.admin import EUCSAdmin, TranslationInline
 

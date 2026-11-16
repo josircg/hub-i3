@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
 from contact.models import Subscriber
@@ -110,7 +110,7 @@ class EditProfile(LoginRequiredMixin, generic.TemplateView):
             messages.success(request, _("Profile details saved!"))
             response = redirect("profiles:show_self")
 
-            return set_language_preference(self.request, response, user.profile.language)
+            return set_language_preference(response, user.profile.language)
         else:
             messages.error(request, _("Please correct the error below."))
             return self.get(request, user_form=user_form, profile_form=profile_form)

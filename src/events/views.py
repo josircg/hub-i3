@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import formats, translation
 from django.utils.translation import get_language, pgettext
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from dossiers.models import Dossier
 from eucs_platform import send_email, set_pages_and_get_object_list

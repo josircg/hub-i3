@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from . import views
 
@@ -11,5 +10,5 @@ urlpatterns = [
     path('approve_organisation/<int:pk>/<int:status>', views.approve_organisation, name='approve_organisation'),
     path('delete_organisation/<int:pk>', views.delete_organisation, name='delete_organisation'),
     path('allowUserOrganisation/', views.allowUserOrganisation, name='allowUserOrganisation'),
-    url(r'^api/', include('organisations.api.urls')),
+    re_path(r'^api/', include('organisations.api.urls')),
 ]

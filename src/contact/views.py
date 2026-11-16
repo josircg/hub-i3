@@ -16,7 +16,7 @@ from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import get_language
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from honeypot.decorators import check_honeypot
 from PIL import Image

@@ -8,11 +8,11 @@ from django.contrib.auth.views import INTERNAL_RESET_SESSION_TOKEN
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.urls import reverse_lazy
 from django.utils import translation
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import lazy
 from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import get_language
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
 from contact.models import Subscriber
@@ -56,7 +56,7 @@ class LoginView(bracesviews.AnonymousRequiredMixin, authviews.LoginView):
             expiry = getattr(settings, "KEEP_LOGGED_DURATION", ONE_MONTH)
             self.request.session.set_expiry(expiry)
 
-        return set_language_preference(self.request, redirect, user.profile.language)
+        return set_language_preference(redirect, user.profile.language)
 
 
 class LogoutView(authviews.LogoutView):
@@ -175,7 +175,7 @@ def delete_user(request):
 
 def activate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
@@ -206,7 +206,7 @@ def activate(request, uidb64, token):
             if response is None:
                 response = render(request, 'accounts/confirmation-account.html', {})
 
-            response = set_language_preference(request, response, language)
+            response = set_language_preference(response, language)
 
             return response
     else:
