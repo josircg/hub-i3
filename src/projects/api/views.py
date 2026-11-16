@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.http import Http404
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticated
@@ -56,6 +57,7 @@ class ParticipationTaskViewSet(viewsets.ModelViewSet):
 
 
 class ProjectList(APIView):
+    serializer_class = ProjectSerializer
 
     def applyFilters(self, request, projects):
         approvedProjects = Project.objects.approved().values_list('pk', flat=True)
@@ -95,6 +97,7 @@ class ProjectList(APIView):
 
         return projects
 
+    @extend_schema(operation_id='api_projects_list', responses=ProjectSerializer(many=True))
     def get(self, request, format=None):
         '''
         Return a list of projects.
@@ -114,6 +117,7 @@ class PermissionClass(BasePermission):
 
 
 class ProjectDetail(APIView):
+    serializer_class = ProjectSerializer
     permission_classes = (PermissionClass,)
 
     def get_object(self, pk):
@@ -122,6 +126,7 @@ class ProjectDetail(APIView):
         except Project.DoesNotExist:
             raise Http404
 
+    @extend_schema(operation_id='api_projects_detail')
     def get(self, request, pk, format=None):
         '''
         Return a project by id.
@@ -144,6 +149,7 @@ class ProjectDetail(APIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(exclude=True)
 class ProjectCreate(APIView):
     permission_classes = (PermissionClass,)
 
@@ -160,6 +166,7 @@ class ProjectCreate(APIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(exclude=True)
 class ProjectTranslate(APIView):
     permission_classes = (PermissionClass,)
 
