@@ -23,14 +23,24 @@ Or for postgresql 14 or superior:
    ```
    
 
-2) Open psql console:
+2) Open the psql console as the `postgres` superuser (`sudo -u postgres psql`) and create the
+database, the user and the PostGIS extension. The names below
+(`hub_i3` and `i3_user`) must match `DATABASE_NAME` and `DATABASE_USER` in your `local.env`;
+choose your own password:
+
 ```
-create database eucitizenscience;
-create user eucitizenscience_usr with password 'XXX';
-grant all on database eucitizenscience to eucitizenscience_usr;
-\connect eucitizenscience;
+create user i3_user with encrypted password 'XXX';
+create database hub_i3 with owner i3_user;
+\connect hub_i3;
 create extension postgis;
+grant all on public.spatial_ref_sys to i3_user;
 ```
+
+`create extension` requires a superuser, so it must be run here as `postgres`.
+**`manage.py migrate` does not create the database nor the PostGIS extension** — neither exists in
+the migrations — so this step must be done before running it. Without them, `migrate` fails
+(connection error or missing geometry types).
+
 ## Python Installation
 
 1) In source directory:
@@ -42,6 +52,9 @@ uv sync
 cd src
 cp eucs_platform/settings/local.sample.reference.env eucs_platform/settings/local.env
 ```
+
+In `local.env`, set `DATABASE_NAME=hub_i3`, `DATABASE_USER=i3_user`, `DATABASE_PASSWORD` (the password chosen above)
+and `DATABASE_HOST=localhost` (also update `DATABASE_URL` accordingly).
 
 `uv sync` creates the `.venv` (Python 3.10.19, downloaded automatically by uv
 if not present) and installs runtime + the `dev` dependency group (debug
