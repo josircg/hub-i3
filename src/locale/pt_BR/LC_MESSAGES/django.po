@@ -2168,6 +2168,10 @@ msgid "Invitation sent succesfully!"
 msgstr "Convite enviado com sucesso!"
 
 #, python-format
+msgid "Could not add a new editor. Please send an email to %(email)s reporting the problem."
+msgstr "Não foi possível adicionar um novo editor. Por favor, envie um e-mail para %(email)s informando sobre o problema."
+
+#, python-format
 msgid "Invitation sent to an unregistered email (%s)"
 msgstr "Convite enviado para um e-mail não cadastrado (%s)"
 
