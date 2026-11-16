@@ -4,7 +4,7 @@ from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget
 

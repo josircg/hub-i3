@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import forms as authforms
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 

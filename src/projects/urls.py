@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from . import views
 
@@ -20,7 +19,7 @@ urlpatterns = [
     path('setFeatured/', views.setFeatured, name='setFeatured'),
     path('setFollowedProject/', views.setFollowedProject, name='setFollowedProject'),
     path('allowUser/', views.allowUser, name='allowUser'),
-    url(r'^api/', include('projects.api.urls')),
+    re_path(r'^api/', include('projects.api.urls')),
     path('downloadProjects', views.downloadProjects, name='downloadProjects'),
     path('test_visao/', views.test_visao, name='test_visao'),
     path('project_invite/', views.project_invite, name='project_invite'),

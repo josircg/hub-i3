@@ -19,7 +19,7 @@ from django.utils import translation
 from django.utils.datetime_safe import datetime
 from django.utils.timezone import get_default_timezone
 from django.utils.translation import get_language
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 
 from authors.models import Author

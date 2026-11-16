@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.shortcuts import get_object_or_404, render
 from django.templatetags.static import static
 from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django_summernote.widgets import SummernoteWidget
 
 from .constants import PostStatus

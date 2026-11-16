@@ -28,7 +28,7 @@ from django.utils.html import conditional_escape, format_html_join
 from django.utils.safestring import mark_safe
 from django.utils.timezone import get_default_timezone
 from django.utils.translation import get_language
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from rest_framework import status
 
 from accounts.models import ActivationTask

@@ -6,7 +6,7 @@ from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.formats import date_format
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from blog.models import Post
 from eucs_platform import send_email

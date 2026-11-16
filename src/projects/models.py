@@ -4,8 +4,8 @@ from django.contrib.gis.db import models
 from django.core.files.storage import default_storage
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
-from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
 
 from eucs_platform import visao

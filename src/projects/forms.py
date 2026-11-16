@@ -4,8 +4,8 @@ from django.contrib.admin.models import ADDITION
 from django.contrib.auth import get_user_model
 from django.contrib.gis import forms
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext
-from django.utils.translation import ugettext_lazy as _
 from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget
 from django_summernote.widgets import SummernoteWidget

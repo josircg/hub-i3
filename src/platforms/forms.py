@@ -1,7 +1,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_countries import countries
 from django_select2 import forms as s2forms
 

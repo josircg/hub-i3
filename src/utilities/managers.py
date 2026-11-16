@@ -9,7 +9,7 @@ from django.db import ProgrammingError
 from django.db.models import CharField, F, IntegerField, OuterRef, QuerySet, Subquery, UUIDField
 from django.db.models.functions import Cast, Coalesce
 from django.utils.translation import get_language
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from unidecode import unidecode
 
 

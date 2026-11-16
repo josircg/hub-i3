@@ -4,7 +4,7 @@ from crispy_forms.layout import Field, Layout, Submit
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from django_select2 import forms as s2forms
 from django_select2.forms import ModelSelect2Widget
