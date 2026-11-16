@@ -1,15 +1,23 @@
 from django.db.models import Q
 from django.http import Http404
-from resources.api.serializers import ResourceSerializer, AudienceSerializer, ThemeSerializer, CategorySerializer, \
-    ResourceSerializerCreateUpdate, TrainingResourceSerializer, TrainingResourceSerializerCreateUpdate
-from resources.models import Resource, Audience, Theme, Category
-from resources.views import getCooperators, setResourceHidden
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
-from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST)
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+
+from resources.api.serializers import (
+    AudienceSerializer,
+    CategorySerializer,
+    ResourceSerializer,
+    ResourceSerializerCreateUpdate,
+    ThemeSerializer,
+    TrainingResourceSerializer,
+    TrainingResourceSerializerCreateUpdate,
+)
+from resources.models import Audience, Category, Resource, Theme
+from resources.views import getCooperators, setResourceHidden
 
 
 class AdminPermissionsClass(BasePermission):
@@ -68,8 +76,6 @@ class ResourceList(APIView):
                 resources = resources.filter(id__in=approvedResources)
             if request.GET['approvedCheck'] == 'Off':
                 resources = resources.exclude(id__in=approvedResources)
-            if request.GET['approvedCheck'] == 'All':
-                resources = resources
         else:
             resources = resources.filter(id__in=approvedResources)
 
@@ -179,8 +185,6 @@ class TrainingResourceList(APIView):
                 resources = resources.filter(id__in=approvedResources)
             if request.GET['approvedCheck'] == 'Off':
                 resources = resources.exclude(id__in=approvedResources)
-            if request.GET['approvedCheck'] == 'All':
-                resources = resources
         else:
             resources = resources.filter(id__in=approvedResources)
 

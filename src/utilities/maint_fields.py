@@ -1,6 +1,7 @@
 from urllib.parse import urlsplit, urlunsplit
 
 from django.core.validators import EMPTY_VALUES
+
 from events.models import Event
 from organisations.models import Organisation
 from platforms.models import Platform

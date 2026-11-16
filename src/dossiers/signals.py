@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import translation
 from django.utils.translation import gettext as _
+
 from eucs_platform import send_email
 
 

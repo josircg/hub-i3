@@ -3,10 +3,6 @@ import re
 from io import TextIOWrapper
 from urllib.parse import urlencode
 
-from PIL import Image
-from honeypot.decorators import check_honeypot
-
-from contact.models import Subscriber, Newsletter
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -14,21 +10,25 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_email
 from django.db.models import F
-from django.http import HttpResponse, FileResponse
-from django.shortcuts import redirect
-from django.shortcuts import render, get_object_or_404
-from django.template import Template, Context
+from django.http import FileResponse, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import ugettext_lazy as _
 from django.views import generic
+from honeypot.decorators import check_honeypot
+from PIL import Image
+
+from contact.models import Newsletter, Subscriber
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 from events.models import Event
 from projects.models import Project
 from resources.models import Resource
 
-from .forms import ContactForm, SubmitterContactForm, SubscribeForm, ImportForm
+from .forms import ContactForm, ImportForm, SubmitterContactForm, SubscribeForm
 
 User = get_user_model()
 

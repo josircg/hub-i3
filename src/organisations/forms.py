@@ -1,12 +1,13 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
-from django_select2.forms import Select2MultipleWidget
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
+from django_select2.forms import Select2MultipleWidget
+
+from projects.forms import getCountryCode
 
 from .models import Organisation, OrganisationType
-from projects.forms import getCountryCode
-from ckeditor.widgets import CKEditorWidget
 
 
 class OrganisationForm(forms.Form):

@@ -1,11 +1,12 @@
 from django import forms
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _, pgettext
+from django.utils.translation import pgettext
+from django.utils.translation import ugettext_lazy as _
+
 from organisations.models import Organisation
 from utilities.admin import EUCSAdmin, TranslationInline
 
-from .models import (Project, Topic, Status, ParticipationTask, ProjectPermission, FundingBody,
-                     ProjectStatsReport)
+from .models import FundingBody, ParticipationTask, Project, ProjectPermission, ProjectStatsReport, Status, Topic
 
 
 class ProjectFormA(forms.ModelForm):

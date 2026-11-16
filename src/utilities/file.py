@@ -3,11 +3,11 @@ import os
 import uuid
 from xml.dom.minidom import parse
 
-from PIL import Image, ImageOps
 from django.conf import settings
 from django.contrib import messages
 from django.core.files.storage import get_storage_class
 from django.utils.translation import ugettext_lazy as _
+from PIL import Image, ImageOps
 
 logger = logging.getLogger("django.request")
 

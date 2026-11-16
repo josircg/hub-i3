@@ -4,16 +4,23 @@ from django.contrib.gis.db import models
 from django.core.files.storage import default_storage
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import pgettext_lazy
+from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
+
 from eucs_platform import visao
 from eucs_platform.logger import log_message
 from organisations.models import Organisation
 from platforms.models import GeographicExtend
 from utilities.models import AbstractTranslatedModel
 
-from .managers import (ProjectPermissionQuerySet, ProjectQuerySet, TopicQuerySet, StatusQuerySet,
-                       ParticipationTaskQuerySet)
+from .managers import (
+    ParticipationTaskQuerySet,
+    ProjectPermissionQuerySet,
+    ProjectQuerySet,
+    StatusQuerySet,
+    TopicQuerySet,
+)
 
 
 class Status(AbstractTranslatedModel):

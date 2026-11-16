@@ -7,7 +7,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from .managers import DossierObjectQuerySet, DossierCuratorQuerySet, DossierQuerySet
+from .managers import DossierCuratorQuerySet, DossierObjectQuerySet, DossierQuerySet
 
 
 def get_content_type(content_type, content_object):

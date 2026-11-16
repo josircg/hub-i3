@@ -1,7 +1,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django.contrib import admin
 
-from .models import Subscriber, Newsletter
+from .models import Newsletter, Subscriber
 
 
 class SubscriberAdmin(admin.ModelAdmin):

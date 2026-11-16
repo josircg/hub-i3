@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import translation
 from django.utils.translation import ugettext as _
+
 from eucs_platform import send_email
 
 
@@ -56,7 +57,7 @@ def notify_removed_from_project(sender, instance, using, **kwargs):
 
 
 def add_search_index(sender, instance, created, **kwargs):
-    from utilities.models import add_searchindex_text, SearchIndexType
+    from utilities.models import SearchIndexType, add_searchindex_text
 
     if instance.approved and not instance.hidden:
         text = f'{instance.name} {instance.description}'
@@ -78,7 +79,7 @@ def add_search_index(sender, instance, created, **kwargs):
 
 
 def delete_search_index(sender, instance, **kwargs):
-    from utilities.models import delete_searchindex, SearchIndexType
+    from utilities.models import SearchIndexType, delete_searchindex
     delete_searchindex(SearchIndexType.PROJECT.value, instance.pk)
 
 

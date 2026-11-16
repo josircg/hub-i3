@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Organisation, OrganisationType
 from django.utils.translation import ugettext_lazy as _
 
 from utilities.admin import TranslationInline
+
+from .models import Organisation, OrganisationType
 
 
 @admin.register(Organisation)

@@ -1,8 +1,8 @@
 from django.apps import AppConfig
-from django.db.models.signals import pre_save, post_save, post_delete, m2m_changed
+from django.db.models.signals import m2m_changed, post_delete, post_save, pre_save
 from django.utils.translation import ugettext_lazy as _
 
-from .signals import notify_approved_project, add_search_index, delete_search_index, notify_new_translation
+from .signals import add_search_index, delete_search_index, notify_approved_project, notify_new_translation
 
 
 class ProjectsConfig(AppConfig):

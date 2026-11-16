@@ -1,21 +1,29 @@
 from django.db.models import Q
 from django.http import Http404
-from projects.api.serializers import ProjectSerializer, ProjectSerializerCreateUpdate, StatusSerializer
-from projects.api.serializers import ProjectTranslateSerializer, ProjectTranslateCreateSerializer
-from projects.api.serializers import TopicSerializer, ParticipationTaskSerializer
-from projects.models import Project, Status, Topic, ParticipationTask
-from projects.models import TranslatedProject
-from projects.views import setProjectApproved, setProjectHidden, setProjectFeatured, has_permission_to_edit_project, \
-    setFollowedProject
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_201_CREATED,
-    HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST)
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+
+from projects.api.serializers import (
+    ParticipationTaskSerializer,
+    ProjectSerializer,
+    ProjectSerializerCreateUpdate,
+    ProjectTranslateCreateSerializer,
+    ProjectTranslateSerializer,
+    StatusSerializer,
+    TopicSerializer,
+)
+from projects.models import ParticipationTask, Project, Status, Topic, TranslatedProject
+from projects.views import (
+    has_permission_to_edit_project,
+    setFollowedProject,
+    setProjectApproved,
+    setProjectFeatured,
+    setProjectHidden,
+)
 
 
 class AdminPermissionsClass(BasePermission):
@@ -74,7 +82,7 @@ class ProjectList(APIView):
 
         doingAtHome = request.query_params.get('doingAtHome', None)
         if doingAtHome is not None:
-            doingAtHome = True if (doingAtHome == "true" or doingAtHome == '1') else False
+            doingAtHome = True if doingAtHome in ('true', '1') else False
             projects = projects.filter(doingAtHome=doingAtHome)
 
         if request.user.is_staff and request.GET.get('approvedCheck'):
@@ -82,8 +90,6 @@ class ProjectList(APIView):
                 projects = projects.filter(id__in=approvedProjects)
             if request.GET['approvedCheck'] == 'Off':
                 projects = projects.exclude(id__in=approvedProjects)
-            if request.GET['approvedCheck'] == 'All':
-                projects = projects
         else:
             projects = projects.filter(id__in=approvedProjects)
 

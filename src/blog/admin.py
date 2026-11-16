@@ -1,14 +1,14 @@
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django_summernote.widgets import SummernoteWidget
 
-from .models import Post
 from .constants import PostStatus
+from .models import Post
 
 
 def make_published(modeladmin, request, queryset):

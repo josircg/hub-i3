@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .managers import SectionQuerySet, ArticleQuerySet
+from .managers import ArticleQuerySet, SectionQuerySet
 
 
 class Page(models.Model):

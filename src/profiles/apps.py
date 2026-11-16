@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 from django.conf import settings
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_delete, post_save
 
-from .signals import add_search_index, delete_search_index, create_profile_handler
+from .signals import add_search_index, create_profile_handler, delete_search_index
 
 
 class ProfileConfig(AppConfig):

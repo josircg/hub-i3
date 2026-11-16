@@ -1,13 +1,15 @@
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
-from .models import Digest
+
 from blog.models import Post
 from events.models import Event
+from organisations.models import Organisation
 from projects.models import Project
 from resources.models import Resource
-from organisations.models import Organisation
-from dateutil.relativedelta import relativedelta
+
+from .models import Digest
 
 
 def showDigests(request):
