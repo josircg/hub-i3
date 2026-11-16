@@ -169,9 +169,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'rest_framework_swagger',
     'oidc_provider',
-    'drf_yasg',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'captcha',
     'active_link',
     'oauth2_provider',
@@ -355,7 +355,7 @@ SITE_ID = 1
 NEWSLETTER_TYPE = 'Local'  # Accepts Local or Mailchimp
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication'
@@ -369,8 +369,17 @@ REST_FRAMEWORK = {
     )
 }
 
-SWAGGER_SETTINGS = {
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'utilities.inspectors.SwaggerAutoSchema',
+SPECTACULAR_SETTINGS = {
+    'TITLE': f'{SITE_NAME} API',
+    'DESCRIPTION': f'{SITE_NAME} API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PUBLIC': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_GENERATOR_CLASS': 'utilities.inspectors.SchemaGenerator',
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }
 
 PASSWORD_RESET_CONFIRM_URL = '/password-reset/'
