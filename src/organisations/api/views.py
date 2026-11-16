@@ -1,4 +1,5 @@
 from django.http import Http404
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
@@ -37,6 +38,7 @@ class OrganisationTypeViewSet(viewsets.ModelViewSet):
 
 
 class OrganisationList(APIView):
+    serializer_class = OrganisationSerializer
 
     def applyFilters(self, request, organisations):
         country = request.query_params.get('country', None)
@@ -49,6 +51,7 @@ class OrganisationList(APIView):
 
         return organisations
 
+    @extend_schema(operation_id='api_organisations_list', responses=OrganisationSerializer(many=True))
     def get(self, request, format=None):
         organisations = Organisation.objects.all()
         if not request.user.is_staff:
@@ -68,6 +71,7 @@ class OrganisationList(APIView):
 
 
 class OrganisationDetail(APIView):
+    serializer_class = OrganisationSerializer
     permission_classes = (PermissionClass,)
 
     def get_object(self, pk):
@@ -76,6 +80,7 @@ class OrganisationDetail(APIView):
         except Organisation.DoesNotExist:
             raise Http404
 
+    @extend_schema(operation_id='api_organisations_detail')
     def get(self, request, pk, format=None):
         organisation = self.get_object(pk)
         serializer = OrganisationSerializer(organisation, context={'request': request})
