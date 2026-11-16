@@ -4,7 +4,6 @@ import json
 import logging
 from datetime import datetime
 
-import pytz
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.models import DELETION
@@ -23,7 +22,7 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils import formats, translation
+from django.utils import formats, timezone, translation
 from django.utils.html import conditional_escape, format_html_join
 from django.utils.safestring import mark_safe
 from django.utils.timezone import get_default_timezone
@@ -334,9 +333,8 @@ def project(request, pk):
     hasTranslation = project_obj.translatedProject.filter(inLanguage=request.LANGUAGE_CODE).exists()
 
     # Check status
-    utc = pytz.UTC
     if project_obj.end_date:
-        if project_obj.end_date < utc.localize(datetime.now()):
+        if project_obj.end_date < timezone.now():
             status = _('Completed')
         else:
             status = project_obj.status
@@ -416,7 +414,7 @@ def applyFilters(request, projects):
         # Workaround to solve the filter by calculated status
         # "Completed sent on view project (def project(request, pk))"
         if request.GET.get('status') == _('Completed'):
-            projects = projects.filter(end_date__lt=pytz.UTC.localize(datetime.now()))
+            projects = projects.filter(end_date__lt=timezone.now())
         else:
             status_qs = Status.objects.translated().filter(translated_text=request.GET['status']).values_list('pk')
             projects = projects.filter(status__pk__in=status_qs)

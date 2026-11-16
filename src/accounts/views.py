@@ -1,4 +1,3 @@
-import six
 from braces import views as bracesviews
 from django.conf import settings
 from django.contrib import auth, messages
@@ -36,10 +35,10 @@ def _safe_resolve_url(url):
     Thanks to GitHub user alanwj for pointing out the problem and providing
     this solution.
     """
-    return six.text_type(resolve_url(url))
+    return str(resolve_url(url))
 
 
-resolve_url_lazy = lazy(_safe_resolve_url, six.text_type)
+resolve_url_lazy = lazy(_safe_resolve_url, str)
 
 
 class LoginView(bracesviews.AnonymousRequiredMixin, authviews.LoginView):
