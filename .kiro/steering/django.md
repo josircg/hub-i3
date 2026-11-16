@@ -7,8 +7,7 @@ EU-Citizen.Science (`eucs_platform`), mantida no contexto do IBICT/Civis. Para o
 
 ## Stack confirmada
 
-- **Python**: 3.10.19 (`requires-python = ">=3.10,<3.11"`). O `.travis.yml`
-  legado aponta 3.6.9 e está defasado.
+- **Python**: 3.10.19 (`requires-python = ">=3.10,<3.11"`). 
 - **Django**: < 4.0 — o pin fica em `../../pyproject.toml` (`django<4.0`).
   NÃO subir para 4.x sem uma migração planejada.
 - **Banco**: PostgreSQL com **PostGIS** (engine
@@ -25,14 +24,12 @@ A gestão de dependências é feita com **`uv`**: `../../pyproject.toml` +
   leaflet, etc.), com os mesmos pins dos antigos `requirements/base.txt`, mais
   `setuptools<81` (ver "Dívida técnica").
 - `[dependency-groups].dev` — ferramentas de dev (`django-debug-toolbar`,
-  `flake8`, `pre-commit`, `fabric`, `werkzeug`, `pytz`, `six`, `invoke`, etc.).
+  `ruff`, `pre-commit`, `fabric`, `werkzeug`, `pytz`, `six`, `invoke`, etc.).
 - `[dependency-groups].prod` — **só produção**: `gunicorn` e `django[argon2]`.
   Não é instalado por padrão. Dependência só de produção entra aqui
   (`uv add --group prod <pacote>`), nunca em `[project].dependencies`.
-- `../../requirements/*.txt` e `../../requirements.txt` — **legado** (pip),
-  mantidos apenas por compatibilidade com o CI antigo (`.travis.yml`). A fonte
-  canônica é o `pyproject.toml`; os `.txt` não são mais atualizados em paralelo
-  a cada mudança de dependência, exceto a remoção do fórum.
+- Os antigos `requirements/*.txt` e `requirements.txt` (pip) foram removidos; a fonte
+  única de dependências é o `pyproject.toml` (+ `uv.lock`).
 
 Instalação:
 
@@ -178,8 +175,6 @@ urls, views raiz, dashboard do admin).
   removido do setuptools 81+. Com `uv` o `setuptools` não vem por padrão, então
   ele foi adicionado ao runtime. Remover o pin está acoplado à migração Django
   4.x.
-- **`requirements/*.txt` legados** ainda existem ao lado do `pyproject.toml`;
-  remover quando o CI deixar de usá-los.
 
 ## Armadilhas de ambiente
 

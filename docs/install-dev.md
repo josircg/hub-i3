@@ -45,7 +45,7 @@ cp eucs_platform/settings/local.sample.reference.env eucs_platform/settings/loca
 
 `uv sync` creates the `.venv` (Python 3.10.19, downloaded automatically by uv
 if not present) and installs runtime + the `dev` dependency group (debug
-toolbar, flake8, pre-commit, etc.), without `gunicorn`.
+toolbar, ruff, pre-commit, etc.), without `gunicorn`.
 
 2) Edit local.env with database and email configuration and test your configuration
 
@@ -53,14 +53,14 @@ toolbar, flake8, pre-commit, etc.), without `gunicorn`.
 uv run manage.py check
 ```
 
-3) Install flake8 pre-commit hook (optional) to check PEP8 before commit. 
+3) Install ruff pre-commit hook (optional) to check PEP8 before commit. 
 Run `pre-commit install` to set up the git hook scripts (see .pre-commit-config.yaml):
 
 ```
 uv run pre-commit install
 ```
 
-To commit without flake8 verification just run `commit` with `--no-verify` flag:
+To commit without ruff verification just run `commit` with `--no-verify` flag:
 
 ```
 git commit -m "feat: pre-commit hooks" --no-verify
@@ -108,5 +108,5 @@ Calling the `.venv` interpreter directly avoids `uv` having to be on cron's `PAT
 [2]: https://www.python.org/
 [3]: https://www.djangoproject.com/
 [4]: https://pypi.org/project/django-crontab/ 
-[5]: https://flake8.pycqa.org/en/latest/user/using-hooks.html
+[5]: https://docs.astral.sh/ruff/
 [6]: https://pre-commit.com/#pre-commit-configyaml---hooks
