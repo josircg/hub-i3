@@ -1,4 +1,3 @@
-from authors.models import Author
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.files.storage import default_storage
@@ -6,11 +5,13 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+
+from authors.models import Author
 from organisations.models import Organisation
 from projects.models import Project
 from utilities.models import AbstractTranslatedModel
 
-from .managers import ResourceQuerySet, ThemeQuerySet, CategoryQuerySet, AudienceQuerySet
+from .managers import AudienceQuerySet, CategoryQuerySet, ResourceQuerySet, ThemeQuerySet
 
 
 class Theme(AbstractTranslatedModel):

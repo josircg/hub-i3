@@ -5,7 +5,6 @@ import logging
 from datetime import datetime
 
 import pytz
-from accounts.models import ActivationTask
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.models import DELETION
@@ -18,28 +17,29 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import ProgrammingError, transaction
-from django.db.models import Q, F
+from django.db.models import F, Q
 from django.db.models.functions import Coalesce
-from django.http import HttpResponse, JsonResponse, Http404
-from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import formats, translation
 from django.utils.timezone import get_default_timezone
-from django.utils.translation import gettext as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext as _
+from rest_framework import status
+
+from accounts.models import ActivationTask
 from dossiers.models import Dossier
-from eucs_platform import send_email, visao, set_pages_and_get_object_list, get_main_page
+from eucs_platform import get_main_page, send_email, set_pages_and_get_object_list, visao
 from eucs_platform.logger import log_message
 from eucs_platform.utils import get_message_list
-from rest_framework import status
 from utilities.file import crop_and_save
 from utilities.keyword_utils import update_keywords_dict
 from utilities.models import SearchIndex, SearchIndexType
 
-from .forms import (ProjectForm, ProjectTranslationForm, ProjectGeographicLocationForm,
-                    InviteProjectForm)
-from .models import (Project, Topic, Status, FollowedProjects, FundingBody, ProjectPermission, Likes,
-                     Stats)
+from .forms import InviteProjectForm, ProjectForm, ProjectGeographicLocationForm, ProjectTranslationForm
+from .models import FollowedProjects, FundingBody, Likes, Project, ProjectPermission, Stats, Status, Topic
 
 User = get_user_model()
 logger = logging.getLogger("django.request")

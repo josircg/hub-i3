@@ -7,7 +7,7 @@ from django.contrib.contenttypes.forms import BaseGenericInlineFormSet
 from django.utils.translation import gettext as _
 
 from .actions import export_as_csv_action
-from .models import Translation, Keyword, IndexType, Schema, Concept
+from .models import Concept, IndexType, Keyword, Schema, Translation
 
 
 class TranslationInlineFormset(BaseGenericInlineFormSet):

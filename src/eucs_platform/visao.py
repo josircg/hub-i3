@@ -88,11 +88,10 @@ def create_project_layer(project):
     if not project.latitude or not project.longitude:
         print('Latitude or Longitude not filled: %d' % project.id)
         return None
+    elif type(project.latitude) is str:
+        geojson = "[%s,%s]" % (project.latitude, project.longitude)
     else:
-        if type(project.latitude) is str:
-            geojson = "[%s,%s]" % (project.latitude, project.longitude)
-        else:
-            geojson = "[%f,%f]" % (project.latitude, project.longitude)
+        geojson = "[%f,%f]" % (project.latitude, project.longitude)
     domain = settings.DOMAIN
     description = 'Visualizar Projeto'
     return {
@@ -121,11 +120,10 @@ def save_project(project, auth_header, dataset_id=None):
     if not project.latitude or not project.longitude:
         print('Latitude or Longitude not filled: %d' % project.id)
         return
+    elif type(project.latitude) is str:
+        geojson = "[%s,%s]" % (project.latitude, project.longitude)
     else:
-        if type(project.latitude) is str:
-            geojson = "[%s,%s]" % (project.latitude, project.longitude)
-        else:
-            geojson = "[%f,%f]" % (project.latitude, project.longitude)
+        geojson = "[%f,%f]" % (project.latitude, project.longitude)
 
     domain = settings.DOMAIN
     endpoint = settings.VISAO_URL

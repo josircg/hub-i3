@@ -1,6 +1,6 @@
 import poplib
-import environ
 
+import environ
 
 env = environ.Env()
 env_filename = "../eucs_platform/settings/local.env"

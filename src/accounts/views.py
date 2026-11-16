@@ -1,26 +1,26 @@
 import six
 from braces import views as bracesviews
-from contact.models import Subscriber
 from django.conf import settings
-from django.contrib import auth
-from django.contrib import messages
+from django.contrib import auth, messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as authviews
 from django.contrib.auth.views import INTERNAL_RESET_SESSION_TOKEN
-from django.shortcuts import redirect, get_object_or_404, resolve_url
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.urls import reverse_lazy
 from django.utils import translation
 from django.utils.encoding import force_text
 from django.utils.functional import lazy
 from django.utils.http import urlsafe_base64_decode
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import ugettext_lazy as _
 from django.views import generic
+
+from contact.models import Subscriber
 from eucs_platform import set_language_preference
 from profiles.models import Profile
 
 from . import forms
-from .email import send_new_user_email, send_welcome_email, send_password_reset_email
+from .email import send_new_user_email, send_password_reset_email, send_welcome_email
 from .models import ActivationTask
 from .tokens import account_activation_token
 

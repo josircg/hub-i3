@@ -5,6 +5,7 @@ from django.urls import reverse_lazy as rl
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
+
 from utilities.models import AbstractTranslatedModel
 
 from .managers import OrganisationTypeQuerySet

@@ -1,7 +1,7 @@
 import csv
 
 from django.conf import settings
-from django.contrib.admin.utils import label_for_field, lookup_field, display_for_value, display_for_field
+from django.contrib.admin.utils import display_for_field, display_for_value, label_for_field, lookup_field
 from django.db import models
 from django.db.models.constants import LOOKUP_SEP
 from django.http import HttpResponse
@@ -65,15 +65,14 @@ def export_as_csv_action(description=_('Export as CSV'), fields=None, header=Tru
                 if f is None or f.auto_created:
                     boolean = getattr(attr, 'boolean', False)
                     result_repr = display_for_value(value, boolean)
-                else:
-                    if hasattr(f, 'rel') and isinstance(f.rel, models.ManyToOneRel):
-                        field_val = getattr(obj, f.name)
-                        if field_val is None:
-                            result_repr = model_admin.get_empty_value_display()
-                        else:
-                            result_repr = field_val
+                elif hasattr(f, 'rel') and isinstance(f.rel, models.ManyToOneRel):
+                    field_val = getattr(obj, f.name)
+                    if field_val is None:
+                        result_repr = model_admin.get_empty_value_display()
                     else:
-                        result_repr = display_for_field(value, f, model_admin.get_empty_value_display())
+                        result_repr = field_val
+                else:
+                    result_repr = display_for_field(value, f, model_admin.get_empty_value_display())
                 line.append(strip_tags('%s' % result_repr))
             writer.writerow(line)
         return response

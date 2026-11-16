@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+
 from utilities.admin import TranslationInline
 
 from .models import Event, EventMode

@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from authors.models import Author
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.conf import settings
@@ -8,12 +7,13 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget
+
+from authors.models import Author
 from organisations.models import Organisation
 from projects.models import Project
 from utilities.models import Keyword
 
-from .models import Resource, Category, Theme, ResourceGroup
-from .models import ResourcesGrouped
+from .models import Category, Resource, ResourceGroup, ResourcesGrouped, Theme
 
 
 class ResourceForm(forms.Form):

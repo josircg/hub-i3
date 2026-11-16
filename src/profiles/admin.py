@@ -1,15 +1,17 @@
 import csv
 
-from accounts.email import send_new_user_email
 from authtools.admin import NamedUserAdmin
 from django.contrib import admin, messages
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.translation import gettext_lazy as _, ngettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext
 
-from .models import Profile, InterestArea
+from accounts.email import send_new_user_email
+
+from .models import InterestArea, Profile
 
 User = get_user_model()
 

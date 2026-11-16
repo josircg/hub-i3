@@ -1,9 +1,10 @@
 from itertools import chain
 
 from django.apps import apps as django_apps
-from django.db.models import QuerySet, OuterRef, Subquery, F, Q
+from django.db.models import F, OuterRef, Q, QuerySet, Subquery
 from django.db.models.functions import Coalesce
 from django.utils.translation import get_language
+
 from utilities.managers import TranslationBaseQuerySet
 
 

@@ -13,6 +13,7 @@ from pathlib import Path
 
 # Use 12factor inspired environment variables or from a file
 import environ
+
 # For Bootstrap 3, change error alert to 'danger'
 from django.contrib import messages
 from django.urls import reverse_lazy

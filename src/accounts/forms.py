@@ -1,7 +1,7 @@
 from authtools import forms as authtoolsforms
 from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field
+from crispy_forms.layout import HTML, Field, Layout, Submit
 from django import forms
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model

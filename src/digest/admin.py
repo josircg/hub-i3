@@ -1,16 +1,16 @@
+from dateutil.relativedelta import relativedelta
 from django.contrib import admin, messages
-from django.utils.html import mark_safe
 from django.core.mail import EmailMessage
+from django.utils.html import mark_safe
 from django.utils.translation import ngettext
 
-from dateutil.relativedelta import relativedelta
-
-from .models import Digest
 from blog.models import Post
 from events.models import Event
+from organisations.models import Organisation
 from projects.models import Project
 from resources.models import Resource
-from organisations.models import Organisation
+
+from .models import Digest
 from .views import showDigest
 
 

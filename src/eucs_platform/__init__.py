@@ -1,5 +1,5 @@
-from django.core.mail import EmailMessage
 from django.conf import settings as django_settings
+from django.core.mail import EmailMessage
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.utils.translation import LANGUAGE_SESSION_KEY
 

@@ -8,11 +8,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db import ProgrammingError
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import formats, translation
-from django.utils.translation import ugettext_lazy as _, pgettext, get_language
+from django.utils.translation import get_language, pgettext
+from django.utils.translation import ugettext_lazy as _
+
 from dossiers.models import Dossier
 from eucs_platform import send_email, set_pages_and_get_object_list
 from eucs_platform.logger import log_message

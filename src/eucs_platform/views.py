@@ -3,20 +3,23 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.admin.views.main import SEARCH_VAR
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils import translation
 from django.utils.safestring import mark_safe
-from django.utils.translation import get_language, check_for_language
-from django.views.i18n import set_language as sl, LANGUAGE_QUERY_PARAMETER
+from django.utils.translation import check_for_language, get_language
+from django.views.i18n import LANGUAGE_QUERY_PARAMETER
+from django.views.i18n import set_language as sl
 from django_countries import countries
 from django_countries.templatetags.countries import get_country
+
 from events.models import Event
 from organisations.models import Organisation
 from platforms.models import Platform
 from profiles.models import Profile
-from projects.models import Project, Topic as PTopic, Likes, FollowedProjects
-from resources.models import Resource, ResourceGroup, ResourcesGrouped, BookmarkedResources
+from projects.models import FollowedProjects, Likes, Project
+from projects.models import Topic as PTopic
+from resources.models import BookmarkedResources, Resource, ResourceGroup, ResourcesGrouped
 from utilities.models import SearchIndex
 
 from . import set_language_preference

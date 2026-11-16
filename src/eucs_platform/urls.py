@@ -1,12 +1,3 @@
-import accounts.urls
-import contact.urls
-import digest.urls
-import events.urls
-import organisations.urls
-import platforms.urls
-import profiles.urls
-import projects.urls
-import resources.urls
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -20,8 +11,17 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from . import sitemaps
-from . import views
+import accounts.urls
+import contact.urls
+import digest.urls
+import events.urls
+import organisations.urls
+import platforms.urls
+import profiles.urls
+import projects.urls
+import resources.urls
+
+from . import sitemaps, views
 
 schema_view = get_schema_view(
     openapi.Info(

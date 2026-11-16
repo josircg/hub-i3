@@ -3,7 +3,9 @@ from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.utils.translation import gettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
+
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 

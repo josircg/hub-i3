@@ -1,5 +1,6 @@
 from django.db.models import QuerySet
 from django.utils import timezone
+
 from utilities.managers import TranslationBaseQuerySet
 
 

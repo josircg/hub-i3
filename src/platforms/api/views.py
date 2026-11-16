@@ -1,5 +1,6 @@
-from platforms.models import GeographicExtend, Platform
 from rest_framework.viewsets import ReadOnlyModelViewSet
+
+from platforms.models import GeographicExtend, Platform
 
 from .serializers import GeographicExtendSerializer, PlatformSerializer
 

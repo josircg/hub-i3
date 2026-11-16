@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_delete, post_save
 from django.utils.translation import ugettext_lazy as _
 
 from .signals import add_search_index, delete_search_index
