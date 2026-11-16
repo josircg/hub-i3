@@ -1,0 +1,58 @@
+[
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "project",
+            "order": 1
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "platform",
+            "order": 2
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "resource",
+            "order": 3
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "training",
+            "order": 4
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "organisation",
+            "order": 5
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "profile",
+            "order": 6
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "event",
+            "order": 7
+        }
+    },
+    {
+        "model": "utilities.indextype",
+        "fields": {
+            "type": "blog",
+            "order": 8
+        }
+    }
+]
