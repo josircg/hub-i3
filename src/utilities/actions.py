@@ -1,10 +1,10 @@
 import csv
+import datetime
 
 from django.contrib.admin.utils import display_for_field, display_for_value, label_for_field, lookup_field
 from django.db import models
 from django.db.models.constants import LOOKUP_SEP
 from django.http import HttpResponse
-from django.utils.datetime_safe import datetime
 from django.utils.formats import localize
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _

@@ -73,7 +73,7 @@ class BruteForceProtectionMiddleware:
                 context = {
                     'token': default_token_generator.make_token(user),
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT_DAYS * 24,
+                    'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT // 3600,
                     'domain': settings.DOMAIN,
                     'user': user
                 }

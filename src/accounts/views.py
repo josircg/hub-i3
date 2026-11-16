@@ -115,7 +115,7 @@ class PasswordResetView(authviews.PasswordResetView):
     success_url = reverse_lazy("accounts:password-reset-done")
     subject_template_name = "accounts/emails/password-reset-subject.txt"
     tag = getattr(settings, 'EMAIL_TAG', 'XXX')
-    extra_email_context = {'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT_DAYS * 24,
+    extra_email_context = {'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT // 3600,
                            'domain': settings.DOMAIN,
                            'tag': tag}
 
