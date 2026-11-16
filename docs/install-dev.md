@@ -90,6 +90,7 @@ uv run manage.py loaddata projects/fixtures/geographicextend.json
 uv run manage.py loaddata resources/fixtures/categories.json
 uv run manage.py loaddata resources/fixtures/themes.json
 uv run manage.py loaddata organisations/fixtures/organisation_types.json
+uv run manage.py loaddata utilities/fixtures/indextypes.json
 ```
 
 5) To restore a existing database:
