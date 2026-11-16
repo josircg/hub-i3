@@ -16,8 +16,8 @@ a "cola": settings, urls raiz, views da home, dashboard do admin e utilitários.
 
 - `settings/` — `base.py` (comum, lê `local.env`), `development.py`,
   `production.py`. `manage.py` usa **production** como default.
-- `urls.py` — urls raiz (ver "Roteamento" abaixo). Define a API "CÍVIS API"
-  (drf-yasg) e o admin com título "Cívis Administração".
+- `urls.py` — urls raiz (ver "Roteamento" abaixo). Define as rotas da
+  documentação da API (drf-spectacular) e o admin com título "Cívis Administração".
 - `views.py` — views da home e páginas institucionais (function-based). A
   `home` agrega conteúdo de quase todos os apps.
 - `dashboard.py` — dashboards customizados do `django-admin-tools`.
@@ -145,9 +145,9 @@ Além desses, há o módulo **`formats`**.
   `moderation_quality_criteria`, `translations/`, `development/`, `about/`,
   `setlanguage/`, `home_autocomplete/`.
 - Integrações na raiz: `admin/`, `admin_tools/`, `select2/`, `captcha/`,
-  `summernote/`, `ckeditor/`, `o/` (oauth2), `openid/`
-  (oidc), `api-auth/`, `api/auth/` (djoser + authtoken), `swagger`/`redoc`
-  (drf-yasg, login-only), `i18n/`, `sitemap.xml`, `robots.txt`, páginas de erro
+  `ckeditor/`, `o/` (oauth2), `openid/`
+  (oidc), `api-auth/`, `api/auth/` (djoser + authtoken), `schema/`, `swagger/`, `redoc/`
+  (drf-spectacular, login-only), `i18n/`, `sitemap.xml`, `robots.txt`, páginas de erro
   (`500/`, `403/`, `coming_soon/`).
 
 ## Convenções
