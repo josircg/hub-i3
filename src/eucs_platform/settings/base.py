@@ -370,14 +370,12 @@ SPECTACULAR_SETTINGS = {
     'REDOC_DIST': 'SIDECAR',
 }
 
-PASSWORD_RESET_CONFIRM_URL = '/password-reset/'
-ACTIVATION_URL = '/activate/'
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '/password-reset/',
     'EMAIL': {
-        'activation': 'accounts.views.ActivationEmail',
-        'confirmation': 'accounts.views.ConfirmationEmail',
-        'password_reset': 'accounts.views.PasswordResetEmail',
+        'activation': 'accounts.email.ActivationEmail',
+        'confirmation': 'accounts.email.ConfirmationEmail',
+        'password_reset': 'accounts.email.PasswordResetEmail',
     },
     'SEND_ACTIVATION_EMAIL': True,
 }
