@@ -18,12 +18,18 @@
 <meta property="og:title" content="{{ project.name|striptags }}">
 <meta property="og:description" content="{{ project.description_translated|truncate_summary:30 }}">
 <meta property="og:url" content="{{ DOMAIN}}{{ project.get_absolute_url }}">
-<meta property="og:image" content="{{ DOMAIN }}{% thumbnail project.image1|safe_meta_image 1200x627 %}">
+{% thumbnail project.image1|safe_meta_image 1200x630 crop upscale as og_image %}
+<meta property="og:image" content="{{ DOMAIN }}{{ og_image.url }}">
+<meta property="og:image:width" content="{{ og_image.width }}">
+<meta property="og:image:height" content="{{ og_image.height }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ project.name|striptags }}">
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:description" content='{{ project.description_translated|truncate_summary:30 }}'>
-<meta property="twitter:title" content='{{ project.name|striptags }}'>
-<meta property="twitter:image" content="{{ DOMAIN }}{% thumbnail project.image1|safe_meta_image 600x300 crop upscale %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content='{{ project.description_translated|truncate_summary:30 }}'>
+<meta name="twitter:title" content='{{ project.name|striptags }}'>
+<meta name="twitter:image" content="{{ DOMAIN }}{{ og_image.url }}">
+<meta name="twitter:image:alt" content="{{ project.name|striptags }}">
 {% endblock %}
 
 {% block list_of_items %}

@@ -1,3 +1,4 @@
+import html
 import re
 
 from django.conf import settings
@@ -11,12 +12,20 @@ register = Library()
 P_TAG_RE = re.compile(r'</?p[^>]*>', re.IGNORECASE)
 
 
-@register.filter(is_safe=True)
+@register.filter(is_safe=False)
 @stringfilter
 def truncate_summary(value, arg):
-    """Remove all tags/whitespaces and return a truncated text"""
+    """
+    Strip HTML tags, decode HTML entities and truncate the text to ``arg`` words.
+
+    The result is plain text (not marked as safe), so the template autoescape re-escapes it correctly.
+
+    :param value: HTML text, usually from a rich text editor field.
+    :param arg: Maximum number of words.
+    :return: Plain text truncated to ``arg`` words.
+    """
     if isinstance(value, str):
-        value = strip_tags(value).replace('&nbsp;', '')
+        value = html.unescape(strip_tags(value)).replace('\xa0', ' ')
         value = ' '.join([s for s in value.splitlines() if s])
 
     return truncatewords(value, arg)

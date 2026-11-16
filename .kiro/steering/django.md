@@ -7,32 +7,29 @@ EU-Citizen.Science (`eucs_platform`), mantida no contexto do IBICT/Civis. Para o
 
 ## Stack confirmada
 
-- **Python**: 3.10.19 (`requires-python = ">=3.10,<3.11"`). O `.travis.yml`
-  legado aponta 3.6.9 e está defasado.
-- **Django**: < 4.0 — o pin fica em `../../pyproject.toml` (`django<4.0`).
-  NÃO subir para 4.x sem uma migração planejada.
+- **Python**: 3.14 (`requires-python = ">=3.14,<3.15"`).
+- **Django**: 5.2 LTS — a faixa fica em `../../pyproject.toml`
+  (`django[argon2]>=5.2,<5.3`).
 - **Banco**: PostgreSQL com **PostGIS** (engine
-  `django.contrib.gis.db.backends.postgis`, via `psycopg2-binary`), com GIS
+  `django.contrib.gis.db.backends.postgis`, via `psycopg` 3), com GIS
   (`django.contrib.gis`, `django-leaflet`).
 - **Localização/Tradução**: `translate.sh` (ver seção "Traduções").
 
 ## Dependências e ambientes (uv)
 
 A gestão de dependências é feita com **`uv`**: `../../pyproject.toml` +
-`../../uv.lock`, com `package = false` e Python `>=3.10,<3.11` (3.10.19).
+`../../uv.lock`, com `package = false` e Python `>=3.14,<3.15`.
 
 - `[project].dependencies` — runtime comum a todos os ambientes (Django, DRF,
-  leaflet, etc.), com os mesmos pins dos antigos `requirements/base.txt`, mais
-  `setuptools<81` (ver "Dívida técnica").
+  leaflet, etc.), com versões mínimas (`>=`); o `uv.lock` fixa as versões exatas.
+  O `django-cron` vem do fork `jorenham` via `[tool.uv.sources]`.
 - `[dependency-groups].dev` — ferramentas de dev (`django-debug-toolbar`,
-  `flake8`, `pre-commit`, `fabric`, `werkzeug`, `pytz`, `six`, `invoke`, etc.).
-- `[dependency-groups].prod` — **só produção**: `gunicorn` e `django[argon2]`.
+  `ruff`, `pre-commit`, `fabric`, `werkzeug`).
+- `[dependency-groups].prod` — **só produção**: `gunicorn`.
   Não é instalado por padrão. Dependência só de produção entra aqui
   (`uv add --group prod <pacote>`), nunca em `[project].dependencies`.
-- `../../requirements/*.txt` e `../../requirements.txt` — **legado** (pip),
-  mantidos apenas por compatibilidade com o CI antigo (`.travis.yml`). A fonte
-  canônica é o `pyproject.toml`; os `.txt` não são mais atualizados em paralelo
-  a cada mudança de dependência, exceto a remoção do fórum.
+- Os antigos `requirements/*.txt` e `requirements.txt` (pip) foram removidos; a fonte
+  única de dependências é o `pyproject.toml` (+ `uv.lock`).
 
 Instalação:
 
@@ -62,11 +59,14 @@ Os settings ficam em `../../src/eucs_platform/settings`:
   `VISAO_*`). **NÃO é versionado** (git-ignored); há `local.sample.env` /
   `local.sample.reference.env` de referência.
 
-**IMPORTANTE — settings:** hoje só existem `base.py` e `production.py` (não há
-`development.py`). O `manage.py` usa `eucs_platform.settings.production` como
-default (o comentário no arquivo diz "development", mas o código seta
-production). Portanto todo comando `manage.py` carrega **production**; controle
-o comportamento (ex.: `DEBUG`) pelo `local.env`.
+**IMPORTANTE — settings:** o repositório versiona só `base.py` e `production.py`.
+O `development.py` é um arquivo customizado e local (git-ignored), criado por cada
+desenvolvedor: se existir, use-o via
+`DJANGO_SETTINGS_MODULE=eucs_platform.settings.development`. O `manage.py` usa
+`eucs_platform.settings.production` como default (o comentário no arquivo diz
+"development", mas o código seta production). Sem o `development.py`, todo comando
+`manage.py` carrega **production**; controle o comportamento (ex.: `DEBUG`) pelo
+`local.env`.
 
 ## Como rodar comandos
 
@@ -150,14 +150,13 @@ urls, views raiz, dashboard do admin).
 - **Admin**: `django-admin-tools` (dashboard customizado em
   `eucs_platform/dashboard.py`). No Windows (`os.name == 'nt'`) o `admin_tools`
   é removido do `INSTALLED_APPS` em runtime.
-- **API/REST**: `djangorestframework`, `django-rest-swagger` (pacote morto),
-  `drf-yasg`. Auth via token/sessão. OAuth/OIDC via `django-oauth-toolkit` e
+- **API/REST**: `djangorestframework`, `drf-spectacular` (OpenAPI em
+  `/schema/`, `/swagger/` e `/redoc/`, só GET e só para logados). Auth via token/sessão. OAuth/OIDC via `django-oauth-toolkit` e
   `django-oidc-provider`.
 - **Mapas**: usa **apenas django-leaflet** (client-side). `LEAFLET_CONFIG` em
   `base.py` (centro em `(-15.125159, -57.636719)`, zoom 3 — visão América do
   Sul), usado via `{% leaflet_map %}` nas páginas de organização/projeto.
-- **Editores de texto**: `django-ckeditor` (+ `ckeditor_uploader`) e
-  `django-summernote`.
+- **Editores de texto**: `django-ckeditor` (+ `ckeditor_uploader`).
 - **Integração Visão**: `eucs_platform/visao.py` (geoserver IBICT), configurada
   por envs `VISAO_*`; consumida por `projects` (cron `UpdateVisaoCronJob`,
   command `populate_visao`).
@@ -168,18 +167,12 @@ urls, views raiz, dashboard do admin).
 
 ## Dívida técnica conhecida
 
-- **`django<4.0`** (`../../pyproject.toml`): migrar para Django 4.x é um
-  projeto à parte (mexe em várias dependências, ver abaixo).
-- **`django-rest-swagger` (2.2.0)**: pacote morto, provavelmente incompatível
-  com Django 4. Candidato a remoção/substituição por `drf-yasg` na migração.
-- **Pin `setuptools<81`** (`../../pyproject.toml`): `drf-yasg 1.21.7` e
-  `django-countries 7.5.1` ainda importam `pkg_resources` (o `django-authtools`
-  já foi para 2.1.0 e não depende mais dele),
-  removido do setuptools 81+. Com `uv` o `setuptools` não vem por padrão, então
-  ele foi adicionado ao runtime. Remover o pin está acoplado à migração Django
-  4.x.
-- **`requirements/*.txt` legados** ainda existem ao lado do `pyproject.toml`;
-  remover quando o CI deixar de usá-los.
+- **`django-ckeditor<6.7`** (`../../pyproject.toml`): faixa limitada no `pyproject.toml`; revisar a cada
+  atualização do Django.
+- **Documentação da API**: `manage.py spectacular --validate` ainda aponta o campo GIS
+  `projects.Project.projectGeographicLocation` (documentado como `string`), dois `OrganisationSerializer` com o
+  mesmo nome (em `projects/api` e `organisations/api`) e nomes duplicados de enum (`CountriesEnum`, `InLanguageEnum`).
+- **GDAL do sistema**: com GDAL < 3.9 o `check` mostra o aviso `gis.W001`.
 
 ## Armadilhas de ambiente
 
@@ -195,20 +188,19 @@ urls, views raiz, dashboard do admin).
 
 ## Remote git
 
-- Repositório: `github.com/josircg/hubi3` (remote `origin`).
-- **`master`**: branch de produção e padrão. Protegida: mudanças por PR com 1
-  aprovação.
-- **`dev`**: branch de integração, criada a partir da `master`. Protegida: PR
-  com 1 aprovação, sem exclusão e sem force push.
-- **Novas branches devem partir do `dev`**, e as PRs devem ter o `dev` como base:
+- Repositório: `github.com/josircg/hub-i3` (remote `origin`).
+- **`main`**: branch de produção e padrão.
+- **`develop`**: branch de integração. Recebe merge direto das branches `release_NNN`,
+  **sem PR**.
+- **Novas branches partem da `main`** e o nome **deve ser `release_NNN`** (`NNN` é o número
+  usado como prefixo dos commits, ex.: `27: ...`):
 
   ```
   git fetch origin
-  git switch -c issueNNN origin/dev
+  git switch -c release_NNN origin/main
   ```
 
-- O `dev` é levado para a `master` nas publicações. Hotfixes diretos na `master`
-  devem ser levados de volta ao `dev` logo em seguida.
+- A **PR é aberta para a `main`** só depois que o usuário validar a feature.
 
 ## Fluxo de trabalho com specs
 

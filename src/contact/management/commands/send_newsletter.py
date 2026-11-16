@@ -1,7 +1,8 @@
-from contact.models import Newsletter, Subscriber
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from django.db.transaction import set_autocommit, commit
+from django.db.transaction import commit, set_autocommit
+
+from contact.models import Newsletter, Subscriber
 from eucs_platform.logger import log_message
 
 User = get_user_model()

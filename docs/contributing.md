@@ -25,13 +25,13 @@ All contributors are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT
 3. Be as detailed as possible in your issue description, including steps to reproduce the bug, expected behavior, and any relevant error messages or screenshots.
 
 ## Submitting Changes
-1. Before making any changes, ensure that you are working on the latest version of the `master` branch.
-2. Create a new feature branch for your changes using a descriptive naming convention (e.g., `feature/username-description` or `bugfix/username-description`).
+1. Before making any changes, ensure that you are working on the latest version of the `main` branch.
+2. Create a new branch from `main` for your changes. The branch name must be `release_NNN`, where `NNN` is the number used as the commit message prefix (e.g., `release_27` for commits starting with `27:`).
 3. Make your changes in the new branch, adhering to the [Code Quality and Standards](#code-quality-and-standards) guidelines.
 4. Test your changes thoroughly and ensure all tests pass.
 5. Commit your changes using concise, clear commit messages that follow a standard format.
 6. Push your branch to your forked repository.
-7. Create a pull request (PR) to the main repository, providing a clear title and description of your changes, including any relevant issue numbers.
+7. Once the feature has been validated, create a pull request (PR) to the `main` branch of the main repository, providing a clear title and description of your changes, including any relevant issue numbers.
 8. Address any feedback from the code review process and make any necessary changes.
 
 ## Code Quality and Standards

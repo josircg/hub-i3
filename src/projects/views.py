@@ -4,8 +4,6 @@ import json
 import logging
 from datetime import datetime
 
-import pytz
-from accounts.models import ActivationTask
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.models import DELETION
@@ -18,28 +16,41 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import ProgrammingError, transaction
-from django.db.models import Q, F
+from django.db.models import F, Q
 from django.db.models.functions import Coalesce
-from django.http import HttpResponse, JsonResponse, Http404
-from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils import formats, translation
+from django.utils import formats, timezone, translation
+from django.utils.html import conditional_escape, format_html_join
+from django.utils.safestring import mark_safe
 from django.utils.timezone import get_default_timezone
-from django.utils.translation import ugettext as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext as _
+from rest_framework import status
+
+from accounts.models import ActivationTask
 from dossiers.models import Dossier
-from eucs_platform import send_email, visao, set_pages_and_get_object_list, get_main_page
+from eucs_platform import get_main_page, send_email, set_pages_and_get_object_list, visao
 from eucs_platform.logger import log_message
 from eucs_platform.utils import get_message_list
-from rest_framework import status
 from utilities.file import crop_and_save
 from utilities.keyword_utils import update_keywords_dict
 from utilities.models import SearchIndex, SearchIndexType
 
-from .forms import (ProjectForm, ProjectTranslationForm, ProjectGeographicLocationForm,
-                    InviteProjectForm)
-from .models import (Project, Topic, ParticipationTask, Status, FollowedProjects, FundingBody, ProjectPermission, Likes,
-                     Stats)
+from .forms import InviteProjectForm, ProjectForm, ProjectGeographicLocationForm, ProjectTranslationForm
+from .models import (
+    FollowedProjects,
+    FundingBody,
+    Likes,
+    ParticipationTask,
+    Project,
+    ProjectPermission,
+    Stats,
+    Status,
+    Topic,
+)
 
 User = get_user_model()
 logger = logging.getLogger("django.request")
@@ -335,9 +346,8 @@ def project(request, pk):
     hasTranslation = project_obj.translatedProject.filter(inLanguage=request.LANGUAGE_CODE).exists()
 
     # Check status
-    utc = pytz.UTC
     if project_obj.end_date:
-        if project_obj.end_date < utc.localize(datetime.now()):
+        if project_obj.end_date < timezone.now():
             status = _('Completed')
         else:
             status = project_obj.status
@@ -417,7 +427,7 @@ def applyFilters(request, projects):
         # Workaround to solve the filter by calculated status
         # "Completed sent on view project (def project(request, pk))"
         if request.GET.get('status') == _('Completed'):
-            projects = projects.filter(end_date__lt=pytz.UTC.localize(datetime.now()))
+            projects = projects.filter(end_date__lt=timezone.now())
         else:
             status_qs = Status.objects.translated().filter(translated_text=request.GET['status']).values_list('pk')
             projects = projects.filter(status__pk__in=status_qs)
@@ -700,6 +710,12 @@ def send_project_invite_email(project_obj, email, user):
 
 @login_required
 def project_invite(request):
+    """
+    Invite an editor to a project and send the invitation email.
+
+    The invitation is only kept if the email is sent; otherwise it is rolled back and an error with the
+    contact addresses (``settings.EMAIL_CIVIS``) is returned.
+    """
     project_obj = get_object_or_404(Project, pk=request.POST.get('project_id'))
 
     check_permission_to_edit_project(project_obj, request.user)
@@ -710,9 +726,17 @@ def project_invite(request):
     form = InviteProjectForm(post_data)
 
     if form.is_valid():
-        form.save()
-
-        send_project_invite_email(project_obj, form.cleaned_data['email'], form.cleaned_data['user'])
+        try:
+            with transaction.atomic():
+                form.save()
+                send_project_invite_email(project_obj, form.cleaned_data['email'], form.cleaned_data['user'])
+        except Exception:
+            logger.exception('Error sending project invitation email (project %s)', project_obj.pk)
+            links = format_html_join(', ', '<a href="mailto:{0}">{0}</a>', ((email,) for email in settings.EMAIL_CIVIS))
+            msg = mark_safe(conditional_escape(
+                _('Could not add a new editor. Please send an email to %(email)s reporting the problem.')
+            ) % {'email': links})
+            return JsonResponse({'email': [msg]}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         messages.success(request, _('Invitation sent succesfully!'))
 

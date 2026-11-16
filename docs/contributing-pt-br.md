@@ -25,13 +25,13 @@ Todos os colaboradores devem aderir ao nosso [Código de Conduta](CODE_OF_CONDUC
 3. Descreva a sua solicitação com o maior detalhamento possível, incluindo as etapas para reproduzir o bug, o comportamento esperado e quaisquer mensagens de erro ou capturas de tela relevantes.
 
 ## Envie suas mudanças
-1. Antes de fazer qualquer alteração, certifique-se de que está trabalhando com a versão mais recente do ramo `master`.
-2. Crie um novo 'branch' para suas alterações usando uma convenção de nomenclatura descritiva (exemplo: `feature/username-description` ou `bugfix/username-description`).
+1. Antes de fazer qualquer alteração, certifique-se de que está trabalhando com a versão mais recente do ramo `main`.
+2. Crie um novo 'branch' a partir da `main` para suas alterações. O nome do 'branch' deve ser `release_NNN`, onde `NNN` é o número usado como prefixo das mensagens de commit (exemplo: `release_27` para commits que começam com `27:`).
 3. Faça suas alterações no novo 'branch', seguindo o [Padronização do Código](#Padronização do Código).
 4. Teste suas alterações minuciosamente e certifique-se de que todos os testes sejam aprovados.
 5. Confirme suas alterações usando mensagens de confirmação concisas e claras que seguem um formato padrão.
 6. Execute um 'Push' para o seu repositório.
-7. Crie um 'pull request' (PR) para o repositório da HUB 3I, fornecendo um título e uma descrição claros de suas alterações, incluindo quaisquer números de problemas relevantes.
+7. Depois que a funcionalidade for validada, crie um 'pull request' (PR) para o ramo `main` do repositório da HUB 3I, fornecendo um título e uma descrição claros de suas alterações, incluindo quaisquer números de problemas relevantes.
 8. Responda a todos os comentários do processo de revisão de código e faça as alterações necessárias.
 
 ## Padronização do Código

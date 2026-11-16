@@ -3,8 +3,10 @@ from django.contrib.auth import get_user_model
 from django.template import engines
 from django.urls import reverse_lazy
 from django.utils.http import urlencode
-from django.utils.translation import gettext_lazy as _, ngettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext
 from django_cron import CronJobBase, Schedule
+
 from eucs_platform import send_email
 
 User = get_user_model()

@@ -2,13 +2,14 @@
 # Rotina para popular os projetos no Visão
 #
 import json
+import sys
+from datetime import datetime, timezone
 
 import requests
-
-from datetime import datetime, timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
+
 from eucs_platform import visao
 from projects.models import Project, Topic
 from utilities.models import Translation
@@ -147,7 +148,6 @@ def delete_dataset(auth_header, dataset_id):
         print(f'Group layer deleted. {tot_excluidos} layers deleted')
     else:
         print('Error deleting group layer: %d' % response.status_code)
-    return
 
 
 class Command(BaseCommand):
@@ -263,7 +263,7 @@ class Command(BaseCommand):
                 owner_id = record["ownerId"]
             else:
                 print(f'Invalid Group ID (Status Code {response.status_code})')
-                exit(-1)
+                sys.exit(-1)
 
             query = {
                   "id": 0,
@@ -290,7 +290,7 @@ class Command(BaseCommand):
                 # geo_groupid = record['geonetworkGroupId']
             else:
                 print('User Info API failed')
-                exit(-1)
+                sys.exit(-1)
 
             query = {'ownerIdFilter': owner_id, 'type': 'LAYER'}
             response = requests.get(f'{endpoint}/visao2/api2/group-layers', params=query)
@@ -333,7 +333,7 @@ class Command(BaseCommand):
                 print(f'VISAO_GROUP={group_id}')
             else:
                 print('Error inserting new group category')
-                exit(-1)
+                sys.exit(-1)
 
         elif options['create_dataset']:
             auth_header = visao.authenticate2()

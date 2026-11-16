@@ -165,7 +165,7 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 #### Critérios de Aceitação (EARS)
 1. O SISTEMA DEVE expor APIs DRF para projetos (`/api/projects/`, detalhe, criação, tradução e viewsets de topic/status/participationTask), além de organisations, platforms e resources (cada app com seu `api/urls`).
 2. QUANDO um cliente autentica via djoser (`/api/auth/`) por token ou sessão O SISTEMA DEVE emitir/validar as credenciais; e a documentação (`/swagger/`, `/redoc/`) DEVE exigir login (`login_required`).
-3. ENQUANTO o esquema OpenAPI é servido (`CÍVIS API`, drf-yasg) O SISTEMA DEVE tratá-lo como não público, exigindo usuário autenticado (`IsAuthenticated`).
+3. ENQUANTO o esquema OpenAPI é servido (`HUB 3I API`, drf-spectacular) O SISTEMA DEVE tratá-lo como não público, exigindo usuário autenticado (`IsAuthenticated`).
 4. O SISTEMA DEVE oferecer provedor OAuth2 (`/o/`, oauth2_provider) e OpenID Connect (`/openid/`, oidc_provider).
 5. O SISTEMA DEVE suportar renderização de respostas de API em CSV: `utilities.renderers.CSVRenderer` (baseado em `rest_framework_csv`) é registrado globalmente em `REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES']` (`settings/base.py`), ao lado de `JSONRenderer`, valendo para todas as views DRF que não definam `renderer_classes`. Nenhum `api/` de app define renderer próprio; portanto todos os endpoints da API aceitam CSV via negociação de conteúdo.
 

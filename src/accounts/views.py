@@ -1,26 +1,25 @@
-import six
 from braces import views as bracesviews
-from contact.models import Subscriber
 from django.conf import settings
-from django.contrib import auth
-from django.contrib import messages
+from django.contrib import auth, messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import views as authviews
 from django.contrib.auth.views import INTERNAL_RESET_SESSION_TOKEN
-from django.shortcuts import redirect, get_object_or_404, resolve_url
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.urls import reverse_lazy
 from django.utils import translation
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import lazy
 from django.utils.http import urlsafe_base64_decode
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
+
+from contact.models import Subscriber
 from eucs_platform import set_language_preference
 from profiles.models import Profile
 
 from . import forms
-from .email import send_new_user_email, send_welcome_email, send_password_reset_email
+from .email import send_new_user_email, send_password_reset_email, send_welcome_email
 from .models import ActivationTask
 from .tokens import account_activation_token
 
@@ -36,10 +35,10 @@ def _safe_resolve_url(url):
     Thanks to GitHub user alanwj for pointing out the problem and providing
     this solution.
     """
-    return six.text_type(resolve_url(url))
+    return str(resolve_url(url))
 
 
-resolve_url_lazy = lazy(_safe_resolve_url, six.text_type)
+resolve_url_lazy = lazy(_safe_resolve_url, str)
 
 
 class LoginView(bracesviews.AnonymousRequiredMixin, authviews.LoginView):
@@ -56,7 +55,7 @@ class LoginView(bracesviews.AnonymousRequiredMixin, authviews.LoginView):
             expiry = getattr(settings, "KEEP_LOGGED_DURATION", ONE_MONTH)
             self.request.session.set_expiry(expiry)
 
-        return set_language_preference(self.request, redirect, user.profile.language)
+        return set_language_preference(redirect, user.profile.language)
 
 
 class LogoutView(authviews.LogoutView):
@@ -116,7 +115,7 @@ class PasswordResetView(authviews.PasswordResetView):
     success_url = reverse_lazy("accounts:password-reset-done")
     subject_template_name = "accounts/emails/password-reset-subject.txt"
     tag = getattr(settings, 'EMAIL_TAG', 'XXX')
-    extra_email_context = {'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT_DAYS * 24,
+    extra_email_context = {'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT // 3600,
                            'domain': settings.DOMAIN,
                            'tag': tag}
 
@@ -175,7 +174,7 @@ def delete_user(request):
 
 def activate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
@@ -206,7 +205,7 @@ def activate(request, uidb64, token):
             if response is None:
                 response = render(request, 'accounts/confirmation-account.html', {})
 
-            response = set_language_preference(request, response, language)
+            response = set_language_preference(response, language)
 
             return response
     else:

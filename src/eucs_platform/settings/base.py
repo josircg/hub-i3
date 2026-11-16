@@ -13,6 +13,7 @@ from pathlib import Path
 
 # Use 12factor inspired environment variables or from a file
 import environ
+
 # For Bootstrap 3, change error alert to 'danger'
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -106,6 +107,7 @@ TEMPLATES = [
 env = environ.Env(
     FEATURED_MGT=(bool, True),
     ADMIN_EMAIL=(str, ''),
+    CARTODB_API=(str, ''),
     DEBUG=(bool, False),
 )
 
@@ -125,6 +127,7 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = []
 
 ADMIN_EMAIL = env("ADMIN_EMAIL")
+CARTODB_API = env("CARTODB_API")
 
 if ADMIN_EMAIL:
     ADMINS = [(email.split('@')[0], email) for email in ADMIN_EMAIL.split(',')]
@@ -155,7 +158,6 @@ INSTALLED_APPS = (
     "platforms",
     "django_select2",
     "blog",
-    "django_summernote",
     "leaflet",
     "django_countries",
     "authors",
@@ -166,9 +168,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'rest_framework_swagger',
     'oidc_provider',
-    'drf_yasg',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'captcha',
     'active_link',
     'oauth2_provider',
@@ -251,7 +253,6 @@ LANGUAGES = [
 
 TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 FORMAT_MODULE_PATH = 'formats'
 
@@ -287,24 +288,17 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 18,
     'TILES': [
         (
-            'CartoDB Light',
-            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors &copy; '
-            '<a href="https://carto.com">CARTO</a>'
-        )
+            'CartoDB Positron',
+            'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=' + CARTODB_API,
+            {
+                'attribution': (
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
+                    '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+                ),
+                'maxZoom': 20,
+            },
+        ),
     ],
-}
-
-SUMMERNOTE_THEME = 'bs4'
-
-SUMMERNOTE_CONFIG = {
-    'iframe': True,
-    'summernote': {
-        'airMode': False,
-        'width': '100%',
-        'height': '300',
-        'toolbar': ['bold', 'italic', 'underline'],
-    },
 }
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -348,7 +342,7 @@ SITE_ID = 1
 NEWSLETTER_TYPE = 'Local'  # Accepts Local or Mailchimp
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication'
@@ -362,18 +356,25 @@ REST_FRAMEWORK = {
     )
 }
 
-SWAGGER_SETTINGS = {
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'utilities.inspectors.SwaggerAutoSchema',
+SPECTACULAR_SETTINGS = {
+    'TITLE': f'{SITE_NAME} API',
+    'DESCRIPTION': f'{SITE_NAME} API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PUBLIC': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_GENERATOR_CLASS': 'utilities.inspectors.SchemaGenerator',
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }
 
-PASSWORD_RESET_CONFIRM_URL = '/password-reset/'
-ACTIVATION_URL = '/activate/'
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '/password-reset/',
     'EMAIL': {
-        'activation': 'accounts.views.ActivationEmail',
-        'confirmation': 'accounts.views.ConfirmationEmail',
-        'password_reset': 'accounts.views.PasswordResetEmail',
+        'activation': 'accounts.email.ActivationEmail',
+        'confirmation': 'accounts.email.ConfirmationEmail',
+        'password_reset': 'accounts.email.PasswordResetEmail',
     },
     'SEND_ACTIVATION_EMAIL': True,
 }

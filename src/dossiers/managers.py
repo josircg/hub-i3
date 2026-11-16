@@ -1,7 +1,7 @@
 from django.apps import apps as django_apps
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db.models import QuerySet, Count, Q, Value, IntegerField, Prefetch
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+from django.db.models import Count, IntegerField, Prefetch, Q, QuerySet, Value
 from django.utils.translation import get_language
 
 

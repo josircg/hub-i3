@@ -1,12 +1,20 @@
-from PIL import Image
 from django_countries.serializer_fields import CountryField
-from organisations.models import Organisation
-from projects.models import ParticipationTask, TranslatedProject
-from projects.models import Project, Topic, Status, FundingBody, OriginDatabase, CustomField
+from PIL import Image
 from rest_framework import serializers
+
+from organisations.models import Organisation
+from projects.models import (
+    CustomField,
+    FundingBody,
+    OriginDatabase,
+    ParticipationTask,
+    Project,
+    Status,
+    Topic,
+    TranslatedProject,
+)
 from utilities.api.serializers import KeywordSerializer
 from utilities.file import save_image_with_path
-
 from utilities.keyword_utils import keywords_list
 
 

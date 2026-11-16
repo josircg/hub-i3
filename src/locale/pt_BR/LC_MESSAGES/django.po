@@ -180,12 +180,8 @@ msgstr "Redefinição de senha"
 msgid "Don't have an account?"
 msgstr "Ainda não tem conta?"
 
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr ""
-"O link de redefinição de senha não é mais válido. Será necessário solicitá-"
-"lo outra vez."
+msgid "The password reset link has expired. You will need to request it again."
+msgstr "O link de redefinição de senha expirou. Será necessário solicitá-lo outra vez."
 
 msgid "Check your inbox. We've sent a message to confirm your email is valid."
 msgstr ""
@@ -2176,6 +2172,10 @@ msgstr "Convite para editar iniciativa %s"
 
 msgid "Invitation sent succesfully!"
 msgstr "Convite enviado com sucesso!"
+
+#, python-format
+msgid "Could not add a new editor. Please send an email to %(email)s reporting the problem."
+msgstr "Não foi possível adicionar um novo editor. Por favor, envie um e-mail para %(email)s informando sobre o problema."
 
 #, python-format
 msgid "Invitation sent to an unregistered email (%s)"

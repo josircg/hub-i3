@@ -1,22 +1,23 @@
-from accounts.models import ActivationTask
 from ckeditor.widgets import CKEditorWidget
 from django.conf import settings
 from django.contrib.admin.models import ADDITION
 from django.contrib.auth import get_user_model
 from django.contrib.gis import forms
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _, pgettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext
 from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget
-from django_summernote.widgets import SummernoteWidget
-from eucs_platform.logger import log_message
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders import Nominatim
+
+from accounts.models import ActivationTask
+from eucs_platform.logger import log_message
 from organisations.models import Organisation
 from platforms.models import GeographicExtend
 from utilities.models import Keyword
 
-from .models import ParticipationTask, TranslatedProject, ProjectPermission, Project, Topic, Status, FundingBody
+from .models import FundingBody, ParticipationTask, Project, ProjectPermission, Status, Topic, TranslatedProject
 
 geolocator = Nominatim(timeout=None, user_agent=settings.USER_AGENT)
 USER = get_user_model()
@@ -280,7 +281,7 @@ class ProjectForm(forms.Form):
               '<a href="/blog/2021/05/31/june-monthoftheprojects-eu-citizenscience/"> Learn more here!</a>')
     # Custom fields
     title = forms.CharField(max_length=100, required=False)
-    paragraph = forms.CharField(widget=SummernoteWidget(), required=False)
+    paragraph = forms.CharField(widget=CKEditorWidget(config_name='frontpage'), required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -469,7 +470,7 @@ class ProjectTranslationForm(forms.Form):
 
 class CustomFieldForm(forms.Form):
     title = forms.CharField(max_length=100, required=False)
-    paragraph = forms.CharField(widget=SummernoteWidget(), required=False)
+    paragraph = forms.CharField(widget=CKEditorWidget(config_name='frontpage'), required=False)
 
 
 class ProjectPermissionForm(forms.Form):

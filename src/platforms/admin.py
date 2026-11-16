@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from utilities.admin import TranslationInline
 
 from .models import GeographicExtend, Platform

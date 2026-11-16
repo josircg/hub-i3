@@ -4,7 +4,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy as rl
 from django.utils import translation
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
+
 from eucs_platform import send_email
 
 
@@ -30,7 +31,7 @@ def notify_approved_organisation(sender, instance, **kwargs):
 
 
 def add_search_index(sender, instance, created, **kwargs):
-    from utilities.models import add_searchindex_text, SearchIndexType
+    from utilities.models import SearchIndexType, add_searchindex_text
     # Only approved items can be marked as public. Admin has access to approved (public) and non approved info.
     # Organisation.approved can be null. We must use bool to evaluate as True or False.
     add_searchindex_text(
@@ -40,5 +41,5 @@ def add_search_index(sender, instance, created, **kwargs):
 
 
 def delete_search_index(sender, instance, **kwargs):
-    from utilities.models import delete_searchindex, SearchIndexType
+    from utilities.models import SearchIndexType, delete_searchindex
     delete_searchindex(SearchIndexType.ORGANISATION.value, instance.pk)

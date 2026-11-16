@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from PIL import Image
-from authors.models import Author
-from resources.models import Resource, Theme, Audience, Category
 from rest_framework import serializers
+
+from authors.models import Author
+from resources.models import Audience, Category, Resource, Theme
 from utilities.api.serializers import KeywordSerializer
 from utilities.file import save_image_with_path
 from utilities.keyword_utils import keywords_list

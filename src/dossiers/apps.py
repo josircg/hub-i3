@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 from django.db.models.signals import post_save, pre_save
 
-from .signals import notify_new_dossier_curator, notify_dossier_object_moderation
+from .signals import notify_dossier_object_moderation, notify_new_dossier_curator
 
 
 class DossiersConfig(AppConfig):

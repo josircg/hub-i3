@@ -3,7 +3,8 @@ import copy
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import translation
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
+
 from eucs_platform import send_email
 
 
@@ -34,7 +35,7 @@ def notify_approved_resource(sender, instance, **kwargs):
 
 
 def add_search_index(sender, instance, created, **kwargs):
-    from utilities.models import add_searchindex_text, SearchIndexType
+    from utilities.models import SearchIndexType, add_searchindex_text
 
     if instance.isTrainingResource:
         index_type_value = SearchIndexType.TRAINING.value
@@ -53,7 +54,7 @@ def add_search_index(sender, instance, created, **kwargs):
 
 
 def delete_search_index(sender, instance, **kwargs):
-    from utilities.models import delete_searchindex, SearchIndexType
+    from utilities.models import SearchIndexType, delete_searchindex
 
     if instance.isTrainingResource:
         index_type_value = SearchIndexType.TRAINING.value

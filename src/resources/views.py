@@ -1,7 +1,7 @@
 import copy
 import csv
+from datetime import datetime
 
-from authors.models import Author
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -13,25 +13,26 @@ from django.core.validators import EMPTY_VALUES
 from django.db import ProgrammingError, transaction
 from django.db.models import F
 from django.http import JsonResponse, StreamingHttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
-from django.utils.datetime_safe import datetime
 from django.utils.timezone import get_default_timezone
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
+from rest_framework import status
+
+from authors.models import Author
 from dossiers.models import Dossier
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 from eucs_platform.utils import get_message_list
-from rest_framework import status
 from utilities.file import crop_and_save
 from utilities.keyword_utils import update_keywords_dict
 from utilities.models import SearchIndex, SearchIndexType
 
 from .forms import ResourceForm, ResourcePermissionForm, TrainingResourceForm
-from .models import Resource, SavedResources, BookmarkedResources, Theme, Category
-from .models import ResourcesGrouped, ResourcePermission
+from .models import BookmarkedResources, Category, Resource, ResourcePermission, ResourcesGrouped, SavedResources, Theme
 
 User = get_user_model()
 

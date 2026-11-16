@@ -1,5 +1,5 @@
-from django.urls import path, include
-from django.conf.urls import url
+from django.urls import include, path, re_path
+
 from . import views
 
 urlpatterns = [
@@ -17,7 +17,7 @@ urlpatterns = [
     path('bookmarkResource/', views.bookmarkResource, name='bookmarkResource'),
     path('setHiddenResource/', views.setHiddenResource, name='setHiddenResource'),
     path('allowUserResource/', views.allowUserResource, name='allowUserResource'),
-    url(r'^api/', include('resources.api.urls')),
+    re_path(r'^api/', include('resources.api.urls')),
     path('downloadResources', views.downloadResources, name='downloadResources'),
     path('newTrainingResource', views.newTrainingResource, name='newTrainingResource'),
     path('training_resources', views.training_resources, name='training_resources'),

@@ -1,14 +1,11 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
-from django.conf import settings
 from django.contrib import admin
-from django.shortcuts import render, get_object_or_404
-from django.templatetags.static import static
-from django.urls import reverse
-from django.utils.translation import ugettext as _
-from django_summernote.widgets import SummernoteWidget
+from django.shortcuts import get_object_or_404, render
+from django.utils.translation import gettext as _
 
-from .models import Post
 from .constants import PostStatus
+from .models import Post
 
 
 def make_published(modeladmin, request, queryset):
@@ -25,36 +22,10 @@ def make_draft(modeladmin, request, queryset):
 make_draft.short_description = _("Mark selected posts as draft")
 
 
-class SummernoteModelAdminWithCustomToolbar(SummernoteWidget):
-    def summernote_settings(self):
-        summernote_settings = settings.SUMMERNOTE_CONFIG.get(
-            'summernote', {}).copy()
-        lang = settings.SUMMERNOTE_CONFIG['summernote'].get('lang')
-        if not lang:
-            lang = 'en-US'
-        summernote_settings.update({
-            'width': '80%',
-            'height': '500',
-            'lang': lang,
-            'url': {
-                'language': static('summernote/lang/summernote-' + lang + '.min.js'),
-                'upload_attachment': reverse('django_summernote-upload_attachment'),
-            },
-            'toolbar': [
-                ['style', ['style', ]],
-                ['font', ['bold', 'italic', 'underline', 'color', ]],
-                ['paragraph', ['paragraph', 'ol', 'ul', ]],
-                ['misc', ['link', 'picture', 'video', 'undo', 'redo', 'help', ]],
-            ],
-
-        })
-        return summernote_settings
-
-
 class CustomPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        widgets = {'content': SummernoteModelAdminWithCustomToolbar()}
+        widgets = {'content': CKEditorWidget(config_name='default')}
         fields = "__all__"
 
 

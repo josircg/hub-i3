@@ -3,11 +3,12 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+
 from utilities.models import AbstractTranslatedModel
 
-from .managers import EventQuerySet, EventModeQuerySet
+from .managers import EventModeQuerySet, EventQuerySet
 
 
 class EventMode(AbstractTranslatedModel):
