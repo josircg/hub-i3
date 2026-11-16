@@ -24,6 +24,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import formats, translation
+from django.utils.html import conditional_escape, format_html_join
+from django.utils.safestring import mark_safe
 from django.utils.timezone import get_default_timezone
 from django.utils.translation import get_language
 from django.utils.translation import ugettext as _
@@ -710,6 +712,12 @@ def send_project_invite_email(project_obj, email, user):
 
 @login_required
 def project_invite(request):
+    """
+    Invite an editor to a project and send the invitation email.
+
+    The invitation is only kept if the email is sent; otherwise it is rolled back and an error with the
+    contact addresses (``settings.EMAIL_CIVIS``) is returned.
+    """
     project_obj = get_object_or_404(Project, pk=request.POST.get('project_id'))
 
     check_permission_to_edit_project(project_obj, request.user)
@@ -720,9 +728,17 @@ def project_invite(request):
     form = InviteProjectForm(post_data)
 
     if form.is_valid():
-        form.save()
-
-        send_project_invite_email(project_obj, form.cleaned_data['email'], form.cleaned_data['user'])
+        try:
+            with transaction.atomic():
+                form.save()
+                send_project_invite_email(project_obj, form.cleaned_data['email'], form.cleaned_data['user'])
+        except Exception:
+            logger.exception('Error sending project invitation email (project %s)', project_obj.pk)
+            links = format_html_join(', ', '<a href="mailto:{0}">{0}</a>', ((email,) for email in settings.EMAIL_CIVIS))
+            msg = mark_safe(conditional_escape(
+                _('Could not add a new editor. Please send an email to %(email)s reporting the problem.')
+            ) % {'email': links})
+            return JsonResponse({'email': [msg]}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         messages.success(request, _('Invitation sent succesfully!'))
 
