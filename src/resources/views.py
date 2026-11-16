@@ -1,5 +1,6 @@
 import copy
 import csv
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -16,7 +17,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
-from django.utils.datetime_safe import datetime
 from django.utils.timezone import get_default_timezone
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
