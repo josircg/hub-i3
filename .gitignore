@@ -80,3 +80,6 @@ venv
 .env
 .env.*
 !*.sample.env
+
+# Claude Code: documentos e relatórios gerados localmente
+.claude/docs/

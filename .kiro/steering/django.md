@@ -59,11 +59,14 @@ Os settings ficam em `../../src/eucs_platform/settings`:
   `VISAO_*`). **NÃO é versionado** (git-ignored); há `local.sample.env` /
   `local.sample.reference.env` de referência.
 
-**IMPORTANTE — settings:** hoje só existem `base.py` e `production.py` (não há
-`development.py`). O `manage.py` usa `eucs_platform.settings.production` como
-default (o comentário no arquivo diz "development", mas o código seta
-production). Portanto todo comando `manage.py` carrega **production**; controle
-o comportamento (ex.: `DEBUG`) pelo `local.env`.
+**IMPORTANTE — settings:** o repositório versiona só `base.py` e `production.py`.
+O `development.py` é um arquivo customizado e local (git-ignored), criado por cada
+desenvolvedor: se existir, use-o via
+`DJANGO_SETTINGS_MODULE=eucs_platform.settings.development`. O `manage.py` usa
+`eucs_platform.settings.production` como default (o comentário no arquivo diz
+"development", mas o código seta production). Sem o `development.py`, todo comando
+`manage.py` carrega **production**; controle o comportamento (ex.: `DEBUG`) pelo
+`local.env`.
 
 ## Como rodar comandos
 
@@ -185,20 +188,19 @@ urls, views raiz, dashboard do admin).
 
 ## Remote git
 
-- Repositório: `github.com/josircg/hubi3` (remote `origin`).
-- **`master`**: branch de produção e padrão. Protegida: mudanças por PR com 1
-  aprovação.
-- **`dev`**: branch de integração, criada a partir da `master`. Protegida: PR
-  com 1 aprovação, sem exclusão e sem force push.
-- **Novas branches devem partir do `dev`**, e as PRs devem ter o `dev` como base:
+- Repositório: `github.com/josircg/hub-i3` (remote `origin`).
+- **`main`**: branch de produção e padrão.
+- **`develop`**: branch de integração. Recebe merge direto das branches `release_NNN`,
+  **sem PR**.
+- **Novas branches partem da `main`** e o nome **deve ser `release_NNN`** (`NNN` é o número
+  usado como prefixo dos commits, ex.: `27: ...`):
 
   ```
   git fetch origin
-  git switch -c issueNNN origin/dev
+  git switch -c release_NNN origin/main
   ```
 
-- O `dev` é levado para a `master` nas publicações. Hotfixes diretos na `master`
-  devem ser levados de volta ao `dev` logo em seguida.
+- A **PR é aberta para a `main`** só depois que o usuário validar a feature.
 
 ## Fluxo de trabalho com specs
 
