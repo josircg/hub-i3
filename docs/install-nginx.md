@@ -86,17 +86,17 @@ sudo apt install postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts
 
 ```
 su - postgres psql ou sudo -u postgres psql
-create user eucitizenscience_usr with encrypted password 'mypass';
-create database hub_i3 with owner=eucitizenscience_usr;
+create user i3_user with encrypted password 'mypass';
+create database hub_i3 with owner=i3_user;
 \connect hub_i3;
 create extension postgis;
-GRANT ALL on public.spatial_ref_sys TO eucitizenscience_usr;
+GRANT ALL on public.spatial_ref_sys TO i3_user;
 ```
 
 Teste de Conexão no postgres (já logado como webapp):
 
 ```
-psql -h localhost -U eucitizenscience_usr hub_i3
+psql -h localhost -U i3_user hub_i3
 ```
 
 9) Copiar o `local.env`, configurar o banco e testar a conexão e o Django:
