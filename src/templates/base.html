@@ -85,43 +85,11 @@
             </a>
             <div class="collapse navbar-collapse" id="navbarPrincipal">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item top">
-                        <a class="nav-link main {% active_link 'all || projects || resources || training_resources || organisations'%}"
-                            href="{% url 'projects' %}">{% trans "Policies" %}
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item top">
-                        <a class="nav-link main {% active_link  'about' %}" href="/about">{% trans "About" %}</a>
-                    </li>
-                     <li class="nav-item top">
-                        <a class="nav-link main {% active_link  'events' %}" href="{% url 'events' %}">{% trans "Updates" %}</a>
-                    </li>
-                    <li class="nav-item top">
-                        <div class="d-block">
-                            <a class="nav-link main {% active_link  'blog' %}" href="{% url 'blog' %}">{% trans "News" %}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item top">
-                        <div class="d-block">
-                            <a class="nav-link main {% active_link  'dossier' %}" href="{% url 'dossiers:dossiers_list' %}">{% trans "Collections" %}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item top">
-                        <div class="d-block">
-                            <a class="nav-link main {% if request.resolver_match.kwargs.slug == 'faq' %}active{% endif %}" href="{% url 'page_detail' 'faq' %}">{% trans "FAQ" %}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item top">
-                        <div class="d-block">
-                            <a class="nav-link main {% active_link  'contact' %}" href="{% url 'contact' %}">{% trans "Contact" %}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item top">
-                        <div class="d-block">
-                          <a class="nav-link main" href="/#mapaHome">{% translate "Map" %}</a>
-                        </div>
-                    </li>
+                    <li class="nav-item top"><a class="nav-link main {% active_link 'about' %}" href="{% url 'about' %}">Sobre</a></li>
+                    <li class="nav-item top"><a class="nav-link main {% active_link 'projects' %}" href="{% url 'projects' %}">Políticas</a></li>
+                    <li class="nav-item top"><a class="nav-link main {% active_link 'events' %}" href="{% url 'events' %}">Ações</a></li>
+                    <li class="nav-item top"><a class="nav-link main {% active_link 'newsletters' %}" href="{% url 'newsletters' %}">Notícias</a></li>
+                    <li class="nav-item top"><a class="nav-link main {% active_link 'blog' %}" href="{% url 'blog' %}">Blog</a></li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
