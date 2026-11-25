@@ -173,6 +173,11 @@ urls, views raiz, dashboard do admin).
   `projects.Project.projectGeographicLocation` (documentado como `string`), dois `OrganisationSerializer` com o
   mesmo nome (em `projects/api` e `organisations/api`) e nomes duplicados de enum (`CountriesEnum`, `InLanguageEnum`).
 - **GDAL do sistema**: com GDAL < 3.9 o `check` mostra o aviso `gis.W001`.
+- **Social auth (dependência transitiva do `djoser`)**: `social-auth-app-django` e
+  `social-auth-core` estão no `uv.lock` apenas porque o `djoser` 2.3.5 as exige. Nenhum
+  código do projeto as usa, e o subpacote `djoser.social` não é carregado. Removê-las exige
+  substituir o `djoser` (e-mails de conta e API `/api/auth/`); reavaliar se for confirmado
+  que ninguém consome `/api/auth/`.
 
 ## Armadilhas de ambiente
 
