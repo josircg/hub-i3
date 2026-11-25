@@ -48,17 +48,6 @@ class ResourceForm(forms.Form):
         label=_('Brief description'),
         max_length=3000)
 
-    description_citizen_science_aspects = forms.CharField(
-        widget=CKEditorWidget(config_name='frontpage'),
-        help_text=_(
-            "Please describe the citizen science aspect(s) of the resource that "
-            "warrant your registration in Cívis. This information will not be "
-            "visible on the platform, and serves simply as reference when undergoing "
-            "moderation. You can see our explanation on what <a href=\"https://civis.ibict.br/"
-            "about/\">citizen science</a> is (max 2000 characters)."),
-        max_length=2000,
-        label=_("Description of citizen science aspects"))
-
     authors = forms.ModelMultipleChoiceField(
         queryset=Author.objects.all(),
         widget=s2forms.ModelSelect2TagWidget(
@@ -227,7 +216,6 @@ class ResourceForm(forms.Form):
                 resource.hidden = False
             resource.name = self.data['name']
             resource.abstract = self.data['abstract']
-            resource.description_citizen_science_aspects = self.data['description_citizen_science_aspects']
             resource.url = self.cleaned_data['url']
             resource.license = self.data['license']
             resource.publisher = self.data['publisher']
@@ -281,7 +269,6 @@ class ResourceForm(forms.Form):
             name=self.data['name'],
             url=self.cleaned_data['url'],
             abstract=self.data['abstract'],
-            description_citizen_science_aspects=self.data['description_citizen_science_aspects'],
             license=self.data['license'],
             publisher=self.data['publisher'],
             dateUploaded=datetime.now(),

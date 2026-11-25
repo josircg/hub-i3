@@ -2,8 +2,8 @@ from django.db.models import Q
 from django.http import Http404
 from projects.api.serializers import ProjectSerializer, ProjectSerializerCreateUpdate, StatusSerializer
 from projects.api.serializers import ProjectTranslateSerializer, ProjectTranslateCreateSerializer
-from projects.api.serializers import TopicSerializer, ParticipationTaskSerializer
-from projects.models import Project, Status, Topic, ParticipationTask
+from projects.api.serializers import TopicSerializer
+from projects.models import Project, Status, Topic
 from projects.models import TranslatedProject
 from projects.views import setProjectApproved, setProjectHidden, setProjectFeatured, has_permission_to_edit_project, \
     setFollowedProject
@@ -40,13 +40,6 @@ class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topic.objects.all()
 
 
-class ParticipationTaskViewSet(viewsets.ModelViewSet):
-    permission_classes = (AdminPermissionsClass,)
-    serializer_class = ParticipationTaskSerializer
-    http_method_names = ['get']
-    queryset = ParticipationTask.objects.all()
-
-
 class ProjectList(APIView):
 
     def applyFilters(self, request, projects):
@@ -71,11 +64,6 @@ class ProjectList(APIView):
             projects = projects.filter(
                 Q(mainOrganisation__country=country) | Q(country=country) | Q(organisation__country=country)
             ).distinct()
-
-        doingAtHome = request.query_params.get('doingAtHome', None)
-        if doingAtHome is not None:
-            doingAtHome = True if (doingAtHome == "true" or doingAtHome == '1') else False
-            projects = projects.filter(doingAtHome=doingAtHome)
 
         if request.user.is_staff and request.GET.get('approvedCheck'):
             if request.GET['approvedCheck'] == 'On':

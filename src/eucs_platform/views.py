@@ -189,10 +189,6 @@ def moderation_quality_criteria(request):
     return render(request, 'moderation_quality_criteria.html')
 
 
-def translations(request):
-    return render(request, 'translations.html')
-
-
 def guide(request):
     if settings.USE_GUIDE:
         return HttpResponseRedirect("/static/site/files/%s/%s" % (get_language(), settings.USE_GUIDE))

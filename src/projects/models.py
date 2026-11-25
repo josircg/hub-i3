@@ -4,7 +4,7 @@ from django.contrib.gis.db import models
 from django.core.files.storage import default_storage
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import gettext as _, pgettext_lazy
 from django_countries.fields import CountryField
 from eucs_platform import visao
 from eucs_platform.logger import log_message
@@ -12,8 +12,7 @@ from organisations.models import Organisation
 from platforms.models import GeographicExtend
 from utilities.models import AbstractTranslatedModel
 
-from .managers import (ProjectPermissionQuerySet, ProjectQuerySet, TopicQuerySet, StatusQuerySet,
-                       ParticipationTaskQuerySet)
+from .managers import ProjectPermissionQuerySet, ProjectQuerySet, TopicQuerySet, StatusQuerySet
 
 
 class Status(AbstractTranslatedModel):
@@ -43,19 +42,6 @@ class Topic(AbstractTranslatedModel):
         ordering = ['topic']
 
 
-class ParticipationTask(AbstractTranslatedModel):
-    participationTask = models.TextField()
-
-    str_field = 'participationTask'
-
-    objects = ParticipationTaskQuerySet.as_manager()
-
-    class Meta:
-        verbose_name = _('Participation Task')
-        verbose_name_plural = _('Participation Task')
-        ordering = ['participationTask']
-
-
 class FundingBody(models.Model):
     body = models.TextField()
 
@@ -68,24 +54,14 @@ class FundingBody(models.Model):
         ordering = ['body']
 
 
-class OriginDatabase(models.Model):
-    originDatabase = models.TextField()
-
-    def __str__(self):
-        return f'{self.originDatabase}'
-
-
 class CustomField(models.Model):
     title = models.TextField()
     paragraph = models.TextField()
 
 
 # For translation
-
 class TranslatedProject(models.Model):
     translatedDescription = models.CharField(max_length=10000)
-    translatedHowToParticipate = models.CharField(max_length=10000)
-    translatedEquipment = models.CharField(max_length=10000)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
@@ -109,7 +85,6 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     url = models.URLField(null=True)
     description = models.CharField(max_length=3000)
-    description_citizen_science_aspects = models.CharField(max_length=2000)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
     keywords = models.ManyToManyField('utilities.Keyword', blank=True)
 
@@ -117,11 +92,6 @@ class Project(models.Model):
     topic = models.ManyToManyField(Topic, verbose_name=pgettext_lazy('project', 'Topic'), blank=True)
     start_date = models.DateTimeField('Start date', null=True, blank=True)
     end_date = models.DateTimeField('End date', null=True, blank=True)
-
-    # Participation information
-    participationTask = models.ManyToManyField(ParticipationTask, blank=True)
-    howToParticipate = models.CharField(max_length=2000, null=True, blank=True)
-    equipment = models.CharField(max_length=2000, null=True, blank=True)
 
     # Project Location
     projectGeographicLocation = models.MultiPolygonField(blank=True, null=True)
@@ -154,22 +124,10 @@ class Project(models.Model):
     image3 = models.ImageField(upload_to='images/', max_length=300, null=True, blank=True)
     imageCredit3 = models.CharField(max_length=300, null=True, blank=True)
 
-    # Database information
-    origin = models.CharField(max_length=100, null=True, blank=True)
-    originDatabase = models.ForeignKey(OriginDatabase, on_delete=models.CASCADE, null=True, blank=True)
-    originURL = models.URLField(null=True, blank=True)
-    originUID = models.CharField(max_length=200, null=True, blank=True)
-
     # For moderation
     approved = models.BooleanField(_('Approved'), null=True)
     hidden = models.BooleanField(default=False)
-
-    # Others (some of them not used)
     featured = models.BooleanField(default=False)
-    host = models.CharField(max_length=200, null=True, blank=True)
-    doingAtHome = models.BooleanField(null=True, default=False)
-    participatingInaContest = models.BooleanField(null=True, default=False)
-    customField = models.ManyToManyField(CustomField, blank=True)
 
     # For translation
     translatedProject = models.ManyToManyField(TranslatedProject)
@@ -214,7 +172,6 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk and self.creator.is_staff:
-            # Can't use self.approved = self.creator.is_staff. Approved accepts None.
             self.approved = True
 
         super(Project, self).save(*args, **kwargs)
@@ -223,11 +180,6 @@ class Project(models.Model):
                 topic.updated = False
                 topic.save()
 
-    #            try:
-    #                auth_header = visao.authenticate()
-    #                visao.save_project(self, auth_header)
-    #           except Exception as e:
-    #                log_message(self, e)
 
     def delete(self, *args, **kwargs):
         if settings.VISAO_USERNAME:

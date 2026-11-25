@@ -201,7 +201,6 @@ def editResource(request, pk):
         'url': resource.url,
         'keywords': resource.keywords.all,
         'abstract': resource.abstract,
-        'description_citizen_science_aspects': resource.description_citizen_science_aspects,
         'category': getCategory(resource.category),
         'categorySelected': resource.category.id,
         'theme': resource.theme.all,

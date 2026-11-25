@@ -26,23 +26,21 @@ class CustomIndexDashboard(Dashboard):
 
         self.children += [
             modules.ModelList(
+                _('Public Policy'),
+                models=('policy.models.Policy',
+                )
+            ),
+        ]
+
+        self.children += [
+            modules.ModelList(
                 _('Projects'),
                 models=('projects.models.Project',
                         'projects.models.FundingBody',
                         'projects.models.Keyword',
                         'projects.models.Status',
                         'projects.models.Topic',
-                        'projects.models.ParticipationTask',
                         'projects.models.ProjectStatsReport')
-            ),
-        ]
-
-        self.children += [
-            modules.ModelList(
-                _('Platforms'),
-                models=('platforms.models.Platform',
-                        'platforms.models.GeographicExtend',
-                        'platforms.models.Keyword')
             ),
         ]
 
@@ -52,7 +50,6 @@ class CustomIndexDashboard(Dashboard):
                                       'resources.models.TrainingResource',
                                       'resources.models.ResourceGroup',
                                       'resources.models.Keyword',
-                                      'resources.models.Audience',
                                       'resources.models.Category',
                                       'resources.models.Theme',
                                       )),
@@ -74,9 +71,14 @@ class CustomIndexDashboard(Dashboard):
             modules.ModelList(_('Pages'), models=('pages.models.*',)),
         ]
 
+        self.children += [
+            modules.ModelList(_('Classification'), models=('utilities.models.Schema',
+                                                           'utilities.models.Concept',)),
+        ]
+
         self.children.append(modules.AppList(
             _('Communications'),
-            models=('contact.*', 'blog.*', 'digest.*')
+            models=('contact.*', 'blog.*', )
         ))
 
         self.children += [

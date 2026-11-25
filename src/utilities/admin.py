@@ -7,7 +7,7 @@ from django.contrib.contenttypes.forms import BaseGenericInlineFormSet
 from django.utils.translation import gettext as _
 
 from .actions import export_as_csv_action
-from .models import Translation, Keyword, IndexType
+from .models import Translation, Keyword, IndexType, Schema, Concept
 
 
 class TranslationInlineFormset(BaseGenericInlineFormSet):
@@ -85,3 +85,15 @@ class KeywordAdmin(admin.ModelAdmin):
 class IndexTypeAdmin(admin.ModelAdmin):
     list_display = ('type', 'order')
     ordering = ('order',)
+
+
+@admin.register(Schema)
+class SchemaAdmin(admin.ModelAdmin):
+    list_display = ('description', 'external_code', 'active')
+    inlines = (TranslationInline,)
+
+
+@admin.register(Concept)
+class ConceptAdmin(admin.ModelAdmin):
+    list_display = ('concept', 'schema', 'parent_concept')
+    inlines = (TranslationInline,)

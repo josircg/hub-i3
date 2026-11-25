@@ -75,7 +75,6 @@ class Resource(models.Model):
     url = models.URLField(max_length=200)
     keywords = models.ManyToManyField('utilities.Keyword')
     abstract = models.CharField(max_length=3000)
-    description_citizen_science_aspects = models.CharField(max_length=2000)
     category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
     theme = models.ManyToManyField(Theme)
 

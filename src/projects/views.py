@@ -26,7 +26,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import formats, translation
 from django.utils.timezone import get_default_timezone
-from django.utils.translation import ugettext as _, get_language
+from django.utils.translation import gettext as _, get_language
 from dossiers.models import Dossier
 from eucs_platform import send_email, visao, set_pages_and_get_object_list, get_main_page
 from eucs_platform.logger import log_message
@@ -38,7 +38,7 @@ from utilities.models import SearchIndex, SearchIndexType
 
 from .forms import (ProjectForm, ProjectTranslationForm, ProjectGeographicLocationForm,
                     InviteProjectForm)
-from .models import (Project, Topic, ParticipationTask, Status, FollowedProjects, FundingBody, ProjectPermission, Likes,
+from .models import (Project, Topic, Status, FollowedProjects, FundingBody, ProjectPermission, Likes,
                      Stats)
 
 User = get_user_model()
@@ -188,7 +188,6 @@ def editProject(request, pk):
         'keywords': project_obj.keywords.all,
         'end_date': end_datetime,
         'description': project_obj.description,
-        'description_citizen_science_aspects': project_obj.description_citizen_science_aspects,
         'status': project_obj.status,
         'mainOrganisation': project_obj.mainOrganisation,
         'organisation': project_obj.organisation.all,
@@ -245,7 +244,6 @@ def projects(request):
     projects = Project.objects.translated()
     topics = Topic.objects.translated_sorted_by_text()
     status = Status.objects.translated_sorted_by_text()
-    participationTask = ParticipationTask.objects.translated_sorted_by_text()
     dossier = Dossier.objects.get_approved_dossier(pk=request.GET.get('dossier') or 0)
     countries_with_content = projects.countries_with_content()
 
@@ -305,7 +303,6 @@ def projects(request):
         'countriesWithContent': countries_with_content,
         'status': status,
         'filters': filters,
-        'participationTask': participationTask,
         'counter': counter,
         'likes': likes,
         'follows': follows,
@@ -424,12 +421,6 @@ def applyFilters(request, projects):
 
     if request.GET.get('doingAtHome'):
         projects = projects.filter(doingAtHome=request.GET['doingAtHome'])
-
-    if request.GET.get('participationTask'):
-        participationtask_qs = ParticipationTask.objects.translated().filter(
-            translated_text=request.GET['participationTask']
-        ).values_list('pk')
-        projects = projects.filter(participationTask__pk__in=participationtask_qs)
 
     if request.GET.get('country'):
         projects = projects.filter(

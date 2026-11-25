@@ -5,10 +5,9 @@ from django.contrib.admin.models import ADDITION
 from django.contrib.auth import get_user_model
 from django.contrib.gis import forms
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _, pgettext
+from django.utils.translation import gettext_lazy as _, pgettext
 from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget
-from django_summernote.widgets import SummernoteWidget
 from eucs_platform.logger import log_message
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders import Nominatim
@@ -16,7 +15,7 @@ from organisations.models import Organisation
 from platforms.models import GeographicExtend
 from utilities.models import Keyword
 
-from .models import ParticipationTask, TranslatedProject, ProjectPermission, Project, Topic, Status, FundingBody
+from .models import TranslatedProject, ProjectPermission, Project, Topic, Status, FundingBody
 
 geolocator = Nominatim(timeout=None, user_agent=settings.USER_AGENT)
 USER = get_user_model()
@@ -61,17 +60,6 @@ class ProjectForm(forms.Form):
         label=_("Description"),
         max_length=3000)
 
-    description_citizen_science_aspects = forms.CharField(
-        widget=CKEditorWidget(config_name='frontpage'),
-        help_text=_("Please describe the citizen science aspect(s) of the project that "
-                    "warrant your registration in Cívis. This information will not be "
-                    "visible on the platform, and serves simply as reference when undergoing "
-                    "moderation. You can see our explanation on what <a href=\"https://civis.ibict.br/"
-                    "about/\">citizen science</a> is (max 2000 characters)."
-                    ),
-        max_length=2000,
-        label=_('Description of citizen science aspects'))
-
     status = forms.ModelChoiceField(
         queryset=Status.objects.none(),
         label=_("Activity status"),
@@ -105,30 +93,6 @@ class ProjectForm(forms.Form):
         help_text=_("Please select the topic or field(s) of science regarding the project, multiple-choice options."),
         required=False,
         label=pgettext('project', 'Topic'))
-
-    # Participation information
-    participationTask = forms.ModelMultipleChoiceField(
-        queryset=ParticipationTask.objects.none(),
-        widget=Select2MultipleWidget(),
-        help_text=_("Please select the task(s) undertaken by participants."),
-        required=False,
-        label=_("Participation Task"))
-
-    how_to_participate = forms.CharField(
-        widget=CKEditorWidget(config_name='frontpage'),
-        help_text=_("Please describe how people can get involved in the project (max 2000 characters)."),
-        max_length=2000,
-        label=_("How to participate"),
-        required=False)
-
-    equipment = forms.CharField(
-        widget=CKEditorWidget(config_name='frontpage'),
-        help_text=_(
-            'Please indicate any required or suggested equipment '
-            'to be used in the project (max 2000 characters).'),
-        max_length=2000,
-        label=_("Equipment"),
-        required=False)
 
     # Project location
     latitude = forms.DecimalField(
@@ -267,26 +231,10 @@ class ProjectForm(forms.Form):
         required=False,
         label=_("Provide heading image credit, if applicable"))
 
-    # Others, some of them unused
-    host = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(
-            attrs={'placeholder': 'Enter the name of the institution hosting or coordinating the project'}),
-        required=False)
-    participatingInaContest = forms.BooleanField(
-        required=False,
-        label='I want to participate in the #MonthOfTheProjects and agree to be contacted via email if the'
-              'project I am submitting wins the contest.'
-              '<a href="/blog/2021/05/31/june-monthoftheprojects-eu-citizenscience/"> Learn more here!</a>')
-    # Custom fields
-    title = forms.CharField(max_length=100, required=False)
-    paragraph = forms.CharField(widget=SummernoteWidget(), required=False)
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Set queryset here to reflect language change results
         self.fields['topic'].queryset = Topic.objects.translated_sorted_by_text()
-        self.fields['participationTask'].queryset = ParticipationTask.objects.translated_sorted_by_text()
         self.fields['status'].queryset = Status.objects.translated_sorted_by_text()
         self.fields['geoExtend'].queryset = GeographicExtend.objects.translated().order_by('translated_text')
 
@@ -301,14 +249,6 @@ class ProjectForm(forms.Form):
         else:
             mainOrganisation = None
 
-        doingAtHome = False
-        if 'doingAtHome' in self.data and self.data['doingAtHome'] == 'on':
-            doingAtHome = True
-
-        participatingInaContest = False
-        if 'participatingInaContest' in self.data and self.data['participatingInaContest'] == 'on':
-            participatingInaContest = True
-
         if pk:
             project = get_object_or_404(Project, id=pk)
             if project.hidden:
@@ -316,13 +256,10 @@ class ProjectForm(forms.Form):
             self.updateFields(
                 project,
                 status,
-                doingAtHome,
                 mainOrganisation)
         else:
             project = self.createProject(
                 status,
-                doingAtHome,
-                participatingInaContest,
                 mainOrganisation,
                 args)
 
@@ -346,19 +283,17 @@ class ProjectForm(forms.Form):
         project.topic.set(self.data.getlist('topic'))
         project.keywords.set(self.data.getlist('keywords'))
         project.fundingBody.set(self.data.getlist('funding_body'))
-        project.participationTask.set(self.data.getlist('participationTask'))
         project.organisation.set(self.data.getlist('organisation'))
         project.save()
 
         return project.id
 
-    def createProject(self, status, doingAtHome, participatingInaContest, mainOrganisation, args):
+    def createProject(self, status, mainOrganisation, args):
         return Project(
             creator=args.user,
             name=self.data['project_name'],
             url=self.cleaned_data['url'],
             description=self.data['description'],
-            description_citizen_science_aspects=self.data['description_citizen_science_aspects'],
             latitude=self.data['latitude'],
             longitude=self.data['longitude'],
             mainOrganisation=mainOrganisation,
@@ -368,18 +303,11 @@ class ProjectForm(forms.Form):
             imageCredit1=self.data['image_credit1'],
             imageCredit2=self.data['image_credit2'],
             imageCredit3=self.data['image_credit3'],
-            howToParticipate=self.data['how_to_participate'],
-            equipment=self.data['equipment'],
-            fundingProgram=self.data['funding_program'],
             country=self.cleaned_data['country'],
             geoExtend=self.cleaned_data['geoExtend'],
-            language=self.cleaned_data['language'],
-            # originUID=self.data['originUID'],
-            # originURL=self.data['originURL'],
-            # doingAtHome=doingAtHome,
-            participatingInaContest=participatingInaContest)
+            language=self.cleaned_data['language'])
 
-    def updateFields(self, project, status, doingAtHome, mainOrganisation):
+    def updateFields(self, project, status, mainOrganisation):
         project.name = self.data['project_name']
         project.url = self.cleaned_data['url']
         project.latitude = self.data['latitude']
@@ -387,14 +315,10 @@ class ProjectForm(forms.Form):
         project.author = self.data['contact_person']
         project.author_email = self.data['contact_person_email']
         project.description = self.data['description']
-        project.description_citizen_science_aspects = self.data['description_citizen_science_aspects']
         project.status = status
         project.imageCredit1 = self.data['image_credit1']
         project.imageCredit2 = self.data['image_credit2']
         project.imageCredit3 = self.data['image_credit3']
-        project.howToParticipate = self.data['how_to_participate']
-        project.doingAtHome = doingAtHome
-        project.equipment = self.data['equipment']
         project.fundingProgram = self.data['funding_program']
         project.mainOrganisation = mainOrganisation
         project.country = self.cleaned_data['country']
@@ -435,20 +359,6 @@ class ProjectTranslationForm(forms.Form):
         max_length=10000,
         label=_("Description"))
 
-    translatedHowToParticipate = forms.CharField(
-        widget=CKEditorWidget(config_name='frontpage'),
-        help_text=_('Please provide a <i>how to participate</i> field translation.'),
-        max_length=10000,
-        label=_("How to participate"),
-        required=False)
-
-    translatedEquipment = forms.CharField(
-        widget=CKEditorWidget(config_name='frontpage'),
-        help_text=_('Please provide an <i>equipment</i> field translation.'),
-        max_length=10000,
-        label=_("Needed equipment"),
-        required=False)
-
     def save(self, args):
         project = Project.objects.get(id=self.data.get('projectId'))
         translation = project.translatedProject.filter(inLanguage=self.data.get('languageId')).first()
@@ -457,19 +367,12 @@ class ProjectTranslationForm(forms.Form):
         t1 = TranslatedProject(
             inLanguage=self.data.get('languageId'),
             translatedDescription=self.data.get('translatedDescription'),
-            translatedHowToParticipate=self.data.get('translatedHowToParticipate'),
-            translatedEquipment=self.data.get('translatedEquipment'),
             needsUpdate=False,
             creator=args.user,
         )
         t1.save()
         project.translatedProject.add(t1)
         project.save()
-
-
-class CustomFieldForm(forms.Form):
-    title = forms.CharField(max_length=100, required=False)
-    paragraph = forms.CharField(widget=SummernoteWidget(), required=False)
 
 
 class ProjectPermissionForm(forms.Form):

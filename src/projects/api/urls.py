@@ -5,7 +5,6 @@ from . import views
 router = DefaultRouter()
 router.register(r'projects/topic', views.TopicViewSet, basename='topic')
 router.register(r'projects/status', views.StatusViewSet, basename='status')
-router.register(r'projects/participationTask', views.ParticipationTaskViewSet, basename='participationTask')
 
 urlpatterns = [
     path('projects/', views.ProjectList.as_view(), name="api_projects"),

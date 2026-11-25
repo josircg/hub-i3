@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     "profiles",
     "accounts",
     "projects",
+    "policies",
     "resources",
     "digest",
     "dossiers",

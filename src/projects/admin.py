@@ -1,18 +1,16 @@
 from django import forms
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _, pgettext
+from django.utils.translation import gettext_lazy as _, pgettext
 from organisations.models import Organisation
 from utilities.admin import EUCSAdmin, TranslationInline
 
-from .models import (Project, Topic, Status, ParticipationTask, ProjectPermission, FundingBody,
-                     ProjectStatsReport)
+from .models import Project, Topic, Status, ProjectPermission, FundingBody, ProjectStatsReport
 
 
 class ProjectFormA(forms.ModelForm):
     class Meta:
         widgets = {
             'description': forms.Textarea(attrs={'rows': 10, 'cols': 100}),
-            'description_citizen_science_aspects': forms.Textarea(attrs={'rows': 10, 'cols': 100}),
         }
 
 
@@ -35,19 +33,18 @@ class ProjectA(admin.ModelAdmin):
     search_fields = ('creator__name', 'name',)
     list_display = ('name', 'creator', 'status', 'dateCreated', 'dateUpdated', 'approved', 'safe_url')
     fields = (
-        'name', 'url', 'description', 'description_citizen_science_aspects', 'status', 'keywords',
-        'topic', ('start_date', 'end_date'), 'participationTask', 'howToParticipate', 'equipment',
+        'name', 'url', 'description', 'status', 'keywords',
+        'topic', ('start_date', 'end_date'),
         ('latitude', 'longitude'), ('country', 'language'), ('author', 'author_email', 'mainOrganisation'),
         ('fundingBody', 'fundingProgram'), ('image1', 'imageCredit1'), ('image2', 'imageCredit2'),
-        ('image3', 'imageCredit3'), ('originDatabase', 'originURL', 'originUID'),
-        ('doingAtHome', 'participatingInaContest', 'featured',),
+        ('image3', 'imageCredit3'), 'featured',
         ('approved', 'creator', 'dateCreated', 'dateUpdated'),
     )
     form = ProjectFormA
     inlines = [OrganisationInline, ProjectPermissionInLine]
     list_select_related = ('creator',)
     raw_id_fields = ('creator',)
-    autocomplete_fields = ('topic', 'keywords', 'participationTask', 'fundingBody')
+    autocomplete_fields = ('topic', 'keywords', 'fundingBody')
     readonly_fields = ('dateCreated', 'dateUpdated', 'image1', 'image2', 'image3')
 
     def get_form(self, request, obj=None, **kwargs):
@@ -92,12 +89,6 @@ class ProjectInline(admin.TabularInline):
 class TopicAdmin(admin.ModelAdmin):
     search_fields = ('topic',)
     inlines = (ProjectInline, TranslationInline)
-
-
-@admin.register(ParticipationTask)
-class ParticipationTaskAdmin(admin.ModelAdmin):
-    search_fields = ('participationTask',)
-    inlines = (TranslationInline,)
 
 
 @admin.register(FundingBody)

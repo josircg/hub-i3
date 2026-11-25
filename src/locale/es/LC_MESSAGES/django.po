@@ -850,14 +850,17 @@ msgstr "No puedes agregarte a tus propios dosieres"
 msgid "Collaborator updated successfully"
 msgstr "Colaborador actualizado con éxito"
 
-msgid "Platforms"
-msgstr "Plataformas"
+msgid "Public Policy"
+msgstr ""
 
 msgid "Organisations"
 msgstr "Organizaciones"
 
 msgid "Pages"
 msgstr "Páginas"
+
+msgid "Classification"
+msgstr ""
 
 msgid "Communications"
 msgstr "Comunicaciones"
@@ -1317,6 +1320,9 @@ msgstr "Artículo"
 msgid "Articles"
 msgstr "Artículos"
 
+msgid "Platforms"
+msgstr "Plataformas"
+
 msgid "Please write the name of the citizen science platform."
 msgstr "Escriba el nombre de la plataforma de ciencia ciudadana."
 
@@ -1454,6 +1460,38 @@ msgstr "¡Su plataforma \"%s\" ha sido enviada!"
 #, python-format
 msgid "Notification - New Platform \"%s\" submitted"
 msgstr "Notificación: Nueva Plataforma \"%s\" enviada"
+
+#, fuzzy
+#| msgid "Lead organisation"
+msgid "Legislation"
+msgstr "Organización principal"
+
+msgid "Visible"
+msgstr ""
+
+#, fuzzy
+#| msgid "Policies"
+msgid "Public Policies"
+msgstr "Políticas"
+
+msgid "Policy Scheme"
+msgstr ""
+
+#, fuzzy
+#| msgid "Policies"
+msgid "Policy Schemes"
+msgstr "Políticas"
+
+msgid "Public Policy Class"
+msgstr ""
+
+msgid "Public Policy Classes"
+msgstr ""
+
+#, fuzzy
+#| msgid "New content has been associated with the dossier %s!"
+msgid "The concept schema is not associated with this policy."
+msgstr "¡Se ha asociado nuevo contenido al dosier %s!"
 
 msgid "Export monthly stats file"
 msgstr "Exportar fichero de crecimiento de usuarios"
@@ -1701,22 +1739,6 @@ msgstr ""
 "Describa aquí su proyecto, indicando sus principales objetivos y "
 "características (máx. 3000 caracteres)."
 
-msgid ""
-"Please describe the citizen science aspect(s) of the project that warrant "
-"your registration in Cívis. This information will not be visible on the "
-"platform, and serves simply as reference when undergoing moderation. You can "
-"see our explanation on what <a href=\"https://civis.ibict.br/about/"
-"\">citizen science</a> is (max 2000 characters)."
-msgstr ""
-"Describa los aspectos de ciencia ciudadana del proyecto que justifican su "
-"registro en Cívis. Esta información no será visible en la plataforma, y "
-"sirve simplemente como referencia cuando se someta a moderación. Puede "
-"consultar nuestra explicación sobre qué es <a href=\"https://civis.ibict.br/"
-"about/\">ciencia ciudadana</a> (máx. 2000 caracteres)."
-
-msgid "Description of citizen science aspects"
-msgstr "Descripción de los aspectos de la ciencia ciudadana"
-
 msgid "Activity status"
 msgstr "Estado de la actividad"
 
@@ -1741,32 +1763,6 @@ msgid ""
 msgstr ""
 "Por favor, seleccione el tema o campo(s) científico(s) relacionado(s) con el "
 "proyecto, opciones múltiples."
-
-msgid "Please select the task(s) undertaken by participants."
-msgstr "Seleccione la(s) tarea(s) realizada(s) por los participantes."
-
-msgid "Participation Task"
-msgstr "Tarea de los participantes"
-
-msgid ""
-"Please describe how people can get involved in the project (max 2000 "
-"characters)."
-msgstr ""
-"Describa cómo puede participar la gente en el proyecto (máx. 2000 "
-"caracteres)."
-
-msgid "How to participate"
-msgstr "Cómo participar"
-
-msgid ""
-"Please indicate any required or suggested equipment to be used in the "
-"project (max 2000 characters)."
-msgstr ""
-"Indique el equipo necesario o sugerido para el proyecto (máx. 2000 "
-"caracteres)."
-
-msgid "Equipment"
-msgstr "Equipo"
 
 msgid "Please indicate the primary language of the project."
 msgstr "Seleccione el idioma principal del proyecto."
@@ -1851,15 +1847,6 @@ msgstr ""
 msgid "Please provide a <i>description</i> field translation."
 msgstr "Proporcione una traducción para <i>description</i>"
 
-msgid "Please provide a <i>how to participate</i> field translation."
-msgstr "Proporcione una traducción para <i>how to participate</i> "
-
-msgid "Please provide an <i>equipment</i> field translation."
-msgstr "Proporcione una traducción para  <i>equipment</i>"
-
-msgid "Needed equipment"
-msgstr "Equipo necesario"
-
 msgid "Editor's email"
 msgstr "Correo electrónico del editor"
 
@@ -1942,6 +1929,9 @@ msgstr "Me gusta totales"
 
 msgid "Featured"
 msgstr "Destacado"
+
+msgid "Participation Task"
+msgstr "Tarea de los participantes"
 
 msgid "Not yet moderated"
 msgstr "Aún no moderado"
@@ -2051,6 +2041,12 @@ msgstr "Por favor ayude a la comunidad mejorandola"
 msgid "here"
 msgstr "aquí"
 
+msgid "How to participate"
+msgstr "Cómo participar"
+
+msgid "Needed equipment"
+msgstr "Equipo necesario"
+
 msgid "This project profile is not available in your selected language."
 msgstr "Este perfil de proyecto no está disponible en el idioma seleccionado."
 
@@ -2149,6 +2145,9 @@ msgstr "¿Desea eliminar a este editor? Esta acción es permanente."
 msgid "Please indicate the language you want to translate to"
 msgstr "Indique el idioma al que desea traducir"
 
+msgid "Equipment"
+msgstr "Equipo"
+
 msgid "Save translation"
 msgstr "Guardar traducción"
 
@@ -2236,20 +2235,6 @@ msgstr "Describa brevemente el recurso (máx. 3000 caracteres)."
 
 msgid "Brief description"
 msgstr "Breve descripción"
-
-msgid ""
-"Please describe the citizen science aspect(s) of the resource that warrant "
-"your registration in Cívis. This information will not be visible on the "
-"platform, and serves simply as reference when undergoing moderation. You can "
-"see our explanation on what <a href=\"https://civis.ibict.br/about/"
-"\">citizen science</a> is (max 2000 characters)."
-msgstr ""
-"Por favor, describa los aspectos de ciencia ciudadana del recurso que "
-"justifican su registro en Cívis. Esta información no será visible en la "
-"plataforma y servirá simplemente como referencia cuando se someta a "
-"moderación. Puede consultar nuestra explicación sobre qué es <a "
-"href=\"https://civis.ibict.br/about/\">ciencia ciudadana</a> (max 2000 "
-"caracteres)."
 
 msgid ""
 "Please name the author(s) of the resource. Enter <i>First Initial Last Name</"
@@ -2698,9 +2683,11 @@ msgid "Hub-i3"
 msgstr ""
 
 msgid ""
-"Plataforma de consulta a políticas públicas voltadas à inclusão social, "
-"desenvolvida com tecnologias de código aberto pelo IBICT."
+"Platform for consulting public policies aimed at social inclusion, "
+"developed with open-source technologies by IBICT."
 msgstr ""
+"Plataforma de consulta de políticas públicas orientadas a la inclusión "
+"social, desarrollada con tecnologías de código abierto por el IBICT."
 
 #, fuzzy
 #| msgid "Platform"
@@ -2733,9 +2720,6 @@ msgstr "Código fuente"
 
 msgid "Follow us"
 msgstr "Síganos"
-
-msgid "Partnerships"
-msgstr "Asociaciones"
 
 msgid "CC BY 4.0 License"
 msgstr "Licencia CC BY 4.0"
@@ -2951,18 +2935,6 @@ msgstr "Cerrar sesión"
 
 msgid "New submission"
 msgstr "Nuevo envío"
-
-msgid "profile"
-msgstr "Perfil"
-
-msgid "logout"
-msgstr "cerrar sesión"
-
-msgid "Company"
-msgstr "Empresa"
-
-msgid "Connect with us on"
-msgstr "Conecte con Cívis en "
 
 msgid "Coming Soon"
 msgstr "Próximamente"
@@ -3404,9 +3376,6 @@ msgstr "En mi biblioteca"
 msgid "Add to library"
 msgstr "Añadir a mi biblioteca"
 
-msgid "Translations"
-msgstr "Traducciones"
-
 msgid "Export as CSV"
 msgstr "Exportar como CSV"
 
@@ -3430,6 +3399,9 @@ msgstr "Texto traducido"
 msgid "Translation"
 msgstr "Traducciones"
 
+msgid "Translations"
+msgstr "Traducciones"
+
 msgid "Search Index Type"
 msgstr "Tipo de Índice de Búsqueda"
 
@@ -3445,8 +3417,105 @@ msgstr "Índices de Búsqueda"
 msgid "Keyword"
 msgstr "Palabra clave"
 
+msgid "Reference"
+msgstr ""
+
+msgid "External Code"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Schema"
+msgstr ""
+
+msgid "Schemas"
+msgstr ""
+
+msgid "Concept"
+msgstr ""
+
+#, fuzzy
+#| msgid "Sent Count"
+msgid "Parent Concept"
+msgstr "Número de envíos"
+
+msgid "Image"
+msgstr "Imagen"
+
+msgid "Concepts"
+msgstr ""
+
 msgid "TOTALS"
 msgstr "TOTALES"
+
+#~ msgid ""
+#~ "Please describe the citizen science aspect(s) of the project that warrant "
+#~ "your registration in Cívis. This information will not be visible on the "
+#~ "platform, and serves simply as reference when undergoing moderation. You "
+#~ "can see our explanation on what <a href=\"https://civis.ibict.br/about/"
+#~ "\">citizen science</a> is (max 2000 characters)."
+#~ msgstr ""
+#~ "Describa los aspectos de ciencia ciudadana del proyecto que justifican su "
+#~ "registro en Cívis. Esta información no será visible en la plataforma, y "
+#~ "sirve simplemente como referencia cuando se someta a moderación. Puede "
+#~ "consultar nuestra explicación sobre qué es <a href=\"https://civis.ibict."
+#~ "br/about/\">ciencia ciudadana</a> (máx. 2000 caracteres)."
+
+#~ msgid "Description of citizen science aspects"
+#~ msgstr "Descripción de los aspectos de la ciencia ciudadana"
+
+#~ msgid "Please select the task(s) undertaken by participants."
+#~ msgstr "Seleccione la(s) tarea(s) realizada(s) por los participantes."
+
+#~ msgid ""
+#~ "Please describe how people can get involved in the project (max 2000 "
+#~ "characters)."
+#~ msgstr ""
+#~ "Describa cómo puede participar la gente en el proyecto (máx. 2000 "
+#~ "caracteres)."
+
+#~ msgid ""
+#~ "Please indicate any required or suggested equipment to be used in the "
+#~ "project (max 2000 characters)."
+#~ msgstr ""
+#~ "Indique el equipo necesario o sugerido para el proyecto (máx. 2000 "
+#~ "caracteres)."
+
+#~ msgid "Please provide a <i>how to participate</i> field translation."
+#~ msgstr "Proporcione una traducción para <i>how to participate</i> "
+
+#~ msgid "Please provide an <i>equipment</i> field translation."
+#~ msgstr "Proporcione una traducción para  <i>equipment</i>"
+
+#~ msgid ""
+#~ "Please describe the citizen science aspect(s) of the resource that "
+#~ "warrant your registration in Cívis. This information will not be visible "
+#~ "on the platform, and serves simply as reference when undergoing "
+#~ "moderation. You can see our explanation on what <a href=\"https://civis."
+#~ "ibict.br/about/\">citizen science</a> is (max 2000 characters)."
+#~ msgstr ""
+#~ "Por favor, describa los aspectos de ciencia ciudadana del recurso que "
+#~ "justifican su registro en Cívis. Esta información no será visible en la "
+#~ "plataforma y servirá simplemente como referencia cuando se someta a "
+#~ "moderación. Puede consultar nuestra explicación sobre qué es <a "
+#~ "href=\"https://civis.ibict.br/about/\">ciencia ciudadana</a> (max 2000 "
+#~ "caracteres)."
+
+#~ msgid "Partnerships"
+#~ msgstr "Asociaciones"
+
+#~ msgid "profile"
+#~ msgstr "Perfil"
+
+#~ msgid "logout"
+#~ msgstr "cerrar sesión"
+
+#~ msgid "Company"
+#~ msgstr "Empresa"
+
+#~ msgid "Connect with us on"
+#~ msgstr "Conecte con Cívis en "
 
 #~ msgid "Community Forums"
 #~ msgstr "Foros de la comunidad"
@@ -3972,9 +4041,6 @@ msgstr "TOTALES"
 
 #~ msgid "Please briefly describe the dossier."
 #~ msgstr "Describa brevemente el dosier"
-
-#~ msgid "Image"
-#~ msgstr "Imagen"
 
 #~ msgid "Dossier image for profile"
 #~ msgstr "Imagen del dosier para el perfil"

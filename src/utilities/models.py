@@ -4,9 +4,9 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.db import models
 from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
-from .managers import SearchIndexQuerySet
+from .managers import SearchIndexQuerySet, TranslationBaseQuerySet
 
 
 class Translation(models.Model):
@@ -51,6 +51,7 @@ class SearchIndexType(models.TextChoices):
     TRAINING = 'training', _('Training Resources')
     ORGANISATION = 'organisation', _('Organisations')
     PLATFORM = 'platform', _('Platforms')
+    POLICY = 'policy', _('Public Policies')
     PROFILE = 'profile', _('Users')
     EVENT = 'event', _('Events')
     BLOG = 'blog', _('Blog')
@@ -113,6 +114,7 @@ def delete_searchindex(searchindex_type, object_id):
     return SearchIndex.objects.filter(type__type=searchindex_type, object_id=object_id).delete()
 
 
+# Keywords are terms created without a controlled vocabulary
 class Keyword(models.Model):
     keyword = models.TextField(unique=True)
     enabled = models.BooleanField(default=True)
@@ -134,3 +136,49 @@ class Keyword(models.Model):
         if self.keyword:
             self.keyword = self.keyword.lower()
         return super().validate_unique(exclude)
+
+
+# Schemas are foundational cognitive frameworks that aid in organizing and understanding concepts.
+class SchemaQuerySet(TranslationBaseQuerySet):
+    default_field = 'description'
+
+
+class Schema(AbstractTranslatedModel):
+    description = models.TextField(_('Description'))
+    reference = models.TextField(_('Reference'))
+    url = models.TextField(blank=True, null=True)
+    external_code = models.CharField(_('External Code'), max_length=20, blank=True, null=True)
+    parent_schema = models.ForeignKey('Schema', blank=True, null=True, on_delete=models.PROTECT)
+    active = models.BooleanField(_('Active'), default=True)
+
+    str_field = 'description'
+    objects = SchemaQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = _('Schema')
+        verbose_name_plural = _('Schemas')
+        ordering = ['description',]
+
+
+class ConceptQuerySet(TranslationBaseQuerySet):
+    default_field = 'concept'
+
+
+# Concepts are terms that categorize objects based on a predefined schema
+class Concept(AbstractTranslatedModel):
+    schema = models.ForeignKey(Schema, on_delete=models.CASCADE)
+    concept = models.TextField(_('Concept'))
+    parent_concept = models.ForeignKey('Concept', related_name='children', on_delete=models.PROTECT,
+                                       blank=True, null=True, verbose_name=_('Parent Concept'))
+    description = models.TextField(_('Description'))
+    image = models.ImageField(_('Image'), upload_to='images/', blank=True, null=True)
+    active = models.BooleanField(_('Active'), default=True)
+
+    str_field = 'concept'
+    objects = ConceptQuerySet.as_manager()
+
+    class Meta:
+        unique_together = ('schema', 'concept', )
+        verbose_name = _('Concept')
+        verbose_name_plural = _('Concepts')
+        ordering = ('concept', )

@@ -80,3 +80,9 @@ venv
 .env
 .env.*
 !*.sample.env
+
+# Artefatos de workflows do Kiro
+.agents/
+
+# Claude Code: configuração local (CLAUDE.md e .claude/commands/ são versionados)
+.claude/settings.local.json

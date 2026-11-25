@@ -85,6 +85,3 @@ class TopicQuerySet(TranslationBaseQuerySet):
 class StatusQuerySet(TranslationBaseQuerySet):
     default_field = 'status'
 
-
-class ParticipationTaskQuerySet(TranslationBaseQuerySet):
-    default_field = 'participationTask'
