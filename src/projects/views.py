@@ -193,7 +193,6 @@ def editProject(request, pk):
         'mainOrganisation': project_obj.mainOrganisation,
         'organisation': project_obj.organisation.all,
         'topic': project_obj.topic.all,
-        'participationTask': project_obj.participationTask.all,
         'projectGeographicLocation': project_obj.projectGeographicLocation,
         'image1': project_obj.image1,
         'image_credit1': project_obj.imageCredit1,
@@ -204,18 +203,11 @@ def editProject(request, pk):
         'image3': project_obj.image3,
         'image_credit3': project_obj.imageCredit3,
         'withImage3': (True, False)[project_obj.image3 == ""],
-        'how_to_participate': project_obj.howToParticipate,
-        'equipment': project_obj.equipment,
         'contact_person': project_obj.author,
         'contact_person_email': project_obj.author_email,
-        'host': project_obj.host,
         'funding_body': project_obj.fundingBody.all,
-        'doingAtHome': project_obj.doingAtHome,
         'fundingBodySelected': project_obj.fundingBody,
         'fundingProgram': project_obj.fundingProgram,
-        'originDatabase': project_obj.originDatabase,
-        'originUID': project_obj.originUID,
-        'originURL': project_obj.originURL,
         'geoExtend': project_obj.geoExtend_id,
         'language': project_obj.language
     })
@@ -254,9 +246,7 @@ def projects(request):
         'dossier': '',
         'topic': '',
         'status': 0,
-        'host': '',
         'approved': '',
-        'doingAtHome': '',
         'featured': ''}
 
     projects = applyFilters(request, projects)
@@ -419,9 +409,6 @@ def applyFilters(request, projects):
             status_qs = Status.objects.translated().filter(translated_text=request.GET['status']).values_list('pk')
             projects = projects.filter(status__pk__in=status_qs)
 
-    if request.GET.get('doingAtHome'):
-        projects = projects.filter(doingAtHome=request.GET['doingAtHome'])
-
     if request.GET.get('country'):
         projects = projects.filter(
             Q(mainOrganisation__country=request.GET['country']) | Q(country=request.GET['country']) |
@@ -451,12 +438,8 @@ def setFilters(request, filters):
         filters['topic'] = request.GET['topic']
     if request.GET.get('status'):
         filters['status'] = request.GET['status']
-    if request.GET.get('doingAtHome'):
-        filters['doingAtHome'] = int(request.GET['doingAtHome'])
     if request.GET.get('approved'):
         filters['approved'] = request.GET['approved']
-    if request.GET.get('participationTask'):
-        filters['participationTask'] = request.GET['participationTask']
     if request.GET.get('orderby'):
         filters['orderby'] = request.GET['orderby']
     if request.GET.get('country'):
@@ -609,15 +592,13 @@ def downloadProjects(request):
 
 
 def get_headers():
-    return ['id', 'name', 'description', 'keywords', 'status', 'start_date', 'end_date', 'topic', 'url', 'host',
-            'howToParticipate', 'doingAtHome', 'equipment',
-            'fundingBody', 'fundingProgram', 'originDatabase', 'originURL', 'originUID']
+    return ['id', 'name', 'description', 'keywords', 'status', 'start_date', 'end_date', 'topic', 'url',
+            'fundingBody', 'fundingProgram']
 
 
 def get_data(item):
     keywordsList = list(item.keywords.all().values_list('keyword', flat=True))
     topicList = list(item.topic.all().values_list('topic', flat=True))
-    participationTaskList = list(item.participationTask.all().values_list('participationTask', flat=True))
 
     return {
         'id': item.id,
@@ -628,19 +609,11 @@ def get_data(item):
         'start_date': item.start_date,
         'end_date': item.end_date,
         'topic': topicList,
-        'participationTask': participationTaskList,
         'url': item.url,
         'latitude': item.latitude,
         'longitude': item.longitude,
-        'host': item.host,
-        'howToParticipate': item.howToParticipate,
-        'doingAtHome': item.doingAtHome,
-        'equipment': item.equipment,
         'fundingBody': item.fundingBody,
         'fundingProgram': item.fundingProgram,
-        'originDatabase': item.originDatabase,
-        'originURL': item.originURL,
-        'originUID': item.originUID,
     }
 
 

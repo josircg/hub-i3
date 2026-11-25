@@ -74,11 +74,6 @@ class ProjectList(APIView):
                 Q(mainOrganisation__country=country) | Q(country=country) | Q(organisation__country=country)
             ).distinct()
 
-        doingAtHome = request.query_params.get('doingAtHome', None)
-        if doingAtHome is not None:
-            doingAtHome = True if (doingAtHome == "true" or doingAtHome == '1') else False
-            projects = projects.filter(doingAtHome=doingAtHome)
-
         if request.user.is_staff and request.GET.get('approvedCheck'):
             if request.GET['approvedCheck'] == 'On':
                 projects = projects.filter(id__in=approvedProjects)

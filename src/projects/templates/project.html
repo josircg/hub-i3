@@ -62,15 +62,6 @@
                 {% endif %}
                 <p class="mt-3 gray7-color">{{translation.translatedDescription | safe}}</p>
 
-                {% if project.howToParticipate %}
-                <h4 class="mt-4 leftborder">{% trans "How to participate" %} </h4>
-                <p class="gray7-color">{{translation.translatedHowToParticipate | safe}}</p>
-                {% endif %}
-
-                {% if project.equipment %}
-                  <h4 class="mt-4 leftborder">{% trans "Needed equipment" %}</h4>
-                  <p class="gray7-color">{{translation.translatedEquipment |safe}}</p>
-                {% endif %}
               {% endif %}
             {% endfor %}
 
@@ -82,15 +73,6 @@
             {% endif %}
             <p class="mt-3 gray7-color">{{project.description | safe}}</p>
 
-            {% if project.howToParticipate %}
-              <h4 class="mt-4 leftborder">{% trans "How to participate" %} </h4>
-              <p class="gray7-color">{{project.howToParticipate | safe}}</p>
-            {% endif %}
-
-            {% if project.equipment %}
-              <h4 class="mt-4 leftborder">{% trans "Needed equipment" %}</h4>
-              <p class="gray7-color">{{project.equipment |safe}}</p>
-            {% endif %}
         {% endif %}
         </div>
 
@@ -124,15 +106,6 @@
             <div>
                 {% for topic in project.topic.translated_sorted_by_text %}
                 <a class="badge bg-my-darkBlue" href="/projects?keywords=&topic={{topic|urlencode}}">{{topic}}</a>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            {% if project.participationTask.all %}
-            <h5 class="mt-3">{% trans "Participation tasks" %}</h5>
-            <div>
-                {% for participationTask in project.participationTask.translated_sorted_by_text %}
-                <a class="badge bg-my-wood" href="/projects?participationTask={{participationTask}}">{{participationTask}}</a>
                 {% endfor %}
             </div>
             {% endif %}

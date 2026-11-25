@@ -66,15 +66,6 @@
                         {% endfor %}
                     </select>
 
-                    <select id="participationTask" name="participationTask" class="custom-select status-select form-control">
-                        <option value="">{% trans "Participation Task" %}</option>
-                        {% for p in participationTask %}
-                        <option {% if p|safe ==  filters.participationTask %} selected {% endif %} value="{{p}}">
-                        {{p|capfirst}}
-                        </option>
-                        {% endfor %}
-                    </select>
-
                     {% if user.is_staff %}
                     <select id="approved" name="approved" class="custom-select status-select form-control">
                         <option value="approved" {% if filters.approved == "approved" %} selected {% endif %}>{% trans "Approved" %}</option>
@@ -110,12 +101,6 @@
                 <a class="badge rounded-pill bg-pink4 mt-4" id="pill-status">
                     <i class="fas fa-times"></i>
                     {% trans "Status" %}: {{filters.status}}
-                </a>
-                {% endif %}
-                {% if filters.participationTask %}
-                <a class="badge rounded-pill bg-pink7 mt-4" id="pill-participationTask">
-                    <i class="fas fa-times"></i>
-                    {% trans "Participation task" %}: {{filters.participationTask}}
                 </a>
                 {% endif %}
                 <!-- TODO: improve next condition -->

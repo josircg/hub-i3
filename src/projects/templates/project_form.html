@@ -74,16 +74,6 @@
 
                     <div class="row d-flex justify-content-center">
                       <div class="col-8">
-                        <h4 class="leftborder mt-5">{% translate "Participation information" %}</h4>
-                        {{ form.participationTask |as_crispy_field }}
-                        {{ form.how_to_participate|as_crispy_field }}
-                        {{ form.equipment|as_crispy_field }}
-                        {% include '_save_zone.html' with show_continue=True %}
-                      </div>
-                    </div>
-
-                    <div class="row d-flex justify-content-center">
-                      <div class="col-8">
                         <h3 class="leftborder mt-5">{% translate "Location" %}*</h3>
                         <p id="hint_id_logo" class="help-block">{% translate "Locate the city or region and country of your initiative on the map or inform this information in the field below." %}</p>
                         {% leaflet_map "map" callback="window.map_init_basic" %}

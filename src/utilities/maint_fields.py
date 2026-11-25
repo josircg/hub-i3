@@ -61,7 +61,7 @@ def update_models():
     update_object_url_fields(Event, ['url'])
     update_object_url_fields(Organisation, ['url'])
     update_object_url_fields(Platform, ['url'])
-    update_object_url_fields(Project, ['url', 'originURL'])
+    update_object_url_fields(Project, ['url'])
     update_object_url_fields(Resource, ['url'])
     print('Process complete')
 
