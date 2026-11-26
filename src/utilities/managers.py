@@ -142,3 +142,13 @@ class SearchIndexQuerySet(QuerySet):
             )
 
         return qs
+
+
+class SchemaQuerySet(TranslationBaseQuerySet):
+    """Queryset of schemas, translated by description."""
+    default_field = 'description'
+
+
+class ConceptQuerySet(TranslationBaseQuerySet):
+    """Queryset of concepts, translated by concept text."""
+    default_field = 'concept'

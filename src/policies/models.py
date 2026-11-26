@@ -7,9 +7,11 @@ from organisations.models import Organisation
 from resources.models import Resource
 from utilities.models import Concept, Schema
 
+from .managers import PolicyQuerySet
 
-# Public policies
+
 class Policy(models.Model):
+    """Public policy, classified through the concepts of its schemas."""
     name = models.TextField(_('Name'))
     description = models.TextField(_('Description'))
     url = models.URLField(blank=True, null=True)
@@ -33,6 +35,8 @@ class Policy(models.Model):
     dateCreated = models.DateTimeField(_('Created date'), auto_now_add=True)
     dateUpdated = models.DateTimeField(_('Updated date'), auto_now=True)
 
+    objects = PolicyQuerySet.as_manager()
+
     class Meta:
         verbose_name = _('Public Policy')
         verbose_name_plural = _('Public Policies')
@@ -41,27 +45,28 @@ class Policy(models.Model):
         return f'{self.name}'
 
     def year(self):
-        if self.start_date:
-            return f'{self.start_date.year}'
-        else:
+        """Return the start year as text, or ``-`` when there is no start date."""
+        if not self.start_date:
             return '-'
+        return f'{self.start_date.year}'
 
     def missing_required_schemas(self):
-        """Schemas marked as required for this policy that have no concept."""
+        """Return the schemas marked as required for this policy that have no concept."""
         used_schemas = self.policyconcept_set.values('concept__schema')
         return Schema.objects.filter(
             policyschema__policy=self, policyschema__required=True
         ).exclude(pk__in=used_schemas)
 
     def save(self, *args, **kwargs):
+        """Save the policy, approving it automatically when a staff user creates it."""
         if not self.pk and self.creator.is_staff:
             self.approved = True
 
-        super(Policy, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
-# Possible Schemas that categorize one policy
 class PolicySchema(models.Model):
+    """Schema that may categorize a policy, optionally required."""
     schema = models.ForeignKey(Schema, on_delete=models.RESTRICT)
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE)
     required = models.BooleanField(default=False)
@@ -75,8 +80,8 @@ class PolicySchema(models.Model):
         return f'{self.policy} - {self.schema}'
 
 
-# Policy associated concepts
 class PolicyConcept(models.Model):
+    """Concept associated to a policy."""
     concept = models.ForeignKey(Concept, on_delete=models.CASCADE)
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE)
 
@@ -89,16 +94,18 @@ class PolicyConcept(models.Model):
         return f'{self.policy} - {self.concept}'
 
     def clean(self):
+        """Validate that the concept belongs to one of the schemas of the policy.
+
+        :raises ValidationError: if the concept schema is not associated with the policy
+        """
         super().clean()
         # The admin inline validates this against the submitted schemas
         # (the schema may be added in the same request), so it skips this check.
         if getattr(self, 'skip_schema_validation', False):
             return
-        # The concept must belong to one of the schemas of the policy
-        if self.policy_id and self.concept_id:
-            allowed = PolicySchema.objects.filter(
-                policy_id=self.policy_id, schema_id=self.concept.schema_id)
-            if not allowed.exists():
-                raise ValidationError({
-                    'concept': _('The concept schema is not associated '
-                                 'with this policy.')})
+        if not (self.policy_id and self.concept_id):
+            return
+
+        allowed = PolicySchema.objects.filter(policy_id=self.policy_id, schema_id=self.concept.schema_id)
+        if not allowed.exists():
+            raise ValidationError({'concept': _('The concept schema is not associated with this policy.')})

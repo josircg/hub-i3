@@ -2,11 +2,12 @@ from html import unescape
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.core.validators import URLValidator
 from django.db import models
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 
-from .managers import SearchIndexQuerySet, TranslationBaseQuerySet
+from .managers import ConceptQuerySet, SchemaQuerySet, SearchIndexQuerySet
 
 
 class Translation(models.Model):
@@ -114,8 +115,8 @@ def delete_searchindex(searchindex_type, object_id):
     return SearchIndex.objects.filter(type__type=searchindex_type, object_id=object_id).delete()
 
 
-# Keywords are terms created without a controlled vocabulary
 class Keyword(models.Model):
+    """Term created without a controlled vocabulary."""
     keyword = models.TextField(unique=True)
     enabled = models.BooleanField(default=True)
 
@@ -138,15 +139,11 @@ class Keyword(models.Model):
         return super().validate_unique(exclude)
 
 
-# Schemas are foundational cognitive frameworks that aid in organizing and understanding concepts.
-class SchemaQuerySet(TranslationBaseQuerySet):
-    default_field = 'description'
-
-
 class Schema(AbstractTranslatedModel):
+    """Foundational cognitive framework that aids in organizing and understanding concepts."""
     description = models.TextField(_('Description'))
     reference = models.TextField(_('Reference'))
-    url = models.TextField(blank=True, null=True)
+    url = models.TextField(blank=True, null=True, validators=[URLValidator()])
     external_code = models.CharField(_('External Code'), max_length=20, blank=True, null=True)
     parent_schema = models.ForeignKey('Schema', blank=True, null=True, on_delete=models.PROTECT)
     active = models.BooleanField(_('Active'), default=True)
@@ -160,12 +157,8 @@ class Schema(AbstractTranslatedModel):
         ordering = ['description',]
 
 
-class ConceptQuerySet(TranslationBaseQuerySet):
-    default_field = 'concept'
-
-
-# Concepts are terms that categorize objects based on a predefined schema
 class Concept(AbstractTranslatedModel):
+    """Term that categorizes objects based on a predefined schema."""
     schema = models.ForeignKey(Schema, on_delete=models.CASCADE)
     concept = models.TextField(_('Concept'))
     parent_concept = models.ForeignKey('Concept', related_name='children', on_delete=models.PROTECT,
