@@ -32,11 +32,11 @@
                       <div class="pr-5 pl-5 pb-5">
                       {% if event.pk %}
                         <form action="/editEvent/{{ event.pk }}" method="post" enctype="multipart/form-data"
-                              class="save-event" autocomplete="off">
+                              id="form_event" class="save-event" autocomplete="off">
                         <input type="hidden" id="eventID" name="eventID" value={{ event.pk }}>
                       {% else %}
                         <form action="/new_event" method="post" enctype="multipart/form-data"
-                              class="add-new-event" autocomplete="off">
+                              id="form_event" class="add-new-event" autocomplete="off">
                       {% endif %}
                           {% csrf_token %}
                           <div class="row d-flex justify-content-center">
@@ -107,7 +107,7 @@
 
 {% block scripts %}
 <script>
-  $('form button[type=submit]').on('click', function() {
+  $('#form_event button[type=submit]').on('click', function() {
       let $form = $(this.form);
       let $clicked = $(this);
 

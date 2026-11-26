@@ -97,16 +97,18 @@ class SignUpView(
 class PasswordChangeView(authviews.PasswordChangeView):
     form_class = forms.PasswordChangeForm
     template_name = "accounts/password-change.html"
-    success_url = reverse_lazy("accounts:logout")
+    success_url = reverse_lazy("accounts:login")
 
     def form_valid(self, form):
         form.save()
+        # Logout before adding the message: it flushes the session.
+        auth.logout(self.request)
         messages.success(
             self.request,
             _('Your password has been changed, therefore you have been logged out. Please log in again.')
         )
 
-        return super().form_valid(form)
+        return redirect(self.get_success_url())
 
 
 class PasswordResetView(authviews.PasswordResetView):

@@ -39,6 +39,7 @@
         {% endif %}
         method="post"
         enctype="multipart/form-data"
+        id="form_organisation"
         class="edit-organisation"
         autocomplete="off">
         {% csrf_token %}
@@ -121,8 +122,8 @@
 <script src="{% static 'site/js/modal-crop.js' %}?v=1"></script>
 <script>
 
-$('form').on('submit', function(e) {
-  $("button[type=submit]").attr('disabled','true'); 
+$('#form_organisation').on('submit', function(e) {
+  $("#form_organisation button[type=submit]").attr('disabled','true');
 });
 
 </script>

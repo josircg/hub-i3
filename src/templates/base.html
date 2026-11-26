@@ -182,7 +182,11 @@
                             {% if user.is_staff %}
                             <li><a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a></li>
                             {% endif %}
-                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a>
+                            <li>
+                                <form method="post" action="{% url 'accounts:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">{% trans "Logout" %}</button>
+                                </form>
                             </li>
                         </ul>
 
