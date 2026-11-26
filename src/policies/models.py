@@ -3,9 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from organisations.models import Organisation
-from resources.models import Resource
-from utilities.models import Concept, Schema
+from utilities.models import Schema
 
 from .managers import PolicyQuerySet
 
@@ -18,10 +16,8 @@ class Policy(models.Model):
     start_date = models.DateTimeField(_('Start date'))
     end_date = models.DateTimeField(_('End date'), null=True, blank=True)
 
-    organisations = models.ManyToManyField(
-        Organisation, blank=True, verbose_name=_('Organisations'))
-    legislations = models.ManyToManyField(
-        Resource, blank=True, verbose_name=_('Legislation'))
+    organisations = models.ManyToManyField('organisations.Organisation', blank=True, verbose_name=_('Organisations'))
+    legislations = models.ManyToManyField('resources.Resource', blank=True, verbose_name=_('Legislation'))
 
     # Statistics
     totalAccesses = models.IntegerField(default=0)
@@ -30,8 +26,7 @@ class Policy(models.Model):
 
     visible = models.BooleanField(_('Visible'), default=True)
     approved = models.BooleanField(_('Approved'), null=True)
-    creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.RESTRICT)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT)
     dateCreated = models.DateTimeField(_('Created date'), auto_now_add=True)
     dateUpdated = models.DateTimeField(_('Updated date'), auto_now=True)
 
@@ -82,7 +77,7 @@ class PolicySchema(models.Model):
 
 class PolicyConcept(models.Model):
     """Concept associated to a policy."""
-    concept = models.ForeignKey(Concept, on_delete=models.CASCADE)
+    concept = models.ForeignKey('utilities.Concept', on_delete=models.CASCADE)
     policy = models.ForeignKey(Policy, on_delete=models.CASCADE)
 
     class Meta:
