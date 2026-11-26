@@ -112,6 +112,8 @@ uv run --no-sync manage.py check
 
 ```
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
+uv run --no-sync manage.py loaddata utilities/fixtures/indextypes.json
 uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 ```
@@ -155,6 +157,7 @@ uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 # somente após backup do banco e revisão das novas migrations:
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
 ```
 
 Depois reinicie o serviço como root/sudo: `systemctl restart hub_i3`

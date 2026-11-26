@@ -118,6 +118,8 @@ update, compile the translations and collect the static files:
 
 ```
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
+uv run --no-sync manage.py loaddata utilities/fixtures/indextypes.json
 uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 ```
@@ -163,6 +165,7 @@ uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 # only after backing up the database and reviewing the new migrations:
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
 ```
 
 Then restart the service as root/sudo: `systemctl restart hub_i3`

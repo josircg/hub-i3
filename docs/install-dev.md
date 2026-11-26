@@ -83,9 +83,9 @@ git commit -m "feat: pre-commit hooks" --no-verify
 
 ```
 uv run manage.py migrate
+uv run manage.py createcachetable
 uv run manage.py loaddata projects/fixtures/topics.json
 uv run manage.py loaddata projects/fixtures/status.json
-uv run manage.py loaddata projects/fixtures/participationtasks.json
 uv run manage.py loaddata projects/fixtures/geographicextend.json
 uv run manage.py loaddata resources/fixtures/categories.json
 uv run manage.py loaddata resources/fixtures/themes.json
@@ -98,6 +98,7 @@ uv run manage.py loaddata utilities/fixtures/indextypes.json
 ```
 psql < base.sql
 uv run manage.py migrate
+uv run manage.py createcachetable
 ```
 
 ## Launch
