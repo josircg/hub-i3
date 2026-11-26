@@ -17,12 +17,18 @@
 <meta property="og:title" content='{{ platform.name|striptags }}'>
 <meta property="og:description" content='{{ platform.description|truncate_summary:30 }}'>
 <meta property="og:url" content="{{ DOMAIN}}{{ platform.get_absolute_url }}">
-<meta property="og:image" content="{{ DOMAIN }}{% thumbnail platform.logo|safe_meta_image 1200x627 %}">
+{% thumbnail platform.logo|safe_meta_image 1200x630 upscale as og_image %}
+<meta property="og:image" content="{{ DOMAIN }}{{ og_image.url }}">
+<meta property="og:image:width" content="{{ og_image.width }}">
+<meta property="og:image:height" content="{{ og_image.height }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ platform.name|striptags }}">
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:description" content='{{ platform.description|truncate_summary:30 }}'>
-<meta property="twitter:title" content='{{ platform.name|safe }}'>
-<meta property="twitter:image" content="{{ DOMAIN }}{% thumbnail platform.logo|safe_meta_image 600x300 crop upscale %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content='{{ platform.description|truncate_summary:30 }}'>
+<meta name="twitter:title" content='{{ platform.name|safe }}'>
+<meta name="twitter:image" content="{{ DOMAIN }}{{ og_image.url }}">
+<meta name="twitter:image:alt" content="{{ platform.name|striptags }}">
 {% endblock %}
 
 {% block navbar-left %}

@@ -1,14 +1,14 @@
 from authtools import forms as authtoolsforms
 from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field
+from crispy_forms.layout import HTML, Field, Layout, Submit
 from django import forms
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import forms as authforms
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 

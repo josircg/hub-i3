@@ -1,6 +1,7 @@
 from urllib.parse import urlsplit, urlunsplit
 
 from django.core.validators import EMPTY_VALUES
+
 from events.models import Event
 from organisations.models import Organisation
 from platforms.models import Platform
@@ -60,7 +61,7 @@ def update_models():
     update_object_url_fields(Event, ['url'])
     update_object_url_fields(Organisation, ['url'])
     update_object_url_fields(Platform, ['url'])
-    update_object_url_fields(Project, ['url', 'originURL'])
+    update_object_url_fields(Project, ['url'])
     update_object_url_fields(Resource, ['url'])
     print('Process complete')
 

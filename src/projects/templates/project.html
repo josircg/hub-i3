@@ -18,12 +18,18 @@
 <meta property="og:title" content="{{ project.name|striptags }}">
 <meta property="og:description" content="{{ project.description_translated|truncate_summary:30 }}">
 <meta property="og:url" content="{{ DOMAIN}}{{ project.get_absolute_url }}">
-<meta property="og:image" content="{{ DOMAIN }}{% thumbnail project.image1|safe_meta_image 1200x627 %}">
+{% thumbnail project.image1|safe_meta_image 1200x630 crop upscale as og_image %}
+<meta property="og:image" content="{{ DOMAIN }}{{ og_image.url }}">
+<meta property="og:image:width" content="{{ og_image.width }}">
+<meta property="og:image:height" content="{{ og_image.height }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ project.name|striptags }}">
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:description" content='{{ project.description_translated|truncate_summary:30 }}'>
-<meta property="twitter:title" content='{{ project.name|striptags }}'>
-<meta property="twitter:image" content="{{ DOMAIN }}{% thumbnail project.image1|safe_meta_image 600x300 crop upscale %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content='{{ project.description_translated|truncate_summary:30 }}'>
+<meta name="twitter:title" content='{{ project.name|striptags }}'>
+<meta name="twitter:image" content="{{ DOMAIN }}{{ og_image.url }}">
+<meta name="twitter:image:alt" content="{{ project.name|striptags }}">
 {% endblock %}
 
 {% block list_of_items %}
@@ -56,15 +62,6 @@
                 {% endif %}
                 <p class="mt-3 gray7-color">{{translation.translatedDescription | safe}}</p>
 
-                {% if project.howToParticipate %}
-                <h4 class="mt-4 leftborder">{% trans "How to participate" %} </h4>
-                <p class="gray7-color">{{translation.translatedHowToParticipate | safe}}</p>
-                {% endif %}
-
-                {% if project.equipment %}
-                  <h4 class="mt-4 leftborder">{% trans "Needed equipment" %}</h4>
-                  <p class="gray7-color">{{translation.translatedEquipment |safe}}</p>
-                {% endif %}
               {% endif %}
             {% endfor %}
 
@@ -76,15 +73,6 @@
             {% endif %}
             <p class="mt-3 gray7-color">{{project.description | safe}}</p>
 
-            {% if project.howToParticipate %}
-              <h4 class="mt-4 leftborder">{% trans "How to participate" %} </h4>
-              <p class="gray7-color">{{project.howToParticipate | safe}}</p>
-            {% endif %}
-
-            {% if project.equipment %}
-              <h4 class="mt-4 leftborder">{% trans "Needed equipment" %}</h4>
-              <p class="gray7-color">{{project.equipment |safe}}</p>
-            {% endif %}
         {% endif %}
         </div>
 
@@ -118,15 +106,6 @@
             <div>
                 {% for topic in project.topic.translated_sorted_by_text %}
                 <a class="badge bg-my-darkBlue" href="/projects?keywords=&topic={{topic|urlencode}}">{{topic}}</a>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            {% if project.participationTask.all %}
-            <h5 class="mt-3">{% trans "Participation tasks" %}</h5>
-            <div>
-                {% for participationTask in project.participationTask.translated_sorted_by_text %}
-                <a class="badge bg-my-wood" href="/projects?participationTask={{participationTask}}">{{participationTask}}</a>
                 {% endfor %}
             </div>
             {% endif %}

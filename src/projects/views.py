@@ -4,8 +4,6 @@ import json
 import logging
 from datetime import datetime
 
-import pytz
-from accounts.models import ActivationTask
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.models import DELETION
@@ -18,28 +16,31 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import ProgrammingError, transaction
-from django.db.models import Q, F
+from django.db.models import F, Q
 from django.db.models.functions import Coalesce
-from django.http import HttpResponse, JsonResponse, Http404
-from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils import formats, translation
+from django.utils import formats, timezone, translation
+from django.utils.html import conditional_escape, format_html_join
+from django.utils.safestring import mark_safe
 from django.utils.timezone import get_default_timezone
-from django.utils.translation import gettext as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext as _
+from rest_framework import status
+
+from accounts.models import ActivationTask
 from dossiers.models import Dossier
-from eucs_platform import send_email, visao, set_pages_and_get_object_list, get_main_page
+from eucs_platform import get_main_page, send_email, set_pages_and_get_object_list, visao
 from eucs_platform.logger import log_message
 from eucs_platform.utils import get_message_list
-from rest_framework import status
 from utilities.file import crop_and_save
 from utilities.keyword_utils import update_keywords_dict
 from utilities.models import SearchIndex, SearchIndexType
 
-from .forms import (ProjectForm, ProjectTranslationForm, ProjectGeographicLocationForm,
-                    InviteProjectForm)
-from .models import (Project, Topic, Status, FollowedProjects, FundingBody, ProjectPermission, Likes,
-                     Stats)
+from .forms import InviteProjectForm, ProjectForm, ProjectGeographicLocationForm, ProjectTranslationForm
+from .models import FollowedProjects, FundingBody, Likes, Project, ProjectPermission, Stats, Status, Topic
 
 User = get_user_model()
 logger = logging.getLogger("django.request")
@@ -192,7 +193,6 @@ def editProject(request, pk):
         'mainOrganisation': project_obj.mainOrganisation,
         'organisation': project_obj.organisation.all,
         'topic': project_obj.topic.all,
-        'participationTask': project_obj.participationTask.all,
         'projectGeographicLocation': project_obj.projectGeographicLocation,
         'image1': project_obj.image1,
         'image_credit1': project_obj.imageCredit1,
@@ -203,18 +203,11 @@ def editProject(request, pk):
         'image3': project_obj.image3,
         'image_credit3': project_obj.imageCredit3,
         'withImage3': (True, False)[project_obj.image3 == ""],
-        'how_to_participate': project_obj.howToParticipate,
-        'equipment': project_obj.equipment,
         'contact_person': project_obj.author,
         'contact_person_email': project_obj.author_email,
-        'host': project_obj.host,
         'funding_body': project_obj.fundingBody.all,
-        'doingAtHome': project_obj.doingAtHome,
         'fundingBodySelected': project_obj.fundingBody,
         'fundingProgram': project_obj.fundingProgram,
-        'originDatabase': project_obj.originDatabase,
-        'originUID': project_obj.originUID,
-        'originURL': project_obj.originURL,
         'geoExtend': project_obj.geoExtend_id,
         'language': project_obj.language
     })
@@ -253,9 +246,7 @@ def projects(request):
         'dossier': '',
         'topic': '',
         'status': 0,
-        'host': '',
         'approved': '',
-        'doingAtHome': '',
         'featured': ''}
 
     projects = applyFilters(request, projects)
@@ -332,9 +323,8 @@ def project(request, pk):
     hasTranslation = project_obj.translatedProject.filter(inLanguage=request.LANGUAGE_CODE).exists()
 
     # Check status
-    utc = pytz.UTC
     if project_obj.end_date:
-        if project_obj.end_date < utc.localize(datetime.now()):
+        if project_obj.end_date < timezone.now():
             status = _('Completed')
         else:
             status = project_obj.status
@@ -414,13 +404,10 @@ def applyFilters(request, projects):
         # Workaround to solve the filter by calculated status
         # "Completed sent on view project (def project(request, pk))"
         if request.GET.get('status') == _('Completed'):
-            projects = projects.filter(end_date__lt=pytz.UTC.localize(datetime.now()))
+            projects = projects.filter(end_date__lt=timezone.now())
         else:
             status_qs = Status.objects.translated().filter(translated_text=request.GET['status']).values_list('pk')
             projects = projects.filter(status__pk__in=status_qs)
-
-    if request.GET.get('doingAtHome'):
-        projects = projects.filter(doingAtHome=request.GET['doingAtHome'])
 
     if request.GET.get('country'):
         projects = projects.filter(
@@ -451,12 +438,8 @@ def setFilters(request, filters):
         filters['topic'] = request.GET['topic']
     if request.GET.get('status'):
         filters['status'] = request.GET['status']
-    if request.GET.get('doingAtHome'):
-        filters['doingAtHome'] = int(request.GET['doingAtHome'])
     if request.GET.get('approved'):
         filters['approved'] = request.GET['approved']
-    if request.GET.get('participationTask'):
-        filters['participationTask'] = request.GET['participationTask']
     if request.GET.get('orderby'):
         filters['orderby'] = request.GET['orderby']
     if request.GET.get('country'):
@@ -609,15 +592,13 @@ def downloadProjects(request):
 
 
 def get_headers():
-    return ['id', 'name', 'description', 'keywords', 'status', 'start_date', 'end_date', 'topic', 'url', 'host',
-            'howToParticipate', 'doingAtHome', 'equipment',
-            'fundingBody', 'fundingProgram', 'originDatabase', 'originURL', 'originUID']
+    return ['id', 'name', 'description', 'keywords', 'status', 'start_date', 'end_date', 'topic', 'url',
+            'fundingBody', 'fundingProgram']
 
 
 def get_data(item):
     keywordsList = list(item.keywords.all().values_list('keyword', flat=True))
     topicList = list(item.topic.all().values_list('topic', flat=True))
-    participationTaskList = list(item.participationTask.all().values_list('participationTask', flat=True))
 
     return {
         'id': item.id,
@@ -628,19 +609,11 @@ def get_data(item):
         'start_date': item.start_date,
         'end_date': item.end_date,
         'topic': topicList,
-        'participationTask': participationTaskList,
         'url': item.url,
         'latitude': item.latitude,
         'longitude': item.longitude,
-        'host': item.host,
-        'howToParticipate': item.howToParticipate,
-        'doingAtHome': item.doingAtHome,
-        'equipment': item.equipment,
         'fundingBody': item.fundingBody,
         'fundingProgram': item.fundingProgram,
-        'originDatabase': item.originDatabase,
-        'originURL': item.originURL,
-        'originUID': item.originUID,
     }
 
 
@@ -691,6 +664,12 @@ def send_project_invite_email(project_obj, email, user):
 
 @login_required
 def project_invite(request):
+    """
+    Invite an editor to a project and send the invitation email.
+
+    The invitation is only kept if the email is sent; otherwise it is rolled back and an error with the
+    contact addresses (``settings.EMAIL_CIVIS``) is returned.
+    """
     project_obj = get_object_or_404(Project, pk=request.POST.get('project_id'))
 
     check_permission_to_edit_project(project_obj, request.user)
@@ -701,9 +680,17 @@ def project_invite(request):
     form = InviteProjectForm(post_data)
 
     if form.is_valid():
-        form.save()
-
-        send_project_invite_email(project_obj, form.cleaned_data['email'], form.cleaned_data['user'])
+        try:
+            with transaction.atomic():
+                form.save()
+                send_project_invite_email(project_obj, form.cleaned_data['email'], form.cleaned_data['user'])
+        except Exception:
+            logger.exception('Error sending project invitation email (project %s)', project_obj.pk)
+            links = format_html_join(', ', '<a href="mailto:{0}">{0}</a>', ((email,) for email in settings.EMAIL_CIVIS))
+            msg = mark_safe(conditional_escape(
+                _('Could not add a new editor. Please send an email to %(email)s reporting the problem.')
+            ) % {'email': links})
+            return JsonResponse({'email': [msg]}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         messages.success(request, _('Invitation sent succesfully!'))
 

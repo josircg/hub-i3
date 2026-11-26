@@ -1,12 +1,3 @@
-import accounts.urls
-import contact.urls
-import digest.urls
-import events.urls
-import organisations.urls
-import platforms.urls
-import profiles.urls
-import projects.urls
-import resources.urls
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -16,22 +7,19 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path, re_path
 from django.views.defaults import server_error
 from django.views.generic import TemplateView
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
-from . import sitemaps
-from . import views
+import accounts.urls
+import contact.urls
+import digest.urls
+import events.urls
+import organisations.urls
+import platforms.urls
+import profiles.urls
+import projects.urls
+import resources.urls
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="CÍVIS API",
-        default_version='v1',
-        description="CÍVIS API",
-    ),
-    public=False,
-    permission_classes=(permissions.IsAuthenticated,),
-)
+from . import sitemaps, views
 
 # Personalized admin site settings like title and header
 admin.site.site_title = "Cívis Administração"
@@ -62,16 +50,14 @@ urlpatterns += [
     path("admin_tools/", include('admin_tools.urls')),
     path("select2/", include("django_select2.urls")),
     path('captcha/', include('captcha.urls')),
-    path('summernote/', include('django_summernote.urls')),
     re_path(r'^i18n/', include('django.conf.urls.i18n')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^api/auth/', include('djoser.urls')),
     re_path(r'^api/auth/', include('djoser.urls.authtoken')),
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', login_required(schema_view.with_ui('swagger', cache_timeout=0), login_url='/login'),
-            name='schema-swagger-ui'),
-    re_path(r'^redoc/$', login_required(schema_view.with_ui('redoc', cache_timeout=0), login_url='/login'),
-            name='schema-redoc'),
+    path('schema/', login_required(SpectacularAPIView.as_view(), login_url='/login'), name='schema'),
+    path('swagger/', login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='/login'),
+         name='swagger'),
+    path('redoc/', login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='/login'), name='redoc'),
     re_path(r'^openid/', include('oidc_provider.urls', namespace='oidc_provider')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
@@ -99,8 +85,8 @@ urlpatterns += [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Include django debug toolbar if DEBUG is on
-if settings.DEBUG:
+# Include django debug toolbar if DEBUG is on and it is installed (see settings/base.py)
+if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
     import debug_toolbar
 
     urlpatterns += [

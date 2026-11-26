@@ -174,12 +174,8 @@ msgstr "Restablecer contraseña"
 msgid "Don't have an account?"
 msgstr "¿No tiene una cuenta de usuario?"
 
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr ""
-"El enlace para restaurar la contraseña no es válido, posiblemente debido a "
-"que haya sido utilizado. Por favor, solicite un nuevo cambio de contraseña"
+msgid "The password reset link has expired. You will need to request it again."
+msgstr "El enlace de restablecimiento de contraseña ha expirado. Será necesario solicitarlo nuevamente."
 
 msgid "Check your inbox. We've sent a message to confirm your email is valid."
 msgstr ""
@@ -2178,6 +2174,10 @@ msgstr "Invitación para editar Proyecto %s"
 
 msgid "Invitation sent succesfully!"
 msgstr "Invitación enviada correctamente"
+
+#, python-format
+msgid "Could not add a new editor. Please send an email to %(email)s reporting the problem."
+msgstr "No fue posible agregar un nuevo editor. Por favor, envíe un correo electrónico a %(email)s informando sobre el problema."
 
 #, python-format
 msgid "Invitation sent to an unregistered email (%s)"

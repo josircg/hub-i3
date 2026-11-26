@@ -1,6 +1,7 @@
 from django_countries.serializers import CountryFieldMixin
-from platforms.models import GeographicExtend, Platform
 from rest_framework import serializers
+
+from platforms.models import GeographicExtend, Platform
 
 
 class GeographicExtendSerializer(serializers.ModelSerializer):

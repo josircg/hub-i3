@@ -15,14 +15,15 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import translation
 from django.utils.translation import gettext as _
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
+
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 from organisations.models import Organisation
 from utilities.models import SearchIndex, SearchIndexType
 
-from .forms import DossierForm, DossierObjectFormSet, DossierSelectForm, DossierOrganisationForm, DossierUserForm
-from .models import Dossier, get_content_type, DossierObject
+from .forms import DossierForm, DossierObjectFormSet, DossierOrganisationForm, DossierSelectForm, DossierUserForm
+from .models import Dossier, DossierObject, get_content_type
 from .templatetags.dossiers_tags import has_permission_to_edit
 
 

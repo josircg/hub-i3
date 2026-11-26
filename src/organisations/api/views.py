@@ -1,13 +1,18 @@
 from django.http import Http404
-from organisations.api.serializers import OrganisationTypeSerializer, OrganisationSerializer, \
-    OrganisationSerializerCreateUpdate
-from organisations.models import OrganisationType, Organisation
-from organisations.views import getCooperators
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
-from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST)
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+
+from organisations.api.serializers import (
+    OrganisationSerializer,
+    OrganisationSerializerCreateUpdate,
+    OrganisationTypeSerializer,
+)
+from organisations.models import Organisation, OrganisationType
+from organisations.views import getCooperators
 
 
 class AdminPermissionsClass(BasePermission):
@@ -33,6 +38,7 @@ class OrganisationTypeViewSet(viewsets.ModelViewSet):
 
 
 class OrganisationList(APIView):
+    serializer_class = OrganisationSerializer
 
     def applyFilters(self, request, organisations):
         country = request.query_params.get('country', None)
@@ -45,6 +51,7 @@ class OrganisationList(APIView):
 
         return organisations
 
+    @extend_schema(operation_id='api_organisations_list', responses=OrganisationSerializer(many=True))
     def get(self, request, format=None):
         organisations = Organisation.objects.all()
         if not request.user.is_staff:
@@ -64,6 +71,7 @@ class OrganisationList(APIView):
 
 
 class OrganisationDetail(APIView):
+    serializer_class = OrganisationSerializer
     permission_classes = (PermissionClass,)
 
     def get_object(self, pk):
@@ -72,6 +80,7 @@ class OrganisationDetail(APIView):
         except Organisation.DoesNotExist:
             raise Http404
 
+    @extend_schema(operation_id='api_organisations_detail')
     def get(self, request, pk, format=None):
         organisation = self.get_object(pk)
         serializer = OrganisationSerializer(organisation, context={'request': request})

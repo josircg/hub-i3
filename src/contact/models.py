@@ -1,19 +1,20 @@
 import hashlib
 
-from blog.models import Post
 from django.conf import settings
 from django.db import models
-from django.template import Template, Context
+from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.formats import date_format
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
+
+from blog.models import Post
 from eucs_platform import send_email
 from events.models import Event
 from projects.models import Project
 from resources.models import Resource
 
-from .managers import SubscriberQuerySet, NewsletterQuerySet
+from .managers import NewsletterQuerySet, SubscriberQuerySet
 
 
 class Subscriber(models.Model):

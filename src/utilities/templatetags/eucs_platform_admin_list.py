@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.admin.templatetags.admin_list import result_list as rl
 from django.contrib.admin.templatetags.base import InclusionAdminNode
 from django.template import Library
@@ -18,11 +17,10 @@ def result_footer(cl):
 
             if index == 0 and value == '':
                 value = _('TOTALS')
+            elif value is None:
+                value = cl.model_admin.get_empty_value_display()
             else:
-                if value is None:
-                    value = cl.model_admin.get_empty_value_display()
-                else:
-                    value = localize(value, settings.USE_L10N)
+                value = localize(value)
 
             yield format_html('<th scope="row">{}</th>', value)
 

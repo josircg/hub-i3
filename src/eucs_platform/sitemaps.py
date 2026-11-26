@@ -1,6 +1,7 @@
-from blog.models import Post
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
+
+from blog.models import Post
 from dossiers.models import Dossier
 from projects.models import Project
 from resources.models import Resource

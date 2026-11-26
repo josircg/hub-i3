@@ -1,15 +1,24 @@
 from django.db.models import Q
 from django.http import Http404
-from resources.api.serializers import ResourceSerializer, AudienceSerializer, ThemeSerializer, CategorySerializer, \
-    ResourceSerializerCreateUpdate, TrainingResourceSerializer, TrainingResourceSerializerCreateUpdate
-from resources.models import Resource, Audience, Theme, Category
-from resources.views import getCooperators, setResourceHidden
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
-from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST)
+from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+
+from resources.api.serializers import (
+    AudienceSerializer,
+    CategorySerializer,
+    ResourceSerializer,
+    ResourceSerializerCreateUpdate,
+    ThemeSerializer,
+    TrainingResourceSerializer,
+    TrainingResourceSerializerCreateUpdate,
+)
+from resources.models import Audience, Category, Resource, Theme
+from resources.views import getCooperators, setResourceHidden
 
 
 class AdminPermissionsClass(BasePermission):
@@ -39,6 +48,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ResourceList(APIView):
+    serializer_class = ResourceSerializer
     def applyFilters(self, request, resources):
         approvedResources = Resource.objects.approved().values_list('pk', flat=True)
 
@@ -68,13 +78,12 @@ class ResourceList(APIView):
                 resources = resources.filter(id__in=approvedResources)
             if request.GET['approvedCheck'] == 'Off':
                 resources = resources.exclude(id__in=approvedResources)
-            if request.GET['approvedCheck'] == 'All':
-                resources = resources
         else:
             resources = resources.filter(id__in=approvedResources)
 
         return resources
 
+    @extend_schema(operation_id='api_resources_list', responses=ResourceSerializer(many=True))
     def get(self, request, format=None):
         resources = Resource.objects.all().filter(~Q(isTrainingResource=True))
         resources = self.applyFilters(request, resources)
@@ -100,6 +109,7 @@ class PermissionClass(BasePermission):
 
 
 class ResourceDetail(APIView):
+    serializer_class = ResourceSerializer
     permission_classes = (PermissionClass,)
 
     def get_object(self, pk):
@@ -108,6 +118,7 @@ class ResourceDetail(APIView):
         except Resource.DoesNotExist:
             raise Http404
 
+    @extend_schema(operation_id='api_resources_detail')
     def get(self, request, pk, format=None):
         resource = self.get_object(pk)
         serializer = ResourceSerializer(resource, context={'request': request})
@@ -149,6 +160,7 @@ class ResourceDetail(APIView):
 
 
 class TrainingResourceList(APIView):
+    serializer_class = TrainingResourceSerializer
 
     def applyFilters(self, request, resources):
         approvedResources = Resource.objects.approved().values_list('pk', flat=True)
@@ -179,13 +191,12 @@ class TrainingResourceList(APIView):
                 resources = resources.filter(id__in=approvedResources)
             if request.GET['approvedCheck'] == 'Off':
                 resources = resources.exclude(id__in=approvedResources)
-            if request.GET['approvedCheck'] == 'All':
-                resources = resources
         else:
             resources = resources.filter(id__in=approvedResources)
 
         return resources
 
+    @extend_schema(operation_id='api_training_resources_list', responses=TrainingResourceSerializer(many=True))
     def get(self, request, format=None):
         resources = Resource.objects.filter(isTrainingResource=True)
         resources = self.applyFilters(request, resources)
@@ -203,6 +214,7 @@ class TrainingResourceList(APIView):
 
 
 class TrainingResourceDetail(APIView):
+    serializer_class = TrainingResourceSerializer
     permission_classes = (PermissionClass,)
 
     def get_object(self, pk):
@@ -211,6 +223,7 @@ class TrainingResourceDetail(APIView):
         except Resource.DoesNotExist:
             raise Http404
 
+    @extend_schema(operation_id='api_training_resources_detail')
     def get(self, request, pk, format=None):
         resource = self.get_object(pk)
         serializer = TrainingResourceSerializer(resource, context={'request': request})
@@ -258,6 +271,7 @@ class TrainingResourceDetail(APIView):
 #    setResourceApproved(pk, approved)
 #    return Response(status=HTTP_204_NO_CONTENT)
 
+@extend_schema(exclude=True)
 @api_view(['PUT'])
 @permission_classes([AdminPermissionsClass])
 def hidden_resource(request, pk):

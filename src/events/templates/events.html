@@ -7,9 +7,9 @@
 {% block meta %}
 {% if request.GET.pk %}
   {% with event=page_obj.object_list.0 %}
-    <meta name="description" content="{{ event.description|truncate_summary:30|safe }}">
+    <meta name="description" content="{{ event.description|truncate_summary:30 }}">
     <meta property="og:title" content='{{ event.title|safe }}'>
-    <meta property="og:description" content='{{ event.description|truncate_summary:30|safe }}'>
+    <meta property="og:description" content='{{ event.description|truncate_summary:30 }}'>
   {% endwith %}
   <meta property="og:image" content="{{ DOMAIN }}{% static 'site/img/eventos_hub3i_banner-1200x627.png' %}">
 {% else %}
@@ -19,19 +19,24 @@
   <meta property="og:image" content="{{ DOMAIN }}{% static 'site/img/background-header-1200x627.png' %}">
 {% endif %}
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{% translate 'Events' %}">
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary_large_image">
 {% if request.GET.pk %}
   {% with event=page_obj.object_list.0 %}
-    <meta property="twitter:description" content='{{ event.description|truncate_summary:30|safe }}'>
-    <meta property="twitter:title" content='{{ event.title|safe }}'>
-    <meta property="twitter:image" content="{{ DOMAIN }}{% static 'site/img/eventos_hub3i_banner-600x300.png' %}">
+    <meta name="twitter:description" content='{{ event.description|truncate_summary:30 }}'>
+    <meta name="twitter:title" content='{{ event.title|safe }}'>
+    <meta name="twitter:image" content="{{ DOMAIN }}{% static 'site/img/eventos_hub3i_banner-1200x627.png' %}">
   {% endwith %}
 {% else %}
-  <meta property="twitter:description" content="{% translate 'Events' %}">
-  <meta property="twitter:title" content="{% translate 'Events' %}">
-  <meta property="twitter:image" content="{{ DOMAIN }}{% static 'site/img/background-header-600x300.png' %}">
+  <meta name="twitter:description" content="{% translate 'Events' %}">
+  <meta name="twitter:title" content="{% translate 'Events' %}">
+  <meta name="twitter:image" content="{{ DOMAIN }}{% static 'site/img/background-header-1200x627.png' %}">
 {% endif %}
+<meta name="twitter:image:alt" content="{% translate 'Events' %}">
 {% endblock %}
 
 {% block list_of_items %}

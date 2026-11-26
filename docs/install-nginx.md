@@ -6,7 +6,7 @@ usuário `webapp`, gunicorn escutando em `127.0.0.1:5000`.
 1) Instalação do NGINX e pacotes do sistema (logado como root) e configuração do timezone:
 
 ````
-apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev
+apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev libcairo2
 dpkg-reconfigure tzdata
 ````
 
@@ -38,7 +38,7 @@ cd .ssh
 cat id_rsa.pub
 ````
 
-4) Ainda logado como webapp, instalar o `uv` (ele gerencia o virtualenv e o Python 3.10):
+4) Ainda logado como webapp, instalar o `uv` (ele gerencia o virtualenv e o Python 3.14):
 
 ````
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -86,17 +86,17 @@ sudo apt install postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts
 
 ```
 su - postgres psql ou sudo -u postgres psql
-create user eucitizenscience_usr with encrypted password 'mypass';
-create database hub_i3 with owner=eucitizenscience_usr;
+create user i3_user with encrypted password 'mypass';
+create database hub_i3 with owner=i3_user;
 \connect hub_i3;
 create extension postgis;
-GRANT ALL on public.spatial_ref_sys TO eucitizenscience_usr;
+GRANT ALL on public.spatial_ref_sys TO i3_user;
 ```
 
 Teste de Conexão no postgres (já logado como webapp):
 
 ```
-psql -h localhost -U eucitizenscience_usr hub_i3
+psql -h localhost -U i3_user hub_i3
 ```
 
 9) Copiar o `local.env`, configurar o banco e testar a conexão e o Django:
@@ -112,6 +112,8 @@ uv run --no-sync manage.py check
 
 ```
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
+uv run --no-sync manage.py loaddata utilities/fixtures/indextypes.json
 uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 ```
@@ -155,6 +157,7 @@ uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 # somente após backup do banco e revisão das novas migrations:
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
 ```
 
 Depois reinicie o serviço como root/sudo: `systemctl restart hub_i3`

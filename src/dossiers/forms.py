@@ -3,6 +3,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 from django_select2.forms import ModelSelect2MultipleWidget
+
 from utilities.widgets import KeywordsSelect2TagWidget
 
 from .models import Dossier, DossierObject

@@ -51,20 +51,6 @@
         <div class="col-6 mt-3">
             {{form.translatedDescription | as_crispy_field}}
         </div>
-        <div class="col-6 mt-3">
-            <h4 class="leftborder">{% trans "How to participate" %}</h4>
-            {{ project.howToParticipate | safe}}
-        </div>
-        <div class="col-6 mt-3">
-            {{form.translatedHowToParticipate | as_crispy_field}}
-        </div>
-        <div class="col-6 mt-3">
-            <h4 class="leftborder">{% trans "Equipment" %}</h4>
-            {{ project.equipment | safe}}
-        </div>
-        <div class="col-6 mt-3">
-            {{form.translatedEquipment | as_crispy_field}}
-        </div>
     </div>
     <div class="row">
         <div class="col-6 mt-3"></div>
@@ -102,11 +88,7 @@
                 },
                 success: function(response){
                     translatedDescription=response[0].fields.translatedDescription
-                    translatedHowToParticipate=response[0].fields.translatedHowToParticipate
-                    translatedEquipment=response[0].fields.translatedEquipment
                     CKEDITOR.instances['id_translatedDescription'].setData(translatedDescription)
-                    CKEDITOR.instances['id_translatedHowToParticipate'].setData(translatedHowToParticipate)
-                    CKEDITOR.instances['id_translatedEquipment'].setData(translatedEquipment)
                 },
                 error: function(response){
                     console.log(response)

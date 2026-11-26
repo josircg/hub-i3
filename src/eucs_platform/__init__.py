@@ -1,7 +1,6 @@
-from django.core.mail import EmailMessage
 from django.conf import settings as django_settings
+from django.core.mail import EmailMessage
 from django.core.paginator import EmptyPage, PageNotAnInteger
-from django.utils.translation import LANGUAGE_SESSION_KEY
 
 
 def send_email(subject, message, to, reply_to=None, bcc=None, headers=None):
@@ -33,11 +32,7 @@ def get_main_page(page_list):
     return page_obj
 
 
-def set_language_preference(request, response, language):
-    if hasattr(request, 'session'):
-        # Storing the language in the session is deprecated and will be removed in django 4.0
-        request.session[LANGUAGE_SESSION_KEY] = language
-
+def set_language_preference(response, language):
     response.set_cookie(
         django_settings.LANGUAGE_COOKIE_NAME, language,
         max_age=django_settings.LANGUAGE_COOKIE_AGE,

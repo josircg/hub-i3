@@ -9,7 +9,9 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.utils.translation import gettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
+
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 
@@ -71,7 +73,7 @@ class BruteForceProtectionMiddleware:
                 context = {
                     'token': default_token_generator.make_token(user),
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT_DAYS * 24,
+                    'PASSWORD_RESET_TIMEOUT_HOURS': settings.PASSWORD_RESET_TIMEOUT // 3600,
                     'domain': settings.DOMAIN,
                     'user': user
                 }

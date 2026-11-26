@@ -16,7 +16,7 @@ def create_profile_handler(sender, instance, created, **kwargs):
 
 
 def add_search_index(sender, instance, created, **kwargs):
-    from utilities.models import add_searchindex_text, SearchIndexType
+    from utilities.models import SearchIndexType, add_searchindex_text
 
     if instance.profileVisible and instance.user.is_active:
         text = f'{instance.user.name} {instance.bio} {instance.title}'
@@ -30,5 +30,5 @@ def add_search_index(sender, instance, created, **kwargs):
 
 
 def delete_search_index(sender, instance, **kwargs):
-    from utilities.models import delete_searchindex, SearchIndexType
+    from utilities.models import SearchIndexType, delete_searchindex
     delete_searchindex(SearchIndexType.PROFILE.value, instance.slug)

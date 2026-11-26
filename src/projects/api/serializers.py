@@ -1,12 +1,11 @@
-from PIL import Image
 from django_countries.serializer_fields import CountryField
-from organisations.models import Organisation
-from projects.models import TranslatedProject
-from projects.models import Project, Topic, Status, FundingBody
+from PIL import Image
 from rest_framework import serializers
+
+from organisations.models import Organisation
+from projects.models import FundingBody, Project, Status, Topic, TranslatedProject
 from utilities.api.serializers import KeywordSerializer
 from utilities.file import save_image_with_path
-
 from utilities.keyword_utils import keywords_list
 
 
@@ -202,9 +201,7 @@ class ProjectSerializerCreateUpdate(serializers.ModelSerializer):
 class ProjectTranslateCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = TranslatedProject
-        fields = [
-            'translatedDescription', 'translatedHowToParticipate',
-            'translatedEquipment', 'inLanguage']
+        fields = ['translatedDescription', 'inLanguage']
 
     def save(self, args, pk):
         project = Project.objects.get(id=pk)

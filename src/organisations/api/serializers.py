@@ -1,8 +1,8 @@
-from PIL import Image
 from django_countries.serializer_fields import CountryField
-from organisations.models import Organisation, OrganisationType
+from PIL import Image
 from rest_framework import serializers
 
+from organisations.models import Organisation, OrganisationType
 from utilities.file import save_image_with_path
 
 

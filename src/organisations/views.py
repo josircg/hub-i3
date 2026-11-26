@@ -8,10 +8,12 @@ from django.core.paginator import Paginator
 from django.db import ProgrammingError
 from django.db.models import ProtectedError
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
+
 from eucs_platform import send_email
 from eucs_platform.logger import log_message
 from profiles.models import Profile
@@ -21,7 +23,7 @@ from utilities.file import crop_and_save
 from utilities.models import SearchIndex, SearchIndexType
 
 from .forms import OrganisationForm, OrganisationPermissionForm
-from .models import Organisation, OrganisationType, OrganisationPermission
+from .models import Organisation, OrganisationPermission, OrganisationType
 
 User = get_user_model()
 
@@ -60,10 +62,9 @@ def new_organisation(request):
                     reply_to=to
                 )
             return redirect('/organisation/' + str(organisation.id), {})
-        else:
-            if 'latitude' in form.errors:
-                error = form.errors['latitude'].data[0].message
-                del form.errors['latitude']
+        elif 'latitude' in form.errors:
+            error = form.errors['latitude'].data[0].message
+            del form.errors['latitude']
 
     return render(
         request,
@@ -75,7 +76,7 @@ def organisation(request, pk):
     organisation = get_object_or_404(Organisation, id=pk)
     user = request.user
     cooperatorsPK = getCooperators(pk)
-    if user != organisation.creator and not user.is_staff and not (user.id in cooperatorsPK):
+    if user != organisation.creator and not user.is_staff and user.id not in cooperatorsPK:
         editable = False
     else:
         editable = True
@@ -114,7 +115,7 @@ def edit_organisation(request, pk):
     organisation = get_object_or_404(Organisation, id=pk)
     user = request.user
     cooperatorsPK = getCooperators(pk)
-    if user != organisation.creator and not user.is_staff and not (user.id in cooperatorsPK):
+    if user != organisation.creator and not user.is_staff and user.id not in cooperatorsPK:
         return redirect('../organisations', {})
 
     form = OrganisationForm(initial={
@@ -136,10 +137,9 @@ def edit_organisation(request, pk):
             image_path = crop_and_save(request, form, 'logo')
             form.save(request, image_path)
             return redirect('/organisation/' + str(organisation.id), {})
-        else:
-            if '__all__' in form.errors:
-                form.errors['logo'] = form.errors['__all__']
-                del form.errors['__all__']
+        elif '__all__' in form.errors:
+            form.errors['logo'] = form.errors['__all__']
+            del form.errors['__all__']
 
     return render(request, 'organisation_form.html', {
         'form': form,

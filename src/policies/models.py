@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from organisations.models import Organisation
 from resources.models import Resource
-from utilities.models import Schema, Concept
+from utilities.models import Concept, Schema
 
 
 # Public policies
@@ -90,6 +90,10 @@ class PolicyConcept(models.Model):
 
     def clean(self):
         super().clean()
+        # The admin inline validates this against the submitted schemas
+        # (the schema may be added in the same request), so it skips this check.
+        if getattr(self, 'skip_schema_validation', False):
+            return
         # The concept must belong to one of the schemas of the policy
         if self.policy_id and self.concept_id:
             allowed = PolicySchema.objects.filter(

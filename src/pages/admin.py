@@ -2,7 +2,7 @@ from ckeditor.widgets import CKEditorWidget
 from django.contrib import admin
 from django.db import models
 
-from .models import Page, Section, Article
+from .models import Article, Page, Section
 
 
 class BaseInline(admin.StackedInline):

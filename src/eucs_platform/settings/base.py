@@ -13,6 +13,7 @@ from pathlib import Path
 
 # Use 12factor inspired environment variables or from a file
 import environ
+
 # For Bootstrap 3, change error alert to 'danger'
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -50,8 +51,12 @@ LOCALE_PATHS = [
 ]
 
 CACHES = {
+    # Cache compartilhado entre os workers do gunicorn. LocMemCache é por processo
+    # e quebraria o contador do BruteForceProtectionMiddleware (cada worker teria o
+    # seu). Crie a tabela uma vez por banco: manage.py createcachetable
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache',
     },
     # … default cache config and others
     "select2": {
@@ -106,6 +111,7 @@ TEMPLATES = [
 env = environ.Env(
     FEATURED_MGT=(bool, True),
     ADMIN_EMAIL=(str, ''),
+    CARTODB_API=(str, ''),
     DEBUG=(bool, False),
 )
 
@@ -125,6 +131,7 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = []
 
 ADMIN_EMAIL = env("ADMIN_EMAIL")
+CARTODB_API = env("CARTODB_API")
 
 if ADMIN_EMAIL:
     ADMINS = [(email.split('@')[0], email) for email in ADMIN_EMAIL.split(',')]
@@ -156,7 +163,6 @@ INSTALLED_APPS = (
     "platforms",
     "django_select2",
     "blog",
-    "django_summernote",
     "leaflet",
     "django_countries",
     "authors",
@@ -167,9 +173,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'rest_framework_swagger',
     'oidc_provider',
-    'drf_yasg',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'captcha',
     'active_link',
     'oauth2_provider',
@@ -252,7 +258,6 @@ LANGUAGES = [
 
 TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 FORMAT_MODULE_PATH = 'formats'
 
@@ -288,24 +293,17 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 18,
     'TILES': [
         (
-            'CartoDB Light',
-            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors &copy; '
-            '<a href="https://carto.com">CARTO</a>'
-        )
+            'CartoDB Positron',
+            'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=' + CARTODB_API,
+            {
+                'attribution': (
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
+                    '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+                ),
+                'maxZoom': 20,
+            },
+        ),
     ],
-}
-
-SUMMERNOTE_THEME = 'bs4'
-
-SUMMERNOTE_CONFIG = {
-    'iframe': True,
-    'summernote': {
-        'airMode': False,
-        'width': '100%',
-        'height': '300',
-        'toolbar': ['bold', 'italic', 'underline'],
-    },
 }
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -345,11 +343,29 @@ DEBUG = env('DEBUG')
 ADMIN_EMAIL = env('ADMIN_EMAIL')
 TEMPLATES[0]["OPTIONS"].update({"debug": DEBUG})
 
+# django-debug-toolbar (grupo "dev" do pyproject): só é ativado com DEBUG ligado
+# e se o pacote estiver instalado. O app precisa estar em INSTALLED_APPS porque
+# a toolbar define models (HistoryEntry).
+if DEBUG:
+    try:
+        import debug_toolbar  # noqa: F401
+    except ImportError:
+        pass
+    else:
+        INSTALLED_APPS += ("debug_toolbar",)
+        MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+        INTERNAL_IPS = ["127.0.0.1"]
+
+# GDAL < 3.9 (ex.: Ubuntu 24.04 traz 3.8.4): o Django avisa que não há proteção
+# contra referências espaciais maliciosas. O sistema não processa arquivos
+# geoespaciais de terceiros; remover quando o GDAL for atualizado.
+SILENCED_SYSTEM_CHECKS = ["gis.W001"]
+
 SITE_ID = 1
 NEWSLETTER_TYPE = 'Local'  # Accepts Local or Mailchimp
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication'
@@ -363,18 +379,25 @@ REST_FRAMEWORK = {
     )
 }
 
-SWAGGER_SETTINGS = {
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'utilities.inspectors.SwaggerAutoSchema',
+SPECTACULAR_SETTINGS = {
+    'TITLE': f'{SITE_NAME} API',
+    'DESCRIPTION': f'{SITE_NAME} API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PUBLIC': False,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_GENERATOR_CLASS': 'utilities.inspectors.SchemaGenerator',
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }
 
-PASSWORD_RESET_CONFIRM_URL = '/password-reset/'
-ACTIVATION_URL = '/activate/'
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '/password-reset/',
     'EMAIL': {
-        'activation': 'accounts.views.ActivationEmail',
-        'confirmation': 'accounts.views.ConfirmationEmail',
-        'password_reset': 'accounts.views.PasswordResetEmail',
+        'activation': 'accounts.email.ActivationEmail',
+        'confirmation': 'accounts.email.ConfirmationEmail',
+        'password_reset': 'accounts.email.PasswordResetEmail',
     },
     'SEND_ACTIVATION_EMAIL': True,
 }

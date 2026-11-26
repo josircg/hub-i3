@@ -6,11 +6,11 @@ user `webapp`, gunicorn listening on `127.0.0.1:5000`.
 1) Install NGINX and system packages (logged as root):
 
 ````
-apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev
+apt-get install -y nginx build-essential libssl-dev python3-dev libxml2-dev git libfreetype6 libfreetype6-dev libpq-dev libjpeg-dev zlib1g-dev gettext gdal-bin libgdal-dev libcairo2
 dpkg-reconfigure tzdata
 ````
 
-(`gettext` is required by `compilemessages`; `gdal-bin`/`libgdal-dev` by GeoDjango.)
+(`gettext` is required by `compilemessages`; `gdal-bin`/`libgdal-dev` by GeoDjango; `libcairo2` by `cairosvg`, which converts SVG images.)
 
 2) Create webapp user and permissions (logged as root)
 
@@ -38,7 +38,7 @@ cd .ssh
 cat id_rsa.pub
 ````
 
-4) Logged as webapp, install `uv` (it manages the virtualenv and Python 3.10):
+4) Logged as webapp, install `uv` (it manages the virtualenv and Python 3.14):
 
 ````
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -85,17 +85,17 @@ sudo apt install postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts
 
 ```
 su - postgres psql ou sudo -u postgres psql
-create user eucitizenscience_usr with encrypted password 'mypass';
-create database hub_i3 with owner=eucitizenscience_usr;
+create user i3_user with encrypted password 'mypass';
+create database hub_i3 with owner=i3_user;
 \connect hub_i3;
 create extension postgis;
-GRANT ALL on public.spatial_ref_sys TO eucitizenscience_usr;
+GRANT ALL on public.spatial_ref_sys TO i3_user;
 ```
 
 Log in as webapp and test postgres connection:
 
 ```
-psql -h localhost -U eucitizenscience_usr hub_i3
+psql -h localhost -U i3_user hub_i3
 ```
 
 9) Copy `src/eucs_platform/settings/local.sample.reference.env` to `local.env`,
@@ -118,6 +118,8 @@ update, compile the translations and collect the static files:
 
 ```
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
+uv run --no-sync manage.py loaddata utilities/fixtures/indextypes.json
 uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 ```
@@ -163,6 +165,7 @@ uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 # only after backing up the database and reviewing the new migrations:
 uv run --no-sync manage.py migrate
+uv run --no-sync manage.py createcachetable
 ```
 
 Then restart the service as root/sudo: `systemctl restart hub_i3`

@@ -1,10 +1,11 @@
 from django.contrib import admin, messages
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import path
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
+
 from utilities.admin import TranslationInline
 
-from .models import ResourcesGrouped, TrainingResource, Resource, Theme, Audience, Category, ResourceGroup
+from .models import Audience, Category, Resource, ResourceGroup, ResourcesGrouped, Theme, TrainingResource
 
 
 class ResourceGroupInline(admin.TabularInline):
