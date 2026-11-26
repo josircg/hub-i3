@@ -85,8 +85,8 @@ urlpatterns += [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Include django debug toolbar if DEBUG is on
-if settings.DEBUG:
+# Include django debug toolbar if DEBUG is on and it is installed (see settings/base.py)
+if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
     import debug_toolbar
 
     urlpatterns += [

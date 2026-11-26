@@ -51,8 +51,12 @@ LOCALE_PATHS = [
 ]
 
 CACHES = {
+    # Cache compartilhado entre os workers do gunicorn. LocMemCache é por processo
+    # e quebraria o contador do BruteForceProtectionMiddleware (cada worker teria o
+    # seu). Crie a tabela uma vez por banco: manage.py createcachetable
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache',
     },
     # … default cache config and others
     "select2": {
@@ -338,6 +342,24 @@ VISAO_URL = env('VISAO_URL')
 DEBUG = env('DEBUG')
 ADMIN_EMAIL = env('ADMIN_EMAIL')
 TEMPLATES[0]["OPTIONS"].update({"debug": DEBUG})
+
+# django-debug-toolbar (grupo "dev" do pyproject): só é ativado com DEBUG ligado
+# e se o pacote estiver instalado. O app precisa estar em INSTALLED_APPS porque
+# a toolbar define models (HistoryEntry).
+if DEBUG:
+    try:
+        import debug_toolbar  # noqa: F401
+    except ImportError:
+        pass
+    else:
+        INSTALLED_APPS += ("debug_toolbar",)
+        MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+        INTERNAL_IPS = ["127.0.0.1"]
+
+# GDAL < 3.9 (ex.: Ubuntu 24.04 traz 3.8.4): o Django avisa que não há proteção
+# contra referências espaciais maliciosas. O sistema não processa arquivos
+# geoespaciais de terceiros; remover quando o GDAL for atualizado.
+SILENCED_SYSTEM_CHECKS = ["gis.W001"]
 
 SITE_ID = 1
 NEWSLETTER_TYPE = 'Local'  # Accepts Local or Mailchimp
