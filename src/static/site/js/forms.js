@@ -94,5 +94,5 @@ $(function() {
 function changeBtn(bool) {
   $("button.submit").attr('disabled', bool);
   $("button.submit.continue").attr('disabled', bool);
-  $("button[type=submit]").attr('disabled', bool);
+  $("#Platform button[type=submit]").attr('disabled', bool);
 }

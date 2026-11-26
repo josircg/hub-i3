@@ -529,10 +529,17 @@ a {
     border: none;
 }
 
-#navTop .dropdown-menu li a {
+#navTop .dropdown-menu li a,
+#navTop .dropdown-menu li button {
     font-weight: 500;
     padding: 15px 27px;
     color: #383738;;
+}
+
+/* Logout item is a POST form button: match the font of the link items */
+#navTop .dropdown-menu li button.dropdown-item {
+    font-family: inherit;
+    font-size: inherit;
 }
 
 /* Text-colors */
