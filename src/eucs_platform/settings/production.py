@@ -39,6 +39,26 @@ loaders = [
 TEMPLATES[0]["OPTIONS"].update({"loaders": loaders})
 TEMPLATES[0].update({"APP_DIRS": False})
 
+# Hosts aceitos. Por padrão aceita qualquer um (comportamento anterior); em
+# produção defina no local.env, ex.: ALLOWED_HOSTS=hub.exemplo.br,www.hub.exemplo.br
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+
+# HTTPS. O site roda em HTTPS atrás do nginx, que deve enviar
+# "X-Forwarded-Proto" (ver docs/nginx.conf). Em desenvolvimento local sem TLS,
+# defina HTTPS_ONLY=False no local.env, senão o login/CSRF e o redirecionamento
+# para https quebram no runserver.
+HTTPS_ONLY = env.bool('HTTPS_ONLY', default=True)
+if HTTPS_ONLY:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    # Comece com 1 hora e aumente (ex.: 31536000) depois de validar o HTTPS.
+    SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', default=3600)
+    # O Django exige o esquema na origem. DOMAIN pode vir com ou sem "https://".
+    _origin = DOMAIN if DOMAIN.startswith(('http://', 'https://')) else f'https://{DOMAIN}'
+    CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[_origin])
+
 # Define STATIC_ROOT for the collectstatic command
 STATIC_ROOT = str(BASE_DIR.parent / "static")
 
