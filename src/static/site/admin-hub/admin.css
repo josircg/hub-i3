@@ -1,0 +1,41 @@
+/* Isolated HUB-i3 admin presentation. */
+:root, html[data-theme="light"], html[data-theme="dark"] {
+ --hub-primary:#003b8f; --hub-accent:#782cbf; --hub-on-accent:#fff; --hub-ink:#17365d; --hub-soft:#eef2fa;
+}
+html[data-hub-brand="2"] {--hub-primary:#006025;--hub-accent:#ffdf00;--hub-on-accent:#17472b;--hub-ink:#17472b;--hub-soft:#eaf5ed;}
+html[data-hub-brand="3"] {--hub-primary:#262626;--hub-accent:#525252;--hub-on-accent:#fff;--hub-ink:#292929;--hub-soft:#f0f0f0;}
+html:root {color-scheme:light;--primary:var(--hub-primary);--secondary:var(--hub-primary);--accent:var(--hub-accent);--primary-fg:#fff;--body-fg:var(--hub-ink);--body-bg:#fff;--body-quiet-color:var(--hub-ink);--body-loud-color:var(--hub-ink);--header-color:var(--hub-ink);--header-branding-color:var(--hub-ink);--header-bg:#fff;--header-link-color:var(--hub-primary);--breadcrumbs-fg:#fff;--breadcrumbs-link-fg:#fff;--breadcrumbs-bg:var(--hub-primary);--link-fg:var(--hub-primary);--link-hover-color:var(--hub-ink);--hairline-color:#e0e5eb;--border-color:#d4dbe4;--darkened-bg:var(--hub-soft);--selected-bg:var(--hub-soft);--selected-row:var(--hub-soft);--button-bg:var(--hub-primary);--button-hover-bg:var(--hub-ink);--default-button-bg:var(--hub-accent);--default-button-hover-bg:var(--hub-primary);--button-fg:#fff;}
+body {font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:#f6f8fb;color:var(--hub-ink);}
+#header {background:#fff;color:var(--hub-ink);border-bottom:4px solid var(--hub-accent);padding:16px 28px;box-sizing:border-box;gap:16px;flex-wrap:wrap;}
+#branding #site-name {margin:0;font-size:15px;}
+#branding .hub-admin-brand {display:flex;align-items:center;gap:18px;color:var(--hub-ink);text-decoration:none;}
+.hub-admin-brand img {width:145px;height:42px;object-fit:contain;}
+.hub-admin-brand span {border-left:1px solid #d4dbe4;padding-left:18px;font-weight:600;}
+#user-tools,#user-tools a {color:var(--hub-primary);font-size:12px;}
+div.breadcrumbs {background:var(--hub-primary);color:#fff;padding:13px 28px;}
+div.breadcrumbs a {color:#fff;}
+#content {padding:28px;}
+#content h1 {color:var(--hub-ink);font-weight:700;font-size:26px;}
+.module,.dashboard-module {background:#fff;border:1px solid #dce3ec;border-radius:10px;box-shadow:0 3px 12px #00000008;}
+.module h2,.module caption,.inline-group h2,.dashboard-module h2 {background:var(--hub-primary);color:#fff;padding:12px 15px;border-radius:9px 9px 0 0;font-weight:600;}
+.module caption a,.module h2 a,.dashboard-module h2 a {color:#fff;}
+.module td,.module th {padding:10px;}
+a:link,a:visited {color:var(--hub-primary);}
+.module caption a:link,.module caption a:visited,div.breadcrumbs a:link,div.breadcrumbs a:visited {color:#fff;}
+#nav-sidebar {background:#fff;}
+#nav-sidebar .current-model {background:var(--hub-soft);}
+#nav-sidebar .module {box-shadow:none;}
+input,select,textarea {border-radius:6px;}
+input:focus,select:focus,textarea:focus,a:focus-visible,button:focus-visible {outline:2px solid var(--hub-primary);outline-offset:2px;}
+.button,input[type=submit],input[type=button],.submit-row input,a.button {background:var(--hub-primary);color:#fff;border-radius:7px;}
+.button.default,input[type=submit].default {background:var(--hub-accent);color:var(--hub-on-accent);font-weight:600;}
+.object-tools a:link,.object-tools a:visited {background:var(--hub-primary);color:#fff;}
+.submit-row {background:var(--hub-soft);border-radius:9px;}
+#changelist-filter {background:var(--hub-soft);border-radius:8px;}
+#changelist-filter h2 {background:var(--hub-primary);color:#fff;}
+.login #container {border-radius:14px;box-shadow:0 12px 40px #00000016;overflow:hidden;}
+.login #header {height:auto;min-height:70px;padding:16px;}
+.login #branding .hub-admin-brand {flex-wrap:wrap;justify-content:center;gap:8px;}
+.login .hub-admin-brand span {border:0;padding:0;}
+#hub-brand-notice {position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--hub-primary);color:#fff;padding:12px 18px;border-radius:8px;box-shadow:0 4px 18px #0003;}
+@media(max-width:767px){#header{padding:12px 16px;}#content{padding:16px;} .hub-admin-brand img{width:110px;} .hub-admin-brand span{font-size:12px;padding-left:8px;} #branding .hub-admin-brand{gap:8px;} div.breadcrumbs{padding:10px 16px;}}

@@ -13,7 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <link rel="shortcut icon" href="{% static 'site/ico/favicon.svg' %}">
+    <link id="hub-brand-favicon" rel="icon" type="image/svg+xml" href="{% static 'site/brand-test/1-icon.svg' %}">
+    <!-- HUB BRAND TEST: remove this block after approval -->
+    <script src="{% static 'site/brand-test/switch.js' %}" data-brand-root="{% static 'site/brand-test/' %}"></script>
     <title>
         {% block title %}{% translate 'Hub-i3 - Hub de Informação e Inovação Inclusivas' %}{% endblock title%}
     </title>
@@ -75,6 +77,7 @@
       <meta name="twitter:image" content="{% block meta_t_image %}{{ DOMAIN }}{% static 'site/img/background-header-1200x627.png' %}{% endblock %}">
       <meta name="twitter:image:alt" content="{{ title }}">
     {% endblock meta %}
+    <link rel="stylesheet" href="{% static 'site/brand-test/themes.css' %}">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -86,15 +89,25 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <img data-src="{% static 'site/img/logos/hub-i3.png' %}" width="220" alt="{% trans 'Hub-i3' %}" class="lazyload"/>
+                <img data-hub-logo="header" src="{% static 'site/brand-test/1-logo.svg' %}" width="220" alt="{% trans 'Hub-i3' %}" class="hub-brand-logo"/>
             </a>
             <div class="collapse navbar-collapse" id="navbarPrincipal">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item top"><a class="nav-link main {% active_link 'about' %}" href="{% url 'about' %}">Sobre</a></li>
-                    <li class="nav-item top"><a class="nav-link main {% active_link 'projects' %}" href="{% url 'projects' %}">Políticas</a></li>
-                    <li class="nav-item top"><a class="nav-link main {% active_link 'events' %}" href="{% url 'events' %}">Ações</a></li>
-                    <li class="nav-item top"><a class="nav-link main {% active_link 'newsletters' %}" href="{% url 'newsletters' %}">Notícias</a></li>
-                    <li class="nav-item top"><a class="nav-link main {% active_link 'blog' %}" href="{% url 'blog' %}">Blog</a></li>
+                    <li class="nav-item top">
+                        <a class="nav-link main {% active_link 'about' %}" href="{% url 'about' %}">{% trans "About" %}</a>
+                    </li>
+                    <li class="nav-item top">
+                        <a class="nav-link main {% active_link 'all || projects || resources || training_resources || organisations' %}" href="{% url 'projects' %}">{% trans "Policies" %}</a>
+                    </li>
+                    <li class="nav-item top">
+                        <a class="nav-link main {% active_link 'events' %}" href="{% url 'events' %}">{% trans "Ações" %}</a>
+                    </li>
+                    <li class="nav-item top">
+                        <span class="nav-link disabled" aria-disabled="true">{% trans "Notícias" %}</span>
+                    </li>
+                    <li class="nav-item top">
+                        <a class="nav-link main {% active_link 'blog' %}" href="{% url 'blog' %}">{% trans "Blog" %}</a>
+                    </li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
