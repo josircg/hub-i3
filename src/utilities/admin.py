@@ -90,10 +90,14 @@ class IndexTypeAdmin(admin.ModelAdmin):
 @admin.register(Schema)
 class SchemaAdmin(admin.ModelAdmin):
     list_display = ('description', 'external_code', 'active')
+    list_filter = ('active',)
+    search_fields = ('description', 'external_code')
     inlines = (TranslationInline,)
 
 
 @admin.register(Concept)
 class ConceptAdmin(admin.ModelAdmin):
-    list_display = ('concept', 'schema', 'parent_concept')
+    list_display = ('concept', 'schema', 'parent_concept', 'active')
+    list_filter = ('schema', 'active')
+    search_fields = ('concept', 'description')
     inlines = (TranslationInline,)
