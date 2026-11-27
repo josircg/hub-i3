@@ -107,13 +107,21 @@ cp eucs_platform/settings/local.sample.reference.env eucs_platform/settings/loca
 uv run --no-sync manage.py dbshell
 ```
 
-10) Test also the django configuration:
+10) Copy the default media files (placeholder images used when content has no image).
+`MEDIA_ROOT` is `src/media`, served by NGINX at `/media/`:
+
+```
+mkdir -p /var/webapp/hub-i3/src/media/images
+cp /var/webapp/hub-i3/docs/media/*.* /var/webapp/hub-i3/src/media/
+```
+
+11) Test also the django configuration:
 
 ```
 uv run --no-sync manage.py check
 ```
 
-11) Import your database or create an empty instance and then apply the model
+12) Import your database or create an empty instance and then apply the model
 update, compile the translations and collect the static files:
 
 ```
@@ -124,7 +132,7 @@ uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 ```
 
-12) Configure the service that runs gunicorn (logged as root/sudo).
+13) Configure the service that runs gunicorn (logged as root/sudo).
 
 Recommended: **systemd**, using the `docs/hub_i3.service` template. Adjust the
 user, paths, port and workers if needed:
@@ -143,14 +151,14 @@ cp docs/supervisor.conf /etc/supervisor/conf.d/hub-i3.conf
 supervisorctl reread && supervisorctl update
 ```
 
-13) Cron jobs. `django_cron` only runs when `runcrons` is called, so schedule it
+14) Cron jobs. `django_cron` only runs when `runcrons` is called, so schedule it
 (as webapp, `crontab -e`):
 
 ```
 */5 * * * * cd /var/webapp/hub-i3/src && /var/webapp/hub-i3/.venv/bin/python manage.py runcrons >> /var/webapp/hub-i3/logs/cron.log 2>&1
 ```
 
-14) Finally, test your site on browser and be happy!
+15) Finally, test your site on browser and be happy!
 
 ## Updating an existing installation
 
