@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | HUB-i3{% endblock %}
+{% block blockbots %}{{ block.super }}
+<link rel="stylesheet" href="{% static 'site/admin-hub/admin.css' %}?v=1">
+<link rel="icon" type="image/svg+xml" id="hub-brand-favicon" href="{% static 'site/brand-test/1-icon.svg' %}">
+<script defer src="{% static 'site/brand-test/switch.js' %}?v=2" data-brand-root="{% static 'site/brand-test/' %}"></script>
+{% endblock %}
+{% block branding %}
+<h1 id="site-name"><a class="hub-admin-brand" href="{% url 'admin:index' %}"><img data-hub-logo="header" src="{% static 'site/brand-test/1-logo.svg' %}" alt="HUB-i3"><span>Administração</span></a></h1>
+{% endblock %}

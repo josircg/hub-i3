@@ -1,18 +1,11 @@
-{% load static %}
 {% load i18n %}
-
-<div id="cookieConsent">
-    <div id="closeCookieConsent">x</div>
-    {% trans 'This website uses cookies.' %}<a href="{% url 'privacy' %}" target="_blank"> {% trans 'More info'%}</a>. <a class="cookieConsentOK" href="javascript:Cookielaw.createCookielawCookie();">{% trans "That's fine" %}</a>
+<div id="CookielawBanner" role="region" aria-label="{% trans 'Cookie notice' %}">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <span>{% trans 'This website uses cookies.' %} <a href="{% url 'privacy' %}" target="_blank" rel="noopener noreferrer">{% trans 'More info' %}</a>.</span>
+        <button type="button" class="btn btn-my-outline-darkBlue" onclick="Cookielaw.accept();">{% trans "That's fine" %}</button>
+    </div>
 </div>
-<script type="text/javascript" src="{% static 'site/js/jquery.min.js' %}"></script>
-<script>
-$(document).ready(function(){   
-    setTimeout(function () {
-        $("#cookieConsent").fadeIn(200);
-     }, 1000);
-    $("#closeCookieConsent, .cookieConsentOK").click(function() {
-        $("#cookieConsent").fadeOut(200);
-    }); 
-});
-</script>
+<style>
+#CookielawBanner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: #fff; color: #222; box-shadow: 0 -2px 12px rgba(0,0,0,.15); padding: 12px 0; }
+#CookielawBanner .container { gap: 12px; }
+</style>
