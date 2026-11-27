@@ -21,7 +21,6 @@ urlpatterns = [
     path('allowUser/', views.allowUser, name='allowUser'),
     re_path(r'^api/', include('projects.api.urls')),
     path('downloadProjects', views.downloadProjects, name='downloadProjects'),
-    path('test_visao/', views.test_visao, name='test_visao'),
     path('project_invite/', views.project_invite, name='project_invite'),
     path('project_invitation/<int:project_id>/', views.project_invitation, name='project_invitation'),
     path('project_permissions/<int:project_id>/', views.project_permission_list, name='project_permissions'),
