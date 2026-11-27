@@ -175,7 +175,7 @@ Este documento descreve **o que o sistema faz hoje**, derivado diretamente do c�
 #### Critérios de Aceitação (EARS)
 1. SE `VISAO_USERNAME` estiver configurado ENTÃO O SISTEMA DEVE montar na home os endpoints de visualização por grupo/camada e os tópicos de projeto com `external_url`; caso contrário O SISTEMA DEVE omitir esses elementos.
 2. QUANDO um projeto aprovado com latitude/longitude é salvo e `VISAO_USERNAME` está configurado O SISTEMA DEVE marcar os tópicos relacionados como `updated = False` para resincronização. O `save()` de `Project` NÃO envia nada ao Visão (a chamada a `visao.save_project` está comentada); o envio é feito de forma assíncrona pelo cron `projects.cron.UpdateVisaoCronJob` (a cada 5 minutos, código `eucs_platform.update_visao`), que executa `populate_visao --update` (`update_all`): se não há tópicos com `updated = False` nada é feito; caso contrário atualiza a camada geral (`VISAO_LAYER`) com todos os projetos aprovados e cria/atualiza o dataset de cada tópico pendente (gravando `external_url` e `updated = True`; tópicos sem projetos têm `external_url` limpo). Já a exclusão de projeto (`delete`), com `VISAO_USERNAME` configurado, chama `visao.delete_project` imediatamente, registrando erros em log.
-3. QUANDO um administrador aciona `test_visao` O SISTEMA DEVE tentar autenticar no serviço e reportar sucesso ou falha.
+3. O SISTEMA NÃO DEVE expor rota web para testar a autenticação no Visão (a rota `test_visao` foi removida); o teste é feito pelo comando `populate_visao --auth`.
 
 ### Requisito 16 — Moderação transversal de conteúdo
 **User Story:** Como moderador/admin, quero aprovar, ocultar e destacar conteúdos, para garantir que o público veja apenas material revisado e priorizar itens em destaque.

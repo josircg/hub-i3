@@ -53,6 +53,13 @@ cd src
 cp eucs_platform/settings/local.sample.reference.env eucs_platform/settings/local.env
 ```
 
+Copy the default media files (placeholder images used when content has no image):
+
+```
+mkdir -p media/images
+cp ../docs/media/*.* media/
+```
+
 In `local.env`, set `DATABASE_NAME=hub_i3`, `DATABASE_USER=i3_user`, `DATABASE_PASSWORD` (the password chosen above)
 and `DATABASE_HOST=localhost` (also update `DATABASE_URL` accordingly).
 

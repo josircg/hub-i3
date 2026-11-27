@@ -108,7 +108,15 @@ uv run --no-sync manage.py dbshell
 uv run --no-sync manage.py check
 ```
 
-10) Criar as tabelas, compilar as traduções e coletar os arquivos estáticos:
+10) Copiar os arquivos de media default (imagens padrão usadas quando o conteúdo não tem imagem).
+O `MEDIA_ROOT` é `src/media`, servido pelo NGINX em `/media/`:
+
+```
+mkdir -p /var/webapp/hub-i3/src/media/images
+cp /var/webapp/hub-i3/docs/media/*.* /var/webapp/hub-i3/src/media/
+```
+
+11) Criar as tabelas, compilar as traduções e coletar os arquivos estáticos:
 
 ```
 uv run --no-sync manage.py migrate
@@ -118,7 +126,7 @@ uv run --no-sync manage.py compilemessages
 uv run --no-sync manage.py collectstatic --noinput
 ```
 
-11) Configurar o serviço que executa o gunicorn (logado como root/sudo).
+12) Configurar o serviço que executa o gunicorn (logado como root/sudo).
 
 Recomendado: **systemd**, usando o modelo `docs/hub_i3.service`. Ajuste usuário,
 caminhos, porta e workers se necessário:
@@ -137,7 +145,7 @@ cp docs/supervisor.conf /etc/supervisor/conf.d/hub-i3.conf
 supervisorctl reread && supervisorctl update
 ```
 
-12) Cron jobs. O `django_cron` só executa quando o `runcrons` é chamado, então
+13) Cron jobs. O `django_cron` só executa quando o `runcrons` é chamado, então
 agende-o (como webapp, `crontab -e`):
 
 ```

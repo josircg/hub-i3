@@ -30,20 +30,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ps-4  {% active_link 'platforms' %}"
-                       href="{% url 'platforms'%}{% if request.GET.keywords %}?keywords={{ request.GET.keywords|urlencode }}{%endif%}">
-                       <i class="fas fa-globe"></i> {% trans "Platforms" %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    {% with request.resolver_match.url_name as url_name %}
-                        <a class="nav-link ps-4 {% if request.get_full_path == '/users/' %}active{% endif %}"
-                        href="/users/{% if request.GET.keywords %}?keywords={{ request.GET.keywords|urlencode }}{%endif%}">
-                        <i class="fas fa-users"></i> {% trans "Users" %}
-                        </a>
-                    {% endwith %}
-                </li>
-                <li class="nav-item">
                     <a class="nav-link ps-4  {% active_link 'events' %}"
                        href="{% url 'events'%}{% if request.GET.keywords %}?keywords={{ request.GET.keywords|urlencode }}{%endif%}">
                        <i class="fas fa-calendar-day"></i> {% trans "Events" %}

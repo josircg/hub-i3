@@ -32,7 +32,7 @@ from rest_framework import status
 
 from accounts.models import ActivationTask
 from dossiers.models import Dossier
-from eucs_platform import get_main_page, send_email, set_pages_and_get_object_list, visao
+from eucs_platform import get_main_page, send_email, set_pages_and_get_object_list
 from eucs_platform.logger import log_message
 from eucs_platform.utils import get_message_list
 from utilities.file import crop_and_save
@@ -584,7 +584,7 @@ def downloadProjects(request):
             rec.name,
             rec.latitude,
             rec.longitude,
-            'https://%s/project/%s' % (settings.DOMAIN, rec.id),
+            '%s/project/%s' % (settings.DOMAIN, rec.id),
         )
     response = HttpResponse(csv_file, content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="projects.csv"'
@@ -633,13 +633,6 @@ def iter_items(items, pseudo_buffer):
 def projects_stats(request):
     return None
 
-
-def test_visao(request):
-    try:
-        visao.authenticate()
-        return HttpResponse('Ok')
-    except Exception as e:
-        return HttpResponse('Falha na autenticação: %s' % e)
 
 
 def send_project_invite_email(project_obj, email, user):
