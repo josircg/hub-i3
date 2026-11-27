@@ -22,8 +22,9 @@ import resources.urls
 from . import sitemaps, views
 
 # Personalized admin site settings like title and header
-admin.site.site_title = "Cívis Administração"
-admin.site.site_header = "Cívis Administração"
+admin.site.site_title = "HUB-i3 | Administração"
+admin.site.site_header = "HUB-i3 | Administração"
+admin.site.index_title = "Painel de gestão"
 
 urlpatterns = i18n_patterns(
     path("", views.home, name="home"),
